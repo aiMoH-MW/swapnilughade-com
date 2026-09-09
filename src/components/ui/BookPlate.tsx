@@ -69,7 +69,11 @@ export function BookPlate({
             Book Overview &amp; Excerpt →
           </Link>
           <a
-            href="https://amazon.com"
+            href={
+              slug === "ai-powered-google-ads-system"
+                ? "https://www.amazon.in/dp/B0HJ6C52V6"
+                : "https://www.amazon.in/dp/934966979X"
+            }
             target="_blank"
             rel="nofollow noopener noreferrer"
             className="btn btn-ghost text-xs"

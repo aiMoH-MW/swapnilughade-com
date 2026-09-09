@@ -210,10 +210,18 @@ export default function BookTwoPage() {
       <section className="buy-zone">
         <div className="buy-eye">First edition</div>
         <h2 className="buy-title">Get the <em>book</em></h2>
-        <p className="buy-body">Published August 2026 by MagicWorks IT Solutions. Get in touch for early access and licensing.</p>
+        <p className="buy-body">Published August 2026 by MagicWorks IT Solutions. Available on Amazon.</p>
         <div className="buy-cta">
-          <Link href="/contact" className="btn">
-            Get in touch
+          <a
+            href="https://www.amazon.in/dp/B0HJ6C52V6"
+            className="btn"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy on Amazon ↗
+          </a>
+          <Link href="/contact" className="btn ghost">
+            Direct &amp; Bulk Inquiries
           </Link>
         </div>
         <div className="buy-note">Published August 2026 · First Edition</div>

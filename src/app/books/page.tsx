@@ -77,7 +77,7 @@ export default function BooksPage() {
                     Read more →
                   </Link>
                   <a
-                    href="https://www.amazon.in/dp/934966979X"
+                    href="https://www.amazon.in/dp/B0HJ6C52V6"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn ghost"
