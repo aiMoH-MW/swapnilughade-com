@@ -1,0 +1,31 @@
+{
+  "newsletter": [
+    {
+      "id": "nl-1788496108789-besr",
+      "email": "mayuri.turkane24@pcu.edu.in",
+      "source": "home",
+      "createdAt": "2026-09-04T04:28:28.789Z",
+      "status": "active"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "cnt-1788867935635-t3he",
+      "name": "Pratik",
+      "email": "pratik03@gmail.com",
+      "purpose": "general",
+      "message": "Want to connect for general enquiry",
+      "createdAt": "2026-09-08T11:45:35.635Z",
+      "status": "new"
+    },
+    {
+      "id": "cnt-1788496072526-6wrg",
+      "name": "Mayuri Turkane",
+      "email": "mayuri.turakane12@gmail.com",
+      "purpose": "media",
+      "message": "I want to ask about your books.",
+      "createdAt": "2026-09-04T04:27:52.526Z",
+      "status": "new"
+    }
+  ]
+}
