@@ -9,66 +9,90 @@ export default function NowPage() {
   const currentMonth = 'September 2026';
 
   return (
-    <div className="section">
-      <div className="container" style={{ maxWidth: '780px' }}>
-        <div className="section-head" style={{ borderBottom: '1px solid var(--line)', paddingBottom: '32px', marginBottom: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
-          <div>
-            <h1 className="section-title" style={{ marginBottom: 0 }}>
-              What I&apos;m Doing <em>Now</em>
-            </h1>
-          </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--gold)', letterSpacing: '0.18em', textTransform: 'uppercase', paddingBottom: '4px' }}>
-            Updated: {currentMonth} · Pune
-          </div>
+    <div className="section now-page">
+      <div className="container">
+        <div className="section-head">
+          <div className="hero-eyebrow">Monthly Cadence</div>
+          <h1 className="section-title">
+            What I&apos;m Doing <em>Now</em>
+          </h1>
+          <p className="section-sub">
+            Current focus, active advisory engagements, reading list, and incubation projects. Updated monthly from Pune.
+          </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          <section style={{ padding: '28px', background: 'var(--bone-warm)', border: '1px solid var(--line)', borderLeft: '4px solid var(--gold)' }}>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: 'var(--ink)', marginBottom: '16px' }}>
-              1. What I&apos;m Working On
-            </h2>
-            <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '15px', color: 'var(--ink-soft)' }}>
-              <li>
-                <strong>MagicWorks Advisory (Pillars 03 &amp; 04):</strong> Actively advising enterprise platforms on LLM search readiness and marketplace unit economics.
-              </li>
-              <li>
-                <strong>Book Launch Rollout:</strong> Distributing <em>Two Algorithms, One Strategy</em> to international marketing leaders and hosting private briefings.
-              </li>
-              <li>
-                <strong>Ideovate / simplidistance.com:</strong> Expanding program taxonomy for 2026/2027 distance MBA admissions cycles.
-              </li>
-            </ul>
-          </section>
+        <div className="now-grid">
+          {/* CARD 1: WORKING ON */}
+          <article className="now-card">
+            <div>
+              <div className="now-card-eyebrow">01 · Focus &amp; Practice</div>
+              <h2 className="now-card-title">
+                What I&apos;m <em>Working On</em>
+              </h2>
+              <ul className="now-card-list">
+                <li>
+                  <strong>MagicWorks Advisory (Pillars 03 &amp; 04):</strong> Actively advising enterprise platforms on LLM search readiness and marketplace unit economics.
+                </li>
+                <li>
+                  <strong>Book Launch Rollout:</strong> Distributing <em>Two Algorithms, One Strategy</em> to international marketing leaders and hosting private briefings.
+                </li>
+                <li>
+                  <strong>Ideovate / simplidistance.com:</strong> Expanding program taxonomy for 2026/2027 distance MBA admissions cycles.
+                </li>
+              </ul>
+            </div>
+            <div className="now-card-footer">
+              <span>Updated {currentMonth}</span>
+              <span>Pune, India</span>
+            </div>
+          </article>
 
-          <section style={{ padding: '28px', background: 'var(--bone-warm)', border: '1px solid var(--line)', borderLeft: '4px solid var(--rosewood)' }}>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: 'var(--ink)', marginBottom: '16px' }}>
-              2. What I&apos;m Reading
-            </h2>
-            <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '15px', color: 'var(--ink-soft)' }}>
-              <li>
-                <em>The Structure of Scientific Revolutions</em> by Thomas S. Kuhn (re-reading through the lens of generative AI paradigms).
-              </li>
-              <li>
-                Technical documentation on agentic search pipelines and Retrieval-Augmented Generation evaluation frameworks.
-              </li>
-              <li>
-                Research papers on high-trust consumer decision velocity in digital health and higher education.
-              </li>
-            </ul>
-          </section>
+          {/* CARD 2: READING */}
+          <article className="now-card">
+            <div>
+              <div className="now-card-eyebrow">02 · Inputs &amp; Research</div>
+              <h2 className="now-card-title">
+                What I&apos;m <em>Reading</em>
+              </h2>
+              <ul className="now-card-list">
+                <li>
+                  <em>The Structure of Scientific Revolutions</em> by Thomas S. Kuhn (re-reading through the lens of generative AI paradigms).
+                </li>
+                <li>
+                  Technical documentation on agentic search pipelines and Retrieval-Augmented Generation evaluation frameworks.
+                </li>
+                <li>
+                  Research papers on high-trust consumer decision velocity in digital health and higher education.
+                </li>
+              </ul>
+            </div>
+            <div className="now-card-footer">
+              <span>Reading List</span>
+              <span>3 Topics In Flight</span>
+            </div>
+          </article>
 
-          <section style={{ padding: '28px', background: 'var(--bone-warm)', border: '1px solid var(--line)', borderLeft: '4px solid var(--ink)' }}>
-            <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: 'var(--ink)', marginBottom: '16px' }}>
-              3. What I&apos;m Building
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--ink-soft)', lineHeight: 1.6 }}>
-              Incubating internal tools at MagicWorks Group: refining <a href="https://www.magicflowai.io/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--rosewood)', borderBottom: '1px solid var(--rosewood)' }}><strong>MagicFlow AI</strong></a> for autonomous campaign negative-keyword gating and testing new Next.js programmatic routing modules for high-trust education portals.
-            </p>
-          </section>
+          {/* CARD 3: BUILDING */}
+          <article className="now-card">
+            <div>
+              <div className="now-card-eyebrow">03 · Labs &amp; Ventures</div>
+              <h2 className="now-card-title">
+                What I&apos;m <em>Building</em>
+              </h2>
+              <p className="now-card-text">
+                Incubating internal tools at MagicWorks Group: refining <a href="https://www.magicflowai.io/" target="_blank" rel="noopener noreferrer" className="now-link"><strong>MagicFlow AI</strong></a> for autonomous campaign negative-keyword gating and testing new Next.js programmatic routing modules for high-trust education portals.
+              </p>
+            </div>
+            <div className="now-card-footer">
+              <span>MagicWorks Labs</span>
+              <span>Internal Tools</span>
+            </div>
+          </article>
         </div>
 
-        <div style={{ marginTop: '48px', paddingTop: '28px', borderTop: '1px solid var(--line)', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Link href="/writing" style={{ fontFamily: 'var(--mono)', fontSize: '12px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)', borderBottom: '1px solid var(--gold)', paddingBottom: '3px' }}>
+        {/* BOTTOM NAV / LINK */}
+        <div className="now-bottom-action">
+          <Link href="/writing" className="now-archive-link">
             Explore recent writings →
           </Link>
         </div>

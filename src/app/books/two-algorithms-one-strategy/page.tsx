@@ -153,10 +153,10 @@ export default function BookOnePage() {
         </div>
       </section>
 
-      {/* SAMPLE EXCERPT */}
+      {/* BOOK EXCERPT */}
       <section className="section parchment">
         <div className="section-inner">
-          <h2 className="h3">Sample <em>excerpt</em></h2>
+          <h2 className="h3">Book <em>excerpt</em></h2>
           <div className="content-block">
             <div className="lbl">Excerpt · From the Preface</div>
             <p className="p">
