@@ -21,13 +21,24 @@ export default function VenturesPage() {
 
       {/* INTRO SECTION */}
       <section className="intro">
-        <div className="intro-inner">
-          <p className="intro-p">
-            Founder, operator, investor, consultant. These are not four separate careers; they are one practice viewed from four angles. The through-line across all four is the same operating thesis: two into one. Human strategy into machine acceleration. Traditional search into AI-powered search. Execution into advisory. Services into products.
-          </p>
-          <p className="intro-p">
-            Both ventures I founded stand on their own. My investor position and consulting engagement are independent commitments to companies I believe in. Every venture below is a separate business with its own team, its own market, and its own site.
-          </p>
+        <div className="container">
+          <div className="ventures-intro-layout">
+            <div className="ventures-intro-media">
+              <img
+                src="/img/ventures-thesis-art.png"
+                alt="Four angles operating thesis: two into one"
+                className="ventures-intro-img"
+              />
+            </div>
+            <div className="ventures-intro-content">
+              <p className="intro-p">
+                Founder, operator, investor, consultant. These are not four separate careers; they are one practice viewed from four angles. The through-line across all four is the same operating thesis: two into one. Human strategy into machine acceleration. Traditional search into AI-powered search. Execution into advisory. Services into products.
+              </p>
+              <p className="intro-p">
+                Both ventures I founded stand on their own. My investor position and consulting engagement are independent commitments to companies I believe in. Every venture below is a separate business with its own team, its own market, and its own site.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

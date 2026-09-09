@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Ornament } from '@/components/ui/Ornament';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'MagicWorks · Swapnil Ughade',
@@ -13,9 +14,11 @@ export default function MagicWorksSubpage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/ventures">Ventures</Link> · Magicworks
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
+            current="MagicWorks"
+            subtitle="AI Agency · Pune"
+          />
           <div className="role-card">
             <div className="rc-role">Founder-Director · Since 2009</div>
             <h1 className="rc-name">Magicworks</h1>

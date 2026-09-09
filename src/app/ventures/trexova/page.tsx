@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Ornament } from '@/components/ui/Ornament';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Trexova · Swapnil Ughade',
@@ -13,9 +14,11 @@ export default function TrexovaSubpage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/ventures">Ventures</Link> · Trexova
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
+            current="Trexova"
+            subtitle="trexova.com"
+          />
           <div className="role-card pearl">
             <div className="rc-role">Digital Marketing Consultant · Since 2021</div>
             <h1 className="rc-name">Trexova</h1>

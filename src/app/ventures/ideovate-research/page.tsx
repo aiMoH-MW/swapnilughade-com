@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Ornament } from '@/components/ui/Ornament';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Ideovate · Swapnil Ughade',
@@ -13,9 +14,11 @@ export default function IdeovateSubpage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/ventures">Ventures</Link> · Ideovate
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
+            current="Ideovate"
+            subtitle="simplidistance.com"
+          />
           <div className="role-card gold">
             <div className="rc-role">Founder-Director · Since 2018</div>
             <h1 className="rc-name">Ideovate</h1>

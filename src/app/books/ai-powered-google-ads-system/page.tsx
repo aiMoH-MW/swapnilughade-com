@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SignatureSvg, FlourishSvg } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'The AI-Powered Google Ads System · Swapnil Ughade',
@@ -12,9 +13,11 @@ export default function BookTwoPage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/books">Books</Link> · Book Two
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Books', href: '/books', icon: '✦' }}
+            current="Book II"
+            subtitle="The AI-Powered Google Ads System"
+          />
           <img
             src="/img/books/ai-powered-google-ads-system.jpg"
             alt="The AI-Powered Google Ads System — book cover"

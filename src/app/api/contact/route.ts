@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name, email, and message are required.' }, { status: 400 });
     }
 
-    // 1. Store in persistent store
+    // 1. Store in persistent store (handles both Supabase and local backup)
     const contact = await addContactInquiry({
       name,
       email,
@@ -19,20 +19,7 @@ export async function POST(req: NextRequest) {
       message,
     });
 
-    // 2. Store in Supabase if available
-    try {
-      await supabaseAdmin.from('contacts').insert({
-        name,
-        email,
-        purpose: purpose || 'General Inquiry',
-        message,
-        status: 'new',
-      });
-    } catch (dbError: any) {
-      console.warn('Supabase contact insert warning:', dbError.message);
-    }
-
-    // 3. Alert Admin Email (fail-safe)
+    // 2. Alert Admin Email (fail-safe)
     try {
       await sendEmail({
         to: process.env.ADMIN_NOTIFICATION_EMAIL || 'swapnil@magicworksitsolutions.com',

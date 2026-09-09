@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Ornament } from '@/components/ui/Ornament';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Dnyanal Educon · Swapnil Ughade',
@@ -13,9 +14,11 @@ export default function DnyanalSubpage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/ventures">Ventures</Link> · Dnyanal Educon
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
+            current="Dnyanal Educon"
+            subtitle="collegencourses.com"
+          />
           <div className="role-card rosewood">
             <div className="rc-role">Investor · Since 2023</div>
             <h1 className="rc-name">Dnyanal Educon</h1>

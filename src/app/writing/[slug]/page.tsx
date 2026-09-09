@@ -4,6 +4,7 @@ import { ARTICLES } from '@/lib/content-data';
 import { FlourishSvg, TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 import { Ornament } from '@/components/ui/Ornament';
 import { InlineMarkdown } from '@/components/writing/InlineMarkdown';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -88,9 +89,12 @@ export default async function ArticlePage({ params }: Props) {
       {/* ARTICLE HEADER & BODY ZONE */}
       <section className="article-zone">
         <header className="article-head">
-          <div className="a-breadcrumb">
-            <Link href="/writing">Writing</Link> · {article.category}
-          </div>
+          <Breadcrumb
+            parent={{ label: 'Writing', href: '/writing', icon: '✎' }}
+            current={article.category.toUpperCase()}
+            subtitle={article.title}
+            className="a-breadcrumb"
+          />
           <h1 className="a-title">
             {renderTitleWithEm(article.title, article.titleEm)}
           </h1>

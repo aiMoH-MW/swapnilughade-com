@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SignatureSvg, FlourishSvg } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Two Algorithms, One Strategy · Swapnil Ughade',
@@ -12,9 +13,11 @@ export default function BookOnePage() {
       {/* HERO SECTION */}
       <header className="hero">
         <div className="container">
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link href="/books">Books</Link> · Book One
-          </nav>
+          <Breadcrumb
+            parent={{ label: 'Books', href: '/books', icon: '✦' }}
+            current="Book I"
+            subtitle="Two Algorithms, One Strategy"
+          />
           <img
             src="/img/books/two-algorithms-one-strategy.jpg"
             alt="Two Algorithms, One Strategy — book cover"

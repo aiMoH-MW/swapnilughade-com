@@ -24,7 +24,7 @@ export default function ContactPage() {
         setForm({ name: '', email: '', purpose: 'speaking', message: '' });
       } else {
         setStatus('error');
-        setMsg(data.error || 'Submission failed.');
+        setMsg(data.error || 'Failed to submit inquiry.');
       }
     } catch {
       setStatus('error');

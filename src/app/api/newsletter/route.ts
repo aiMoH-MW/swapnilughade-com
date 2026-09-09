@@ -23,19 +23,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Valid email is required.' }, { status: 400 });
     }
 
-    // 1. Store in local persistent storage
+    // 1. Store in persistent store (handles both Supabase and local backup)
     const subscriber = await addNewsletterSubscriber(email, source);
 
-    // 2. Insert into Supabase if configured
-    try {
-      await supabaseAdmin
-        .from('newsletter_subscribers')
-        .upsert({ email: subscriber.email, source: subscriber.source, status: 'active' }, { onConflict: 'email' });
-    } catch (dbError: any) {
-      console.warn('Supabase subscription warning:', dbError.message);
-    }
-
-    // 3. Send Welcome Email (fail-safe)
+    // 2. Send Welcome Email (fail-safe)
     try {
       await sendEmail({
         to: email,
