@@ -351,15 +351,15 @@ em {
   flex-wrap: wrap;
 }
 
-/* ============ SEALS BAND (INDIGO ZONE) ============ */
+/* ============ SEALS BAND (INDIGO ZONE / THE COUNTERS) ============ */
 .seals-band, .seals-zone {
   background: var(--bg-indigo);
   color: var(--bone);
-  padding: 56px 0;
+  padding: 52px 0 60px;
   position: relative;
 }
 @media (min-width: 768px) {
-  .seals-band, .seals-zone { padding: 64px 0; }
+  .seals-band, .seals-zone { padding: 64px 0 72px; }
 }
 .seals-band::before, .seals-band::after,
 .seals-zone::before, .seals-zone::after {
@@ -377,6 +377,16 @@ em {
   .seals-band::before, .seals-zone::before { top: 24px; }
   .seals-band::after, .seals-zone::after { bottom: 24px; }
 }
+.seals-eyebrow {
+  font-family: var(--mono) !important;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 24px;
+  display: block;
+}
 .seals-title {
   font-family: var(--serif) !important;
   font-weight: 400;
@@ -390,48 +400,59 @@ em {
 .seals-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  justify-items: center;
-  max-width: 1040px;
+  gap: 16px;
+  width: 100%;
   margin: 0 auto;
 }
 @media (min-width: 640px) {
-  .seals-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .seals-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
 }
-@media (min-width: 860px) {
+@media (min-width: 960px) {
   .seals-grid { grid-template-columns: repeat(5, 1fr); gap: 20px; }
 }
 .seal {
-  width: 128px;
-  height: 128px;
-  border: 1.5px solid var(--gold-light);
-  border-radius: 50%;
+  width: 100%;
+  min-height: 140px;
+  border: 1px solid rgba(228, 181, 81, 0.22);
+  border-radius: 1px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 12px;
-  background: transparent;
-  transition: border-color 200ms;
+  padding: 32px 16px;
+  background: rgba(255, 255, 255, 0.012);
+  transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
+  box-sizing: border-box;
 }
-.seal:hover { border-color: var(--gold); }
+.seal:hover {
+  border-color: var(--gold-light);
+  background: rgba(228, 181, 81, 0.04);
+  transform: translateY(-2px);
+}
 .seal-num {
   font-family: var(--serif) !important;
+  font-style: italic !important;
   font-weight: 400;
-  font-size: 32px;
+  font-size: 38px;
   line-height: 1;
   color: var(--gold-light);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
+}
+@media (min-width: 768px) {
+  .seal-num { font-size: 44px; }
 }
 .seal-lbl {
   font-family: var(--mono) !important;
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-style: normal;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(239, 235, 227, 0.75);
-  margin-top: 12px;
-  line-height: 1.35;
+  color: rgba(239, 235, 227, 0.85);
+  margin-top: 14px;
+  line-height: 1.45;
+  text-align: center;
 }
 
 /* ============ SECTION SCAFFOLDING ============ */
@@ -2644,37 +2665,35 @@ input, select, textarea, button {
   }
 }
 
-/* Data Seals Band (Home & About) 2x2 on Mobile */
+/* Data Seals Band (Home & About) on Mobile */
 @media (max-width: 768px) {
   .h-seals-band, .seals-band {
-    padding: 40px 0;
+    padding: 44px 0;
   }
-  .h-seals-inner, .seals-inner {
-    display: grid !important;
+  .seals-eyebrow {
+    margin-bottom: 20px;
+  }
+  .seals-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0 !important;
-    max-width: 500px;
-    margin: 0 auto;
+    gap: 12px !important;
   }
-  .h-seal, .seal {
+  .seal {
     padding: 24px 12px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    min-height: 120px;
   }
-  .h-seal:nth-child(odd), .seal:nth-child(odd) {
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  .seal:last-child:nth-child(odd) {
+    grid-column: span 2;
+    max-width: 240px;
+    margin: 0 auto;
+    width: 100%;
   }
-  .h-seal:nth-child(3), .h-seal:nth-child(4),
-  .seal:nth-child(3), .seal:nth-child(4) {
-    border-bottom: none;
+  .seal-num {
+    font-size: 34px !important;
   }
-  .h-seal-num, .seal-num {
-    font-size: 38px !important;
-    margin-bottom: 6px;
-  }
-  .h-seal-lbl, .seal-lbl {
-    font-size: 10.5px !important;
-    letter-spacing: 0.14em;
+  .seal-lbl {
+    font-size: 10px !important;
+    margin-top: 10px;
+    letter-spacing: 0.16em;
   }
 }
 

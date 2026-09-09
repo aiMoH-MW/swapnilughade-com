@@ -163,12 +163,28 @@ export default function AboutPage() {
 
       <section className="seals-band">
         <div className="container">
+          <div className="seals-eyebrow">THE COUNTERS</div>
           <div className="seals-grid">
-            <div className="seal"><div className="seal-num">18+</div><div className="seal-lbl">Years in<br />practice</div></div>
-            <div className="seal"><div className="seal-num">4</div><div className="seal-lbl">Companies</div></div>
-            <div className="seal"><div className="seal-num">₹70cr</div><div className="seal-lbl">Ad spend<br />managed</div></div>
-            <div className="seal"><div className="seal-num">50+</div><div className="seal-lbl">Client<br />accounts</div></div>
-            <div className="seal"><div className="seal-num">2</div><div className="seal-lbl">Books<br />published</div></div>
+            <div className="seal">
+              <div className="seal-num">18+</div>
+              <div className="seal-lbl">Years in<br />practice</div>
+            </div>
+            <div className="seal">
+              <div className="seal-num">4</div>
+              <div className="seal-lbl">Companies</div>
+            </div>
+            <div className="seal">
+              <div className="seal-num">₹70cr</div>
+              <div className="seal-lbl">Ad spend<br />managed</div>
+            </div>
+            <div className="seal">
+              <div className="seal-num">50+</div>
+              <div className="seal-lbl">Client<br />accounts</div>
+            </div>
+            <div className="seal">
+              <div className="seal-num">2</div>
+              <div className="seal-lbl">Books<br />published</div>
+            </div>
           </div>
         </div>
       </section>

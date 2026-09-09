@@ -23,6 +23,7 @@ export default function HomePage() {
       {/* SEALS BAND (INDIGO) */}
       <section className="seals-band">
         <div className="container">
+          <div className="seals-eyebrow">THE COUNTERS</div>
           <div className="seals-grid">
             <div className="seal">
               <div className="seal-num">18+</div>
