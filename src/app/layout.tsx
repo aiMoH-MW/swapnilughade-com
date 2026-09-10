@@ -78,7 +78,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     image: "https://swapnilughade.com/img/swapnil.jpg",
     sameAs: [
       "https://www.linkedin.com/in/swapnilughade",
-      "https://twitter.com/swapnilughade",
       "https://www.amazon.in/s?k=swapnil+ughade&i=digital-text&crid=3QC7D12GDGL79&sprefix=%2Cdigital-text%2C221&ref=nb_sb_ss_recent_1_0_recent",
     ],
     worksFor: {

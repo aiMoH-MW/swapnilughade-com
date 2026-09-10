@@ -33,7 +33,6 @@ export function Footer() {
             <h5>Elsewhere</h5>
             <ul>
               <li><a href="https://www.linkedin.com/in/swapnilughade" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-              <li><a href="https://twitter.com/swapnilughade" target="_blank" rel="noopener noreferrer">X</a></li>
               <li><a href="https://www.amazon.in/s?k=swapnil+ughade&i=digital-text&crid=3QC7D12GDGL79&sprefix=%2Cdigital-text%2C221&ref=nb_sb_ss_recent_1_0_recent" target="_blank" rel="noopener noreferrer">Amazon author</a></li>
             </ul>
           </div>
