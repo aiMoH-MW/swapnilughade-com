@@ -49,9 +49,22 @@ export async function POST(req: NextRequest) {
       console.warn('Email sending skipped:', mailErr);
     }
 
-    // If submitted via standard HTML form POST, redirect back with query param or return JSON
+    // If submitted via standard HTML form POST, redirect back with 303 See Other (switches POST to GET)
     if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
-      return NextResponse.redirect(new URL('/?subscribed=true#the-letter', req.url));
+      const referer = req.headers.get('referer');
+      let targetUrl: URL;
+      if (referer) {
+        try {
+          targetUrl = new URL(referer);
+          targetUrl.searchParams.set('subscribed', 'true');
+          targetUrl.hash = 'the-letter';
+        } catch {
+          targetUrl = new URL('/?subscribed=true#the-letter', req.url);
+        }
+      } else {
+        targetUrl = new URL('/?subscribed=true#the-letter', req.url);
+      }
+      return NextResponse.redirect(targetUrl, 303);
     }
 
     return NextResponse.json({ success: true, message: 'Subscribed successfully', subscriber });
