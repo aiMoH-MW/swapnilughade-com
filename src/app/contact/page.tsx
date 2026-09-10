@@ -130,7 +130,6 @@ export default function ContactPage() {
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '14px', marginTop: '12px' }}>
                 <li><a href="https://www.linkedin.com/in/swapnilughade" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ink-soft)' }}>LinkedIn ↗</a></li>
-                <li><a href="https://twitter.com/swapnilughade" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ink-soft)' }}>X (Twitter) ↗</a></li>
                 <li><a href="https://www.amazon.in/s?k=swapnil+ughade&i=digital-text&crid=3QC7D12GDGL79&sprefix=%2Cdigital-text%2C221&ref=nb_sb_ss_recent_1_0_recent" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--ink-soft)' }}>Amazon Author ↗</a></li>
               </ul>
             </div>

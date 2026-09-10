@@ -436,33 +436,33 @@ export const TIMELINE_ROWS = [
 export const SPEAKING_TOPICS = [
   {
     num: "01",
-    title: "Two Algorithms, One Strategy: Navigating Classic SEO and Generative AI",
-    audience: "CMOs, Founders, Head of Growth, Marketing Directors",
-    synopsis: "How search is fracturing between PageRank and LLM synthesis (Perplexity, ChatGPT, Google AI Overviews), and the unified strategy to win both.",
-  },
-  {
-    num: "02",
     title: "The Portal Thesis: Building High-Trust Category Marketplaces",
     audience: "Venture Capitalists, Platform Founders, Product Leaders",
     synopsis: "The economics of high-consideration discovery portals. Why neutral curation out-converts traditional ad-spend in high-trust verticals.",
   },
   {
-    num: "03",
-    title: "Scaling Google Ads at $8M+ Velocity with AI Frameworks",
-    audience: "Performance Marketers, Enterprise Growth Teams",
-    synopsis: "Frameworks, negative-intent gating, and prompt architectures derived from ₹70+ Crore in ad management across five countries.",
+    num: "02",
+    title: "AI Consultation in Practice: Avoiding Enterprise Vaporware",
+    audience: "CTOs, Digital Transformation Leaders, CIOs",
+    synopsis: "Deploying generative AI tools that actually impact bottom-line EBITDA rather than generating unread slide decks.",
   },
   {
-    num: "04",
+    num: "03",
     title: "Why Advisory in Platform Markets Must Be Founder-Led",
     audience: "Executive Leadership, Advisory Boards, Accelerators",
     synopsis: "The organizational case against delegating high-stakes platform strategy to junior account managers.",
   },
   {
-    num: "05",
+    num: "04",
     title: "Two Into One: Human Strategy Meets Machine Acceleration",
     audience: "Enterprise Leadership, Tech Summits, Agency Owners",
     synopsis: "Transforming services into products and integrating creative intuition with automated AI pipelines.",
+  },
+  {
+    num: "05",
+    title: "Two Algorithms, One Strategy: Navigating Classic SEO and Generative AI",
+    audience: "CMOs, Founders, Head of Growth, Marketing Directors",
+    synopsis: "How search is fracturing between PageRank and LLM synthesis (Perplexity, ChatGPT, Google AI Overviews), and the unified strategy to win both.",
   },
   {
     num: "06",
@@ -472,14 +472,14 @@ export const SPEAKING_TOPICS = [
   },
   {
     num: "07",
-    title: "From Agency to Ecosystem: The 18-Year Founder Journey",
-    audience: "Startup Founders, Incubators, Business Schools",
-    synopsis: "Lessons from single-room bootstrapping in Pune to multi-brand holding group and international book publishing.",
+    title: "Scaling Google Ads at $8M+ Velocity with AI Frameworks",
+    audience: "Performance Marketers, Enterprise Growth Teams",
+    synopsis: "Frameworks, negative-intent gating, and prompt architectures derived from ₹70+ Crore in ad management across five countries.",
   },
   {
     num: "08",
-    title: "AI Consultation in Practice: Avoiding Enterprise Vaporware",
-    audience: "CTOs, Digital Transformation Leaders, CIOs",
-    synopsis: "Deploying generative AI tools that actually impact bottom-line EBITDA rather than generating unread slide decks.",
+    title: "From Agency to Ecosystem: The 18-Year Founder Journey",
+    audience: "Startup Founders, Incubators, Business Schools",
+    synopsis: "Lessons from single-room bootstrapping in Pune to multi-brand holding group and international book publishing.",
   },
 ];

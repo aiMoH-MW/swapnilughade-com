@@ -48,18 +48,18 @@ export function PractitionerSeal({ isDark = false, className = 'w-40 h-40', styl
 
   return (
     <svg viewBox="0 0 200 200" className={className} style={style} preserveAspectRatio="xMidYMid meet">
-      <circle cx="100" cy="100" r="95" fill="none" stroke={goldStroke} strokeWidth="1"/>
-      <circle cx="100" cy="100" r="70" fill="none" stroke={goldStroke} strokeWidth="1"/>
-      <path id={id} d="M 100,100 m -82,0 a 82,82 0 1,1 164,0 a 82,82 0 1,1 -164,0" fill="none"/>
-      <text fontFamily="JetBrains Mono, monospace" fontSize="9" fill={textFill} letterSpacing="3.5">
+      <circle cx="100" cy="100" r="95" fill="none" stroke={goldStroke} strokeWidth="1.6"/>
+      <circle cx="100" cy="100" r="70" fill="none" stroke={goldStroke} strokeWidth="1.6"/>
+      <path id={id} d="M 100,100 m -82.5,0 a 82.5,82.5 0 1,1 165,0 a 82.5,82.5 0 1,1 -165,0" fill="none"/>
+      <text fontFamily="JetBrains Mono, monospace" fontSize="9.8" fontWeight="800" fill={textFill} stroke={textFill} strokeWidth="0.4" letterSpacing="2.5">
         <textPath href={`#${id}`} startOffset="0%">SWAPNIL UGHADE · FOUNDER · OPERATOR · INVESTOR · AUTHOR ·</textPath>
       </text>
-      <circle cx="100" cy="15" r="2.5" fill="#E8823D"/>
-      <circle cx="15" cy="100" r="2.5" fill="#E8823D"/>
-      <circle cx="100" cy="185" r="2.5" fill="#E8823D"/>
-      <circle cx="185" cy="100" r="2.5" fill="#E8823D"/>
-      <text x="100" y="108" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontStyle="italic" fontSize="42" fill={initialFill} fontWeight="500">S</text>
-      <text x="100" y="132" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="7" fill={yearFill} letterSpacing="2.5">SINCE MMIX</text>
+      <circle cx="100" cy="17.5" r="3.2" fill="#E8823D"/>
+      <circle cx="17.5" cy="100" r="3.2" fill="#E8823D"/>
+      <circle cx="100" cy="182.5" r="3.2" fill="#E8823D"/>
+      <circle cx="182.5" cy="100" r="3.2" fill="#E8823D"/>
+      <text x="100" y="108" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontStyle="italic" fontSize="46" fill={initialFill} stroke={initialFill} strokeWidth="0.4" fontWeight="700">S</text>
+      <text x="100" y="132" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontSize="8.2" fontWeight="800" fill={yearFill} stroke={yearFill} strokeWidth="0.3" letterSpacing="2.5">SINCE MMIX</text>
     </svg>
   );
 }

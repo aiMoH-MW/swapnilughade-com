@@ -43,7 +43,7 @@ export default function VenturesPage() {
       </section>
 
       {/* VENTURES IN DETAIL (PARCHMENT ZONE) */}
-      <section className="ventures-zone">
+      <section className="ventures-zone" style={{ paddingBottom: '48px' }}>
         <div className="container">
           <div className="ventures-head">
             <h2 className="ventures-title">Four <em>ventures</em>, in detail</h2>
@@ -133,6 +133,94 @@ export default function VenturesPage() {
                 <Link href="/ventures/trexova" className="v-link">Read the venture note →</Link>
                 <a href="https://trexova.com" target="_blank" rel="noopener noreferrer" className="v-external">Visit site ↗</a>
               </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* SIBLINGS GROUP SECTION */}
+      <section className="section warm" style={{ borderTop: '1px solid var(--line-soft)', paddingTop: '40px', paddingBottom: '56px' }}>
+        <div className="siblings-head" style={{ textAlign: 'center', marginBottom: '28px' }}>
+          <h2 className="h3">The MagicWorks <em>Group</em></h2>
+          <p className="pillars-sub" style={{ color: 'var(--ink-mute)' }}>
+            Three sibling brands operating inside the group.
+          </p>
+        </div>
+        <div className="section-inner-wide">
+          <div className="siblings-grid">
+            <article className="sibling">
+              <div className="sibling-eye">Sibling · Hosting</div>
+              <h3 className="sibling-name">
+                <a
+                  href="https://magicworkshost.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  MagicWorks Host
+                </a>
+              </h3>
+              <p className="sibling-desc">
+                Managed hosting infrastructure serving MagicWorks client sites and independent customers on magicworkshost.com.
+              </p>
+              <a
+                href="https://magicworkshost.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pillar-link"
+              >
+                Visit magicworkshost.com ↗
+              </a>
+            </article>
+
+            <article className="sibling">
+              <div className="sibling-eye">Sibling · AI</div>
+              <h3 className="sibling-name">
+                <a
+                  href="https://www.magicflowai.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  MagicFlow AI
+                </a>
+              </h3>
+              <p className="sibling-desc">
+                Multi-tenant AI workflow and chatbot automation SaaS product built out of the agency&apos;s own operational needs (magicflowai.io).
+              </p>
+              <a
+                href="https://www.magicflowai.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pillar-link"
+              >
+                Visit magicflowai.io ↗
+              </a>
+            </article>
+
+            <article className="sibling">
+              <div className="sibling-eye">Sibling · Data</div>
+              <h3 className="sibling-name">
+                <a
+                  href="https://www.magicpipeline.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'inherit', textDecoration: 'none' }}
+                >
+                  Magic Pipeline
+                </a>
+              </h3>
+              <p className="sibling-desc">
+                Data pipeline and multi-tenant outreach CRM integration tooling for marketing and product teams (magicpipeline.io).
+              </p>
+              <a
+                href="https://www.magicpipeline.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pillar-link"
+              >
+                Visit magicpipeline.io ↗
+              </a>
             </article>
           </div>
         </div>

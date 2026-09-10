@@ -193,7 +193,7 @@ export default function AboutPage() {
       <div className="footer-transition-band" aria-hidden="true">
         <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <div className="footer-seal-wrap">
-            <PractitionerSeal className="w-[84px] h-[84px]" isDark={false} />
+            <PractitionerSeal className="w-[112px] h-[112px]" isDark={false} />
           </div>
         </div>
       </div>

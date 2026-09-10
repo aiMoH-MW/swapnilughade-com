@@ -101,7 +101,7 @@ export default function BooksPage() {
             <div>
               <div className="byline-name">Swapnil Ughade</div>
               <div className="byline-bio">
-                Founder-Director of MagicWorks and Ideovate. Based in Pune. Writing on portals, platforms, and the AI era of marketing.
+                Swapnil Ughade is the founder and Managing Director of MagicWorks IT Solutions Pvt. Ltd., an AI-first digital marketing agency in Pune. Over 18+ years he has built MagicWorks (with three sibling brands inside it: MagicWorksHost.com, MagicFlow AI, and Magic Pipeline) and founded Ideovate Research Pvt. Ltd., invested in Dnyanal Educon Pvt. Ltd., and consulted for Trexova Wellbeing Pvt. Ltd.. He has managed ₹70+ Crore ($8M) in ad spend across 50+ clients and published two books on AI-first marketing.
               </div>
               <Link href="/about" className="byline-link">
                 About Swapnil →
