@@ -174,26 +174,6 @@ export function Navbar() {
                 })}
               </div>
             </div>
-
-            <div style={{ paddingTop: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(239, 235, 227, 0.5)' }}>
-                Pune, India · 2026
-              </div>
-              <Link
-                href="/#the-letter"
-                onClick={() => setMobileOpen(false)}
-                style={{
-                  fontFamily: 'var(--mono)',
-                  fontSize: '12px',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--gold-light)',
-                  textDecoration: 'none',
-                }}
-              >
-                The Letter (Newsletter) →
-              </Link>
-            </div>
           </div>
         </div>
       )}
