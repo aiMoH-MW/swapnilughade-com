@@ -15,9 +15,11 @@ export default function DnyanalSubpage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
-            current="Dnyanal Educon"
-            subtitle="collegencourses.com"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Ventures', href: '/ventures' },
+              { label: 'Dnyanal Educon' },
+            ]}
           />
           <div className="role-card rosewood">
             <div className="rc-role">Investor · Since 2023</div>

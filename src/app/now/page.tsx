@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Now · Swapnil Ughade',
@@ -11,6 +12,7 @@ export default function NowPage() {
   return (
     <div className="section now-page">
       <div className="container">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Now' }]} />
         <div className="section-head">
           <div className="hero-eyebrow">Monthly Cadence</div>
           <h1 className="section-title">

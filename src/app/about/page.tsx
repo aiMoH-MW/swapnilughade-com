@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FlourishSvg, PractitionerSeal } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'About · Swapnil Ughade · Founder-author, MagicWorks',
@@ -11,6 +12,7 @@ export default function AboutPage() {
     <div>
       <header className="masthead">
         <div className="container">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About' }]} />
           <h1 className="masthead-wordmark">Swapnil <em>Ughade</em></h1>
         </div>
       </header>

@@ -90,9 +90,11 @@ export default async function ArticlePage({ params }: Props) {
       <section className="article-zone">
         <header className="article-head">
           <Breadcrumb
-            parent={{ label: 'Writing', href: '/writing', icon: '✎' }}
-            current={article.category.toUpperCase()}
-            subtitle={article.title}
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Writing', href: '/writing' },
+              { label: article.title },
+            ]}
             className="a-breadcrumb"
           />
           <h1 className="a-title">

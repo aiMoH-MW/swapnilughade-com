@@ -18,9 +18,10 @@ export default function TermsPage() {
         {/* BREADCRUMB & HEADER */}
         <div style={{ marginBottom: '40px' }}>
           <Breadcrumb
-            parent={{ label: 'Legal & Governance' }}
-            current="Terms of Use"
-            className="a-breadcrumb"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Terms of Use' },
+            ]}
           />
           <h1 className="section-title" style={{ marginTop: '16px', marginBottom: '12px' }}>
             Terms of <em>Use</em>

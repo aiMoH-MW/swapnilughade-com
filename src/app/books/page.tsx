@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FlourishSvg, TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Books · Swapnil Ughade · Published Works',
@@ -12,6 +13,7 @@ export default function BooksPage() {
       {/* HERO */}
       <header className="hero">
         <div className="container">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Books' }]} />
           <div className="hero-eyebrow">Two books · Published 2026</div>
           <h1 className="hero-title">The <em>books</em></h1>
           <p className="hero-lead">

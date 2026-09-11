@@ -56,9 +56,10 @@ export default function CookiesPage() {
         {/* BREADCRUMB & HEADER */}
         <div style={{ marginBottom: '40px' }}>
           <Breadcrumb
-            parent={{ label: 'Legal & Governance' }}
-            current="Cookie Policy"
-            className="a-breadcrumb"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Cookie Policy' },
+            ]}
           />
           <h1 className="section-title" style={{ marginTop: '16px', marginBottom: '12px' }}>
             Cookie <em>Policy</em>

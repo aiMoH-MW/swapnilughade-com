@@ -1,6 +1,7 @@
 import { ARTICLES } from '@/lib/content-data';
 import { WritingArchive } from '@/components/writing/WritingArchive';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Writing · Swapnil Ughade · Long-Form Notes',
@@ -12,6 +13,7 @@ export default function WritingPage() {
     <div>
       <div className="section writing">
         <div className="container">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Writing' }]} />
           <div className="section-head">
             <div className="hero-eyebrow">Editorial Archive</div>
             <h1 className="section-title">Writing &amp; <em>Notes</em></h1>

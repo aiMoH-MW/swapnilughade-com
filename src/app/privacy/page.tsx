@@ -18,9 +18,10 @@ export default function PrivacyPage() {
         {/* BREADCRUMB & HEADER */}
         <div style={{ marginBottom: '40px' }}>
           <Breadcrumb
-            parent={{ label: 'Legal & Governance' }}
-            current="Privacy Policy"
-            className="a-breadcrumb"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Privacy Policy' },
+            ]}
           />
           <h1 className="section-title" style={{ marginTop: '16px', marginBottom: '12px' }}>
             Privacy <em>Policy</em>

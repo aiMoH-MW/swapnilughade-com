@@ -14,9 +14,11 @@ export default function BookTwoPage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Books', href: '/books', icon: '✦' }}
-            current="Book II"
-            subtitle="The AI-Powered Google Ads System"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Books', href: '/books' },
+              { label: 'The AI-Powered Google Ads System' },
+            ]}
           />
           <img
             src="/img/books/ai-powered-google-ads-system.jpg"

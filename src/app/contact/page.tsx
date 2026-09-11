@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', purpose: 'speaking', message: '' });
@@ -35,6 +36,7 @@ export default function ContactPage() {
   return (
     <article className="section">
       <div className="container" style={{ maxWidth: '900px' }}>
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]} />
         <div className="section-head">
           <div className="hero-eyebrow">Direct Correspondence</div>
           <h1 className="section-title">Contact &amp; <em>Inquiries</em></h1>

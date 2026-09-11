@@ -15,9 +15,11 @@ export default function IdeovateSubpage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
-            current="Ideovate"
-            subtitle="simplidistance.com"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Ventures', href: '/ventures' },
+              { label: 'Ideovate Research' },
+            ]}
           />
           <div className="role-card gold">
             <div className="rc-role">Founder-Director · Since 2018</div>

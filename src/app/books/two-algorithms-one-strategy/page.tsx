@@ -14,9 +14,11 @@ export default function BookOnePage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Books', href: '/books', icon: '✦' }}
-            current="Book I"
-            subtitle="Two Algorithms, One Strategy"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Books', href: '/books' },
+              { label: 'Two Algorithms, One Strategy' },
+            ]}
           />
           <img
             src="/img/books/two-algorithms-one-strategy.jpg"

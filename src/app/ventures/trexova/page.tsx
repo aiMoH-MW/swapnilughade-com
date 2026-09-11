@@ -15,9 +15,11 @@ export default function TrexovaSubpage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
-            current="Trexova"
-            subtitle="trexova.com"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Ventures', href: '/ventures' },
+              { label: 'Trexova' },
+            ]}
           />
           <div className="role-card pearl">
             <div className="rc-role">Digital Marketing Consultant · Since 2021</div>

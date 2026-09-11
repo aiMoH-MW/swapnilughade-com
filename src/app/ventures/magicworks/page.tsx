@@ -15,9 +15,11 @@ export default function MagicWorksSubpage() {
       <header className="hero">
         <div className="container">
           <Breadcrumb
-            parent={{ label: 'Ventures', href: '/ventures', icon: '⬡' }}
-            current="MagicWorks"
-            subtitle="AI Agency · Pune"
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Ventures', href: '/ventures' },
+              { label: 'MagicWorks' },
+            ]}
           />
           <div className="role-card">
             <div className="rc-role">Founder-Director · Since 2009</div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SPEAKING_TOPICS } from '@/lib/content-data';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Speaking · Swapnil Ughade · Keynotes & Briefings',
@@ -10,6 +11,7 @@ export default function SpeakingPage() {
   return (
     <article className="section">
       <div className="container">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Speaking' }]} />
         <div className="section-head" style={{ marginBottom: '32px' }}>
           <div className="hero-eyebrow">Keynotes &amp; Briefings</div>
           <h1 className="section-title">Speaking <em>engagements</em></h1>

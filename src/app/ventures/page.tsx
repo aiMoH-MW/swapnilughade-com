@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'Ventures · Swapnil Ughade · Operating Portfolio',
@@ -11,6 +12,7 @@ export default function VenturesPage() {
       {/* HERO */}
       <header className="hero">
         <div className="container">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Ventures' }]} />
           <div className="hero-eyebrow">Four ventures · Three roles</div>
           <h1 className="hero-title">The <em>ventures</em></h1>
           <p className="hero-lead">
