@@ -1,6 +1,13 @@
 {
   "newsletter": [
     {
+      "id": "nl-1789014275861-wsgz",
+      "email": "mayuri.turkane12@gmail.com",
+      "source": "website",
+      "createdAt": "2026-09-10T04:24:35.862Z",
+      "status": "active"
+    },
+    {
       "id": "nl-1788496108789-besr",
       "email": "mayuri.turkane24@pcu.edu.in",
       "source": "home",

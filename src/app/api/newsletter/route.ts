@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/db/supabase';
-import { sendEmail } from '@/lib/email';
+import { sendEmail, getAdminNotificationEmail } from '@/lib/email';
 import { addNewsletterSubscriber } from '@/lib/store';
 
 export async function POST(req: NextRequest) {
@@ -26,7 +26,39 @@ export async function POST(req: NextRequest) {
     // 1. Store in persistent store (handles both Supabase and local backup)
     const subscriber = await addNewsletterSubscriber(email, source);
 
-    // 2. Send Welcome Email (fail-safe)
+    // 2. Alert Admin / Site Owner via SMTP (fail-safe)
+    try {
+      await sendEmail({
+        to: getAdminNotificationEmail(),
+        subject: `[swapnilughade.com] New Newsletter Subscriber: ${email}`,
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1F1420; max-width: 600px; padding: 24px; border: 1px solid #D9D0BE; background: #FAF7F2; border-radius: 6px;">
+            <div style="border-bottom: 2px solid #C89B3C; padding-bottom: 12px; margin-bottom: 20px;">
+              <h2 style="color: #4B1F8C; margin: 0; font-size: 20px;">New Newsletter Subscription</h2>
+              <p style="color: #7C6E68; font-size: 13px; margin: 4px 0 0;">The Letter · swapnilughade.com</p>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <tr>
+                <td style="padding: 8px 0; color: #7C6E68; width: 120px;"><strong>Subscriber:</strong></td>
+                <td style="padding: 8px 0; color: #1F1420;"><a href="mailto:${email}" style="color: #4B1F8C; font-weight: 600;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #7C6E68;"><strong>Source:</strong></td>
+                <td style="padding: 8px 0; color: #1F1420;">${source}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #7C6E68;"><strong>Timestamp:</strong></td>
+                <td style="padding: 8px 0; color: #1F1420;">${new Date().toISOString()}</td>
+              </tr>
+            </table>
+          </div>
+        `,
+      });
+    } catch (mailErr) {
+      console.warn('Admin newsletter notification skipped:', mailErr);
+    }
+
+    // 3. Send Welcome Email to Subscriber (fail-safe)
     try {
       await sendEmail({
         to: email,

@@ -20,9 +20,24 @@ export interface ContactInquiry {
   status: 'new' | 'read' | 'replied';
 }
 
+export interface SpeakingInquiry {
+  id: string;
+  eventName: string;
+  eventDate?: string;
+  locationOrVirtual: string;
+  expectedAttendees?: number;
+  topicInterest?: string;
+  contactName: string;
+  contactEmail: string;
+  additionalNotes?: string;
+  createdAt: string;
+  status: string;
+}
+
 interface DatabaseSchema {
   newsletter: NewsletterSubscriber[];
   contacts: ContactInquiry[];
+  speaking?: SpeakingInquiry[];
 }
 
 const DB_FILE = path.join(process.cwd(), 'src', 'data', 'submissions.json');
@@ -266,6 +281,118 @@ export async function deleteContactInquiry(id: string): Promise<boolean> {
     db.contacts = filtered;
     writeDbFile(db);
     success = true;
+  }
+
+  return success;
+}
+
+// ============ SPEAKING INQUIRIES ============
+
+export async function getSpeakingInquiries(): Promise<SpeakingInquiry[]> {
+  if (isSupabaseConfigured()) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from('speaking_inquiries')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        return data.map((d) => ({
+          id: d.id?.toString(),
+          eventName: d.event_name,
+          eventDate: d.event_date,
+          locationOrVirtual: d.location_or_virtual,
+          expectedAttendees: d.expected_attendees,
+          topicInterest: d.topic_interest,
+          contactName: d.contact_name,
+          contactEmail: d.contact_email,
+          additionalNotes: d.additional_notes,
+          createdAt: d.created_at || new Date().toISOString(),
+          status: d.status || 'pending',
+        }));
+      }
+    } catch (err) {
+      console.warn('Supabase speaking inquiries fetch warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  return db.speaking || [];
+}
+
+export async function addSpeakingInquiry(data: {
+  eventName?: string;
+  eventDate?: string;
+  locationOrVirtual?: string;
+  expectedAttendees?: number;
+  topicInterest?: string;
+  contactName: string;
+  contactEmail: string;
+  additionalNotes?: string;
+}): Promise<SpeakingInquiry> {
+  const db = ensureDbFile();
+  const newEntry: SpeakingInquiry = {
+    id: `spk-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+    eventName: data.eventName || 'Speaking Engagement',
+    eventDate: data.eventDate,
+    locationOrVirtual: data.locationOrVirtual || 'TBD',
+    expectedAttendees: data.expectedAttendees,
+    topicInterest: data.topicInterest || 'Keynotes & Briefings',
+    contactName: data.contactName.trim(),
+    contactEmail: data.contactEmail.toLowerCase().trim(),
+    additionalNotes: data.additionalNotes?.trim(),
+    createdAt: new Date().toISOString(),
+    status: 'pending',
+  };
+
+  // 1. Local backup
+  if (!db.speaking) db.speaking = [];
+  db.speaking.unshift(newEntry);
+  writeDbFile(db);
+
+  // 2. Supabase Cloud DB
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin.from('speaking_inquiries').insert({
+        event_name: newEntry.eventName,
+        event_date: newEntry.eventDate || null,
+        location_or_virtual: newEntry.locationOrVirtual,
+        expected_attendees: newEntry.expectedAttendees || null,
+        topic_interest: newEntry.topicInterest,
+        contact_name: newEntry.contactName,
+        contact_email: newEntry.contactEmail,
+        additional_notes: newEntry.additionalNotes || null,
+        status: newEntry.status,
+        created_at: newEntry.createdAt,
+      });
+    } catch (err) {
+      console.warn('Supabase speaking insert warning:', err);
+    }
+  }
+
+  return newEntry;
+}
+
+export async function deleteSpeakingInquiry(id: string): Promise<boolean> {
+  let success = false;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin.from('speaking_inquiries').delete().eq('id', id);
+      success = true;
+    } catch (err) {
+      console.warn('Supabase speaking delete warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  if (db.speaking) {
+    const filtered = db.speaking.filter((s) => s.id !== id);
+    if (filtered.length !== db.speaking.length) {
+      db.speaking = filtered;
+      writeDbFile(db);
+      success = true;
+    }
   }
 
   return success;
