@@ -6,6 +6,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Writing · Swapnil Ughade · Long-Form Notes',
   description: 'Long-form notes on AI-first marketing, marketplace economics, and operating principles. Published every second Sunday.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/writing',
+  },
 };
 
 export default function WritingPage() {

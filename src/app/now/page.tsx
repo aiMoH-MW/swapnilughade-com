@@ -4,6 +4,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Now · Swapnil Ughade',
   description: 'Current focus, projects in flight, and reading list. Updated monthly from Pune, India.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/now',
+  },
 };
 
 export default function NowPage() {

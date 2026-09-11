@@ -5,6 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Speaking · Swapnil Ughade · Keynotes & Briefings',
   description: 'Eight curated keynote topics on AI-first marketing, platform consultation, and operating frameworks.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/speaking',
+  },
 };
 
 export default function SpeakingPage() {

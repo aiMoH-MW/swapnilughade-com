@@ -54,10 +54,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@swapnilughade",
   },
-  icons: {
-    icon: '/icon.svg',
-    apple: '/apple-icon.svg',
-  },
   alternates: {
     canonical: "https://swapnilughade.com",
     types: {

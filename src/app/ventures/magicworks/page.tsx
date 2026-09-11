@@ -6,6 +6,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'MagicWorks · Swapnil Ughade',
   description: 'MagicWorks IT Solutions Pvt Ltd. Founded 2009. AI-first digital marketing agency based in Pune. Five service pillars, three sibling brands.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/ventures/magicworks',
+  },
 };
 
 export default function MagicWorksSubpage() {

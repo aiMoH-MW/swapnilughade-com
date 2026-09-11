@@ -174,8 +174,8 @@ em {
   text-decoration: none;
 }
 .brand-logo {
-  width: 164px;
-  height: 40px;
+  width: 186px;
+  height: 45px;
   color: var(--gold);
   display: block;
   transition: color 180ms ease-out;
@@ -189,8 +189,8 @@ em {
 }
 .brand-tagline {
   font-family: var(--mono) !important;
-  font-size: 8.5px;
-  letter-spacing: 0.14em;
+  font-size: 9.5px;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: rgba(245, 239, 227, 0.75);
   line-height: 1;
@@ -198,11 +198,11 @@ em {
 }
 @media (max-width: 480px) {
   .brand-logo {
-    width: 135px;
-    height: 33px;
+    width: 152px;
+    height: 37px;
   }
   .brand-tagline {
-    font-size: 7.5px;
+    font-size: 8.5px;
     letter-spacing: 0.08em;
   }
 }

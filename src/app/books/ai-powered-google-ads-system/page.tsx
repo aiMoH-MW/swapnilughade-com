@@ -5,6 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'The AI-Powered Google Ads System · Swapnil Ughade',
   description: 'Frameworks, prompts, and weekly protocols from ₹70+ crore ($8M) in managed ad spend. A field-tested Google Ads system for 2026, by Swapnil Ughade.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/books/ai-powered-google-ads-system',
+  },
 };
 
 export default function BookTwoPage() {
@@ -24,6 +27,8 @@ export default function BookTwoPage() {
             src="/img/books/ai-powered-google-ads-system.jpg"
             alt="The AI-Powered Google Ads System — book cover"
             className="book-cover-hero"
+            width={682}
+            height={1024}
           />
           <div className="title-block">
             <h1 className="h1-title">The <em>AI-Powered</em> Google Ads System</h1>

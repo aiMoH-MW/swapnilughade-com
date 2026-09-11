@@ -4,6 +4,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Privacy Policy · Swapnil Ughade',
   description: 'Privacy Policy for swapnilughade.com — data governance, collection practices, third-party services, and user rights.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/privacy',
+  },
   openGraph: {
     title: 'Privacy Policy · Swapnil Ughade',
     description: 'Privacy Policy for swapnilughade.com — data governance, collection practices, third-party services, and user rights.',

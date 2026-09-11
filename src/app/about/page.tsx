@@ -5,6 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'About · Swapnil Ughade · Founder-author, MagicWorks',
   description: 'Eighteen years building MagicWorks in Pune. Founder of Ideovate. Author of two books on the AI era of marketing.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/about',
+  },
 };
 
 export default function AboutPage() {

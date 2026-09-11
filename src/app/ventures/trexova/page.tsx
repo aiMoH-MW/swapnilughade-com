@@ -6,6 +6,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Trexova · Swapnil Ughade',
   description: 'Trexova Wellbeing Pvt. Ltd. Digital marketing consultant since 2021. Global wellness retreats, yoga training, and holistic health marketplace.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/ventures/trexova',
+  },
 };
 
 export default function TrexovaSubpage() {

@@ -4,6 +4,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Cookie Policy · Swapnil Ughade',
   description: 'This Cookie Policy explains how swapnilughade.com uses cookies and similar technologies on swapnilughade.com.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/cookies',
+  },
   openGraph: {
     title: 'Cookie Policy · Swapnil Ughade',
     description: 'This Cookie Policy explains how swapnilughade.com uses cookies and similar technologies on swapnilughade.com.',

@@ -1,6 +1,15 @@
 import Link from 'next/link';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 
+export const metadata = {
+  title: 'Swapnil Ughade · Founder, Operator, Investor, Author',
+  description:
+    'Founder-Director of MagicWorks and Ideovate. Author of Two Algorithms, One Strategy and The AI-Powered Google Ads System. Pune, India.',
+  alternates: {
+    canonical: 'https://swapnilughade.com',
+  },
+};
+
 export default function HomePage() {
   return (
     <div>
@@ -64,6 +73,9 @@ export default function HomePage() {
                   src="/img/books/two-algorithms-one-strategy.jpg"
                   alt="Two Algorithms, One Strategy cover"
                   className="book-cover-img"
+                  width={723}
+                  height={1024}
+                  loading="lazy"
                 />
               </div>
               <div className="book-info">
@@ -71,7 +83,13 @@ export default function HomePage() {
                 <p className="book-sub">SEO Meets AI-Powered Search</p>
                 <div className="book-meta">April 2026 · Paperback + Kindle</div>
                 <p className="book-blurb">A strategic execution manual for founders, marketers, and digital teams navigating the shift from classic search engines to LLM-driven discovery.</p>
-                <Link href="/books/two-algorithms-one-strategy" className="book-link">Read more →</Link>
+                <Link
+                  href="/books/two-algorithms-one-strategy"
+                  className="book-link"
+                  aria-label="Read more about Two Algorithms, One Strategy"
+                >
+                  Read more →
+                </Link>
               </div>
             </article>
 
@@ -81,6 +99,9 @@ export default function HomePage() {
                   src="/img/books/ai-powered-google-ads-system.jpg"
                   alt="The AI-Powered Google Ads System cover"
                   className="book-cover-img"
+                  width={682}
+                  height={1024}
+                  loading="lazy"
                 />
               </div>
               <div className="book-info">
@@ -88,7 +109,13 @@ export default function HomePage() {
                 <p className="book-sub">Frameworks, Prompts &amp; Strategies from ₹70+ Crore ($8M)</p>
                 <div className="book-meta">September 2026 · Paperback + Kindle</div>
                 <p className="book-blurb">A working system for running Google Ads at scale in the AI era. Co-written with Mohan Chute.</p>
-                <Link href="/books/ai-powered-google-ads-system" className="book-link">Read more →</Link>
+                <Link
+                  href="/books/ai-powered-google-ads-system"
+                  className="book-link"
+                  aria-label="Read more about The AI-Powered Google Ads System"
+                >
+                  Read more →
+                </Link>
               </div>
             </article>
           </div>

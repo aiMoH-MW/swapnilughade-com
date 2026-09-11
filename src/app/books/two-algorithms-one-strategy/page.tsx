@@ -5,6 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Two Algorithms, One Strategy · Swapnil Ughade',
   description: 'How SEO and AI-powered search work together. A strategic execution manual for founders, marketers, and digital teams. By Swapnil Ughade.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/books/two-algorithms-one-strategy',
+  },
 };
 
 export default function BookOnePage() {
@@ -24,6 +27,8 @@ export default function BookOnePage() {
             src="/img/books/two-algorithms-one-strategy.jpg"
             alt="Two Algorithms, One Strategy — book cover"
             className="book-cover-hero"
+            width={723}
+            height={1024}
           />
           <div className="title-block">
             <h1 className="h1-title">Two Algorithms, <em>One</em> Strategy</h1>

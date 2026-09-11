@@ -4,6 +4,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Ventures · Swapnil Ughade · Operating Portfolio',
   description: 'Four ventures, three roles. Two I founded, one I invested in, one I consult for. Each note explains the role, the sector, the story, and what to visit if you want to see the work.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/ventures',
+  },
 };
 
 export default function VenturesPage() {
@@ -30,6 +33,8 @@ export default function VenturesPage() {
                 src="/img/ventures-thesis-art.png"
                 alt="Four angles operating thesis: two into one"
                 className="ventures-intro-img"
+                width={677}
+                height={1019}
               />
             </div>
             <div className="ventures-intro-content">

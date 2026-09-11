@@ -5,6 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Books · Swapnil Ughade · Published Works',
   description: 'Two books, both published in 2026: Two Algorithms, One Strategy and The AI-Powered Google Ads System.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/books',
+  },
 };
 
 export default function BooksPage() {
@@ -33,6 +36,9 @@ export default function BooksPage() {
                   src="/img/books/two-algorithms-one-strategy.jpg"
                   alt="Two Algorithms, One Strategy cover"
                   className="book-plate-img"
+                  width={723}
+                  height={1024}
+                  loading="lazy"
                 />
               </div>
               <div className="book-info">
@@ -43,11 +49,15 @@ export default function BooksPage() {
                   A strategic execution manual for founders, marketers, and digital teams navigating the shift from classic search engines to LLM-driven discovery. Drawn from the SEO practice at MagicWorks. Foreword by Mohan Chute. Illustrations by Vinay Khamkar.
                 </p>
                 <div className="bi-cta">
-                  <Link href="/books/two-algorithms-one-strategy" className="btn primary">
+                  <Link
+                    href="/books/two-algorithms-one-strategy"
+                    className="btn primary"
+                    aria-label="Read more about Two Algorithms, One Strategy"
+                  >
                     Read more →
                   </Link>
                   <a
-                    href="https://www.amazon.com/dp/934966979X"
+                    href="https://www.amazon.in/dp/934966979X"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn ghost"
@@ -65,6 +75,9 @@ export default function BooksPage() {
                   src="/img/books/ai-powered-google-ads-system.jpg"
                   alt="The AI-Powered Google Ads System cover"
                   className="book-plate-img"
+                  width={682}
+                  height={1024}
+                  loading="lazy"
                 />
               </div>
               <div className="book-info">
@@ -75,7 +88,11 @@ export default function BooksPage() {
                   A working system for running Google Ads at scale in the AI era, drawn from over ₹70 crore in managed ad spend. Co-written with Mohan Chute. Not a book of tips; a book of frameworks and prompts a team can put on the desk on Monday.
                 </p>
                 <div className="bi-cta">
-                  <Link href="/books/ai-powered-google-ads-system" className="btn primary">
+                  <Link
+                    href="/books/ai-powered-google-ads-system"
+                    className="btn primary"
+                    aria-label="Read more about The AI-Powered Google Ads System"
+                  >
                     Read more →
                   </Link>
                   <a

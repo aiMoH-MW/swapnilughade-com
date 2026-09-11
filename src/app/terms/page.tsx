@@ -4,6 +4,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Terms of Use · Swapnil Ughade',
   description: 'Terms of Use for swapnilughade.com — terms governing site usage, intellectual property, fair use, disclaimers, and liability.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/terms',
+  },
   openGraph: {
     title: 'Terms of Use · Swapnil Ughade',
     description: 'Terms of Use for swapnilughade.com — terms governing site usage, intellectual property, fair use, disclaimers, and liability.',

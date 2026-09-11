@@ -6,6 +6,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Dnyanal Educon · Swapnil Ughade',
   description: 'Dnyanal Educon Pvt Ltd. Investor since 2023. The company behind collegencourses.com, the discovery platform for regular MBA and design institutes.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/ventures/dnyanal-educon',
+  },
 };
 
 export default function DnyanalSubpage() {

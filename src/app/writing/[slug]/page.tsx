@@ -22,6 +22,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${article.title} · Swapnil Ughade`,
     description: article.metaDescription || article.lead.slice(0, 155),
+    alternates: {
+      canonical: `https://swapnilughade.com/writing/${article.slug}`,
+    },
     openGraph: {
       title: `${article.title} · Swapnil Ughade`,
       description: article.metaDescription || article.lead.slice(0, 155),

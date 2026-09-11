@@ -6,6 +6,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 export const metadata = {
   title: 'Ideovate · Swapnil Ughade',
   description: 'Ideovate Research Pvt Ltd. Founded 2018. The company behind simplidistance.com, the distance and online MBA discovery portal.',
+  alternates: {
+    canonical: 'https://swapnilughade.com/ventures/ideovate-research',
+  },
 };
 
 export default function IdeovateSubpage() {
