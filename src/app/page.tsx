@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
+import { NewsletterForm } from '@/components/forms/NewsletterForm';
 
 export const metadata = {
   title: 'Swapnil Ughade · Founder, Operator, Investor, Author',
@@ -236,13 +237,7 @@ export default function HomePage() {
           <div className="newsletter-eyebrow">Every second Sunday</div>
           <h2 className="newsletter-title">The <em>Letter</em></h2>
           <p className="newsletter-body">Long-form notes on the practice, plus one recommended read. Reply to any issue to reach me directly.</p>
-          <form className="newsletter-form" action="/api/newsletter" method="POST">
-            <label htmlFor="nl-email">Email</label>
-            <input id="nl-email" name="email" type="email" placeholder="you@example.com" required />
-            <button type="submit" className="btn gold" style={{ justifyContent: 'center' }}>
-              Subscribe to The Letter
-            </button>
-          </form>
+          <NewsletterForm source="homepage_newsletter_band" />
           <div className="newsletter-note">No spam. Unsubscribe in one click.</div>
         </div>
       </section>

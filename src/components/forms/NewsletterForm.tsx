@@ -36,22 +36,33 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
         setEmail('');
       } else {
         setStatus('error');
-        setErrorMsg(data.error || 'Subscription failed. Please try again.');
+        setErrorMsg(data.error || 'Something went wrong. Please try again.');
       }
     } catch {
       setStatus('error');
-      setErrorMsg('Connection error. Please try again later.');
+      setErrorMsg('Something went wrong. Please try again.');
     }
   }
 
   if (status === 'success') {
     return (
-      <div style={{ textAlign: 'center', padding: '16px', background: 'rgba(200, 155, 60, 0.15)', border: '1px solid var(--gold-light)', color: 'var(--ivory)' }}>
-        <p style={{ fontFamily: 'var(--serif)', fontSize: '18px', color: 'var(--gold-light)', margin: 0 }}>
-          ✓ Thank you for subscribing.
+      <div
+        className="newsletter-success"
+        style={{
+          maxWidth: '400px',
+          margin: '0 auto',
+          textAlign: 'center',
+          padding: '20px 24px',
+          background: 'rgba(200, 155, 60, 0.12)',
+          border: '1px solid var(--gold-light)',
+          borderRadius: '2px',
+        }}
+      >
+        <p style={{ fontFamily: 'var(--serif)', fontSize: '20px', color: 'var(--gold-light)', margin: 0, fontWeight: 500 }}>
+          ✓ Thanks for subscribing!
         </p>
-        <p style={{ fontSize: '13px', color: 'rgba(245, 239, 227, 0.8)', marginTop: '4px' }}>
-          Your address has been recorded. Look out for the next issue on Sunday.
+        <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'rgba(245, 239, 227, 0.85)', marginTop: '8px', marginBottom: 0, lineHeight: 1.5 }}>
+          You&apos;ll hear from us soon.
         </p>
       </div>
     );
@@ -79,7 +90,7 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
         {status === 'loading' ? 'Subscribing...' : buttonLabel}
       </button>
       {status === 'error' && (
-        <div style={{ color: '#F43F5E', fontSize: '12px', fontFamily: 'var(--mono)', marginTop: '4px', textAlign: 'left' }}>
+        <div style={{ color: '#F87171', fontSize: '13px', fontFamily: 'var(--sans)', marginTop: '6px', textAlign: 'center' }}>
           {errorMsg}
         </div>
       )}

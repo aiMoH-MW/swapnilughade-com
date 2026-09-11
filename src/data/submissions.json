@@ -1,6 +1,13 @@
 {
   "newsletter": [
     {
+      "id": "nl-1789127998603-gxoz",
+      "email": "snehal.turkane24@pcu.edu.in",
+      "source": "website",
+      "createdAt": "2026-09-11T11:59:58.603Z",
+      "status": "active"
+    },
+    {
       "id": "nl-1789014275861-wsgz",
       "email": "mayuri.turkane12@gmail.com",
       "source": "website",
