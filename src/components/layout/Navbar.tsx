@@ -5,9 +5,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SignatureSvg } from '@/components/ui/SignatureSvg';
 
+// Expiration: Monday, September 14, 2026, 11:11:00 AM IST (UTC+5:30)
+const BETA_EXPIRY_TIMESTAMP = new Date('2026-09-14T11:11:00+05:30').getTime();
+
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showBeta, setShowBeta] = useState(false);
+
+  useEffect(() => {
+    setShowBeta(Date.now() < BETA_EXPIRY_TIMESTAMP);
+  }, []);
 
   // Close mobile drawer on route change or escape key
   useEffect(() => {
@@ -46,9 +54,16 @@ export function Navbar() {
       <nav className="nav" role="navigation" aria-label="Main Navigation">
         <div className="container nav-inner">
           <Link href="/" className="brand" aria-label="Swapnil Ughade · Founder, Operator, Investor, Author">
-            <span className="brand-logo" aria-hidden="true">
-              <SignatureSvg />
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span className="brand-logo" aria-hidden="true">
+                <SignatureSvg />
+              </span>
+              {showBeta && (
+                <span className="brand-beta-badge" aria-label="Beta">
+                  Beta
+                </span>
+              )}
+            </div>
             <span className="brand-tagline">Founder · Operator · Investor · Author</span>
           </Link>
 

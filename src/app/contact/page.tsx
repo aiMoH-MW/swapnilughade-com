@@ -108,7 +108,7 @@ export default function ContactPage() {
                 {status === 'loading' ? 'Transmitting...' : 'Send Correspondence →'}
               </button>
 
-              {status === 'success' && <p style={{ color: 'var(--rosewood)', fontSize: '14px', fontWeight: 500 }}>{msg}</p>}
+              {status === 'success' && <p style={{ color: '#16A34A', fontSize: '14px', fontWeight: 500 }}>{msg}</p>}
               {status === 'error' && <p style={{ color: 'red', fontSize: '14px' }}>{msg}</p>}
             </form>
           </div>
