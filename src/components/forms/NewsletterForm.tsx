@@ -53,12 +53,12 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
           margin: '0 auto',
           textAlign: 'center',
           padding: '20px 24px',
-          background: 'rgba(52, 211, 153, 0.12)',
-          border: '1px solid rgba(52, 211, 153, 0.45)',
+          background: 'rgba(22, 163, 74, 0.12)',
+          border: '1px solid rgba(22, 163, 74, 0.45)',
           borderRadius: '2px',
         }}
       >
-        <p style={{ fontFamily: 'var(--serif)', fontSize: '20px', color: '#34D399', margin: 0, fontWeight: 500 }}>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: '20px', color: '#16A34A', margin: 0, fontWeight: 500 }}>
           ✓ Thanks for subscribing!
         </p>
         <p style={{ fontFamily: 'var(--sans)', fontSize: '14px', color: 'rgba(245, 239, 227, 0.85)', marginTop: '8px', marginBottom: 0, lineHeight: 1.5 }}>
