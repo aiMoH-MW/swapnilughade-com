@@ -52,10 +52,24 @@ export const metadata: Metadata = {
     siteName: "Swapnil Ughade",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Swapnil Ughade · Founder, Operator, Investor, Author",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Swapnil Ughade · Founder, Operator, Investor, Author",
+    description:
+      "Founder-Director of MagicWorks and Ideovate. Author of Two Algorithms, One Strategy and The AI-Powered Google Ads System. Pune, India.",
     site: "@swapnilughade",
+    creator: "@swapnilughade",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://swapnilughade.com",

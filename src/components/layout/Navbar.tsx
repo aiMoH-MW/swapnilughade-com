@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SignatureSvg } from '@/components/ui/SignatureSvg';
 
-// Expiration: Monday, September 14, 2026, 11:11:00 AM IST (UTC+5:30)
-const BETA_EXPIRY_TIMESTAMP = new Date('2026-09-14T11:11:00+05:30').getTime();
+// Expiration: Monday, September 14, 2026, 5:30:00 PM IST (UTC+5:30)
+const BETA_EXPIRY_TIMESTAMP = new Date('2026-09-14T17:30:00+05:30').getTime();
 
 export function Navbar() {
   const pathname = usePathname();

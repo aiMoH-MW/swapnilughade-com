@@ -11,6 +11,21 @@ export const metadata = {
     title: 'Cookie Policy · Swapnil Ughade',
     description: 'This Cookie Policy explains how swapnilughade.com uses cookies and similar technologies on swapnilughade.com.',
     url: 'https://swapnilughade.com/cookies',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Cookie Policy · Swapnil Ughade',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cookie Policy · Swapnil Ughade',
+    description: 'This Cookie Policy explains how swapnilughade.com uses cookies and similar technologies on swapnilughade.com.',
+    images: ['/og-image.png'],
   },
 };
 

@@ -11,6 +11,21 @@ export const metadata = {
     title: 'Terms of Use · Swapnil Ughade',
     description: 'Terms of Use for swapnilughade.com — terms governing site usage, intellectual property, fair use, disclaimers, and liability.',
     url: 'https://swapnilughade.com/terms',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Terms of Use · Swapnil Ughade',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Use · Swapnil Ughade',
+    description: 'Terms of Use for swapnilughade.com — terms governing site usage, intellectual property, fair use, disclaimers, and liability.',
+    images: ['/og-image.png'],
   },
 };
 

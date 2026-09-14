@@ -11,6 +11,21 @@ export const metadata = {
     title: 'Privacy Policy · Swapnil Ughade',
     description: 'Privacy Policy for swapnilughade.com — data governance, collection practices, third-party services, and user rights.',
     url: 'https://swapnilughade.com/privacy',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Privacy Policy · Swapnil Ughade',
+        type: 'image/png',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy · Swapnil Ughade',
+    description: 'Privacy Policy for swapnilughade.com — data governance, collection practices, third-party services, and user rights.',
+    images: ['/og-image.png'],
   },
 };
 

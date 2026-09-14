@@ -33,6 +33,21 @@ export async function generateMetadata({ params }: Props) {
       url: `https://swapnilughade.com/writing/${article.slug}`,
       publishedTime: article.publishedAt,
       authors: ['Swapnil Ughade'],
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: `${article.title} · Swapnil Ughade`,
+          type: 'image/png',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${article.title} · Swapnil Ughade`,
+      description: article.metaDescription || article.lead.slice(0, 155),
+      images: ['/og-image.png'],
     },
   };
 }
