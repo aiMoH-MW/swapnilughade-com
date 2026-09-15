@@ -1,6 +1,13 @@
 {
   "newsletter": [
     {
+      "id": "nl-1789472490471-cvcg",
+      "email": "mayuri.turakane12@gmail.com",
+      "source": "homepage_newsletter_band",
+      "createdAt": "2026-09-15T11:41:30.471Z",
+      "status": "active"
+    },
+    {
       "id": "nl-1789129184397-jdhe",
       "email": "pratik@gmail.com",
       "source": "homepage_newsletter_band",
