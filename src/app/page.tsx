@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
 
@@ -70,12 +71,13 @@ export default function HomePage() {
           <div className="books-grid">
             <article className="book-card">
               <div className="book-cover-wrap">
-                <img
+                <Image
                   src="/img/books/two-algorithms-one-strategy.jpg"
                   alt="Two Algorithms, One Strategy cover"
                   className="book-cover-img"
                   width={723}
                   height={1024}
+                  sizes="(max-width: 500px) 136px, (max-width: 800px) 144px, 360px"
                   loading="lazy"
                 />
               </div>
@@ -96,12 +98,13 @@ export default function HomePage() {
 
             <article className="book-card">
               <div className="book-cover-wrap">
-                <img
+                <Image
                   src="/img/books/ai-powered-google-ads-system.jpg"
                   alt="The AI-Powered Google Ads System cover"
                   className="book-cover-img"
                   width={682}
                   height={1024}
+                  sizes="(max-width: 500px) 136px, (max-width: 800px) 144px, 360px"
                   loading="lazy"
                 />
               </div>

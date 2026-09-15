@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SignatureSvg, FlourishSvg } from '@/components/ui/SignatureSvg';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
@@ -23,12 +24,14 @@ export default function BookTwoPage() {
               { label: 'The AI-Powered Google Ads System' },
             ]}
           />
-          <img
+          <Image
             src="/img/books/ai-powered-google-ads-system.jpg"
             alt="The AI-Powered Google Ads System — book cover"
             className="book-cover-hero"
             width={682}
             height={1024}
+            sizes="(max-width: 640px) 180px, (max-width: 1024px) 240px, 320px"
+            priority
           />
           <div className="title-block">
             <h1 className="h1-title">The <em>AI-Powered</em> Google Ads System</h1>

@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container">
         <div className="footer-cols">
           <div className="footer-col">
-            <h5>Read</h5>
+            <p className="footer-col-title">Read</p>
             <ul>
               <li><Link href="/books">Books</Link></li>
               <li><Link href="/writing">Writing</Link></li>
@@ -15,7 +15,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-col">
-            <h5>Meet</h5>
+            <p className="footer-col-title">Meet</p>
             <ul>
               <li><Link href="/speaking">Speaking</Link></li>
               <li><Link href="/now">Now</Link></li>
@@ -23,21 +23,21 @@ export function Footer() {
             </ul>
           </div>
           <div className="footer-col">
-            <h5>Explore</h5>
+            <p className="footer-col-title">Explore</p>
             <ul>
               <li><Link href="/ventures">Ventures</Link></li>
               <li><Link href="/about">About</Link></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h5>Elsewhere</h5>
+            <p className="footer-col-title">Elsewhere</p>
             <ul>
               <li><a href="https://www.linkedin.com/in/swapnilughade" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
               <li><a href="https://www.amazon.in/s?k=swapnil+ughade&i=digital-text&crid=3QC7D12GDGL79&sprefix=%2Cdigital-text%2C221&ref=nb_sb_ss_recent_1_0_recent" target="_blank" rel="noopener noreferrer">Amazon author</a></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h5>Legal</h5>
+            <p className="footer-col-title">Legal</p>
             <ul>
               <li><Link href="/privacy">Privacy Policy</Link></li>
               <li><Link href="/terms">Terms of Use</Link></li>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { SignatureSvg, FlourishSvg } from '@/components/ui/SignatureSvg';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
@@ -23,12 +24,14 @@ export default function BookOnePage() {
               { label: 'Two Algorithms, One Strategy' },
             ]}
           />
-          <img
+          <Image
             src="/img/books/two-algorithms-one-strategy.jpg"
             alt="Two Algorithms, One Strategy — book cover"
             className="book-cover-hero"
             width={723}
             height={1024}
+            sizes="(max-width: 640px) 180px, (max-width: 1024px) 240px, 320px"
+            priority
           />
           <div className="title-block">
             <h1 className="h1-title">Two Algorithms, <em>One</em> Strategy</h1>

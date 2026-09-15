@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { FlourishSvg, TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
@@ -32,12 +33,13 @@ export default function BooksPage() {
             {/* BOOK 1 */}
             <article className="book-card">
               <div className="book-plate-wrap">
-                <img
+                <Image
                   src="/img/books/two-algorithms-one-strategy.jpg"
                   alt="Two Algorithms, One Strategy cover"
                   className="book-plate-img"
                   width={723}
                   height={1024}
+                  sizes="(max-width: 500px) 136px, (max-width: 800px) 144px, 360px"
                   loading="lazy"
                 />
               </div>
@@ -71,12 +73,13 @@ export default function BooksPage() {
             {/* BOOK 2 */}
             <article className="book-card">
               <div className="book-plate-wrap">
-                <img
+                <Image
                   src="/img/books/ai-powered-google-ads-system.jpg"
                   alt="The AI-Powered Google Ads System cover"
                   className="book-plate-img"
                   width={682}
                   height={1024}
+                  sizes="(max-width: 500px) 136px, (max-width: 800px) 144px, 360px"
                   loading="lazy"
                 />
               </div>
