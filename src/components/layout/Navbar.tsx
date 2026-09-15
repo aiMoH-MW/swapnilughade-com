@@ -14,7 +14,9 @@ export function Navbar() {
   const [showBeta, setShowBeta] = useState(false);
 
   useEffect(() => {
-    setShowBeta(Date.now() < BETA_EXPIRY_TIMESTAMP);
+    if (Date.now() < BETA_EXPIRY_TIMESTAMP) {
+      setShowBeta(true);
+    }
   }, []);
 
   // Close mobile drawer on route change or escape key
