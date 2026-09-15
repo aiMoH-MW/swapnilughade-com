@@ -14,6 +14,18 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000,
+  },
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@portabletext/react',
+      'clsx',
+      'tailwind-merge',
+    ],
+  },
   async headers() {
     return [
       {
