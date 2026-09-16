@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -147,18 +146,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${cormorant.variable} ${ibmPlexSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         {gtmId && (
-          <Script
+          // eslint-disable-next-line @next/next/next-script-for-ga
+          <script
             id="google-tag-manager"
-            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${gtmId}');`,
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];var loaded=false;function loadGTM(){if(loaded)return;loaded=true;['scroll','pointerdown','touchstart','keydown','click'].forEach(function(e){w.removeEventListener(e,loadGTM);});w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}['scroll','pointerdown','touchstart','keydown','click'].forEach(function(e){w.addEventListener(e,loadGTM,{passive:true,once:true});});if('requestIdleCallback' in w){w.requestIdleCallback(function(){setTimeout(loadGTM,3000);});}else{setTimeout(loadGTM,3500);}})(window,document,'script','dataLayer','${gtmId}');`,
             }}
           />
         )}
