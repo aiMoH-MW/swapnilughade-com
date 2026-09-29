@@ -1,45 +1,53 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ARTICLES } from '@/lib/content-data';
+import { ARTICLES, getPublishedArticles, isArticlePublished } from '@/lib/content-data';
 import { FlourishSvg, TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 import { Ornament } from '@/components/ui/Ornament';
 import { InlineMarkdown } from '@/components/writing/InlineMarkdown';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
 
+export const revalidate = 300;
+export const dynamicParams = true;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return ARTICLES.map((art) => ({ slug: art.slug }));
+  return getPublishedArticles().map((art) => ({ slug: art.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const article = ARTICLES.find((a) => a.slug === slug);
-  if (!article) return { title: 'Article Not Found · Swapnil Ughade' };
+
+  // Unconditional guard: returns 404 metadata if article does not exist or is not yet published
+  if (!article || !isArticlePublished(article)) {
+    return { title: 'Article Not Found · Swapnil Ughade' };
+  }
+
+  const ogImageUrl = article.ogImage || '/og-image.png';
 
   return {
     title: `${article.title} · Swapnil Ughade`,
     description: article.metaDescription || article.lead.slice(0, 155),
     alternates: {
-      canonical: `https://swapnilughade.com/writing/${article.slug}`,
+      canonical: article.canonicalUrl || `https://swapnilughade.com/writing/${article.slug}`,
     },
     openGraph: {
       title: `${article.title} · Swapnil Ughade`,
       description: article.metaDescription || article.lead.slice(0, 155),
       type: 'article',
       url: `https://swapnilughade.com/writing/${article.slug}`,
-      publishedTime: article.publishedAt,
+      publishedTime: article.publishDate ? `${article.publishDate}T09:00:00+05:30` : article.publishedAt,
       authors: ['Swapnil Ughade'],
       images: [
         {
-          url: '/og-image.png',
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: `${article.title} · Swapnil Ughade`,
-          type: 'image/png',
         },
       ],
     },
@@ -47,7 +55,7 @@ export async function generateMetadata({ params }: Props) {
       card: 'summary_large_image',
       title: `${article.title} · Swapnil Ughade`,
       description: article.metaDescription || article.lead.slice(0, 155),
-      images: ['/og-image.png'],
+      images: [ogImageUrl],
     },
   };
 }
@@ -69,12 +77,14 @@ export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = ARTICLES.find((a) => a.slug === slug);
 
-  if (!article) {
+  // Unconditional 404 guard across production, staging, and preview deployments
+  if (!article || !isArticlePublished(article)) {
     notFound();
   }
 
-  // Related articles (the other 2 articles from ARTICLES)
-  const relatedArticles = ARTICLES.filter((a) => a.slug !== article.slug);
+  // Related articles (only from published articles)
+  const publishedArticles = getPublishedArticles();
+  const relatedArticles = publishedArticles.filter((a) => a.slug !== article.slug).slice(0, 3);
 
   const cleanReadingTime = article.readingTime.replace(/[()[\]]/g, '').trim();
 
@@ -83,7 +93,7 @@ export default async function ArticlePage({ params }: Props) {
     "@type": "Article",
     headline: article.title,
     description: article.metaDescription || article.lead,
-    datePublished: article.publishedAt,
+    datePublished: article.publishDate ? `${article.publishDate}T09:00:00+05:30` : article.publishedAt,
     author: {
       "@type": "Person",
       name: "Swapnil Ughade",
@@ -94,8 +104,8 @@ export default async function ArticlePage({ params }: Props) {
       "@type": "Person",
       name: "Swapnil Ughade"
     },
-    mainEntityOfPage: `https://swapnilughade.com/writing/${article.slug}`,
-    articleSection: article.category,
+    mainEntityOfPage: article.canonicalUrl || `https://swapnilughade.com/writing/${article.slug}`,
+    articleSection: article.pillar || article.category,
   };
 
   return (
@@ -122,6 +132,9 @@ export default async function ArticlePage({ params }: Props) {
           <div className="a-meta">
             <span>{article.publishedAt}</span>
             <span>({cleanReadingTime})</span>
+            {article.pillar && (
+              <span>· <Link href={`/writing/pillar/${article.pillar.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} style={{ textDecoration: 'underline', color: 'inherit' }}>{article.pillar}</Link></span>
+            )}
           </div>
         </header>
 
@@ -217,23 +230,25 @@ export default async function ArticlePage({ params }: Props) {
       </section>
 
       {/* RELATED WRITING ZONE */}
-      <section className="related-zone">
-        <div className="related-head">
-          <h2 className="related-title">Related <em>writing</em></h2>
-        </div>
-        <div className="related-grid">
-          {relatedArticles.map((rel) => (
-            <Link key={rel.slug} href={`/writing/${rel.slug}`} className="related-card">
-              <div className="related-eyebrow">{rel.category}</div>
-              <div className="related-t">
-                {renderTitleWithEm(rel.title, rel.titleEm)}
-              </div>
-              <div className="related-b">{rel.blurb}</div>
-              <span className="related-l">Read →</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {relatedArticles.length > 0 && (
+        <section className="related-zone">
+          <div className="related-head">
+            <h2 className="related-title">Related <em>writing</em></h2>
+          </div>
+          <div className="related-grid">
+            {relatedArticles.map((rel) => (
+              <Link key={rel.slug} href={`/writing/${rel.slug}`} className="related-card">
+                <div className="related-eyebrow">{rel.pillar || rel.category}</div>
+                <div className="related-t">
+                  {renderTitleWithEm(rel.title, rel.titleEm)}
+                </div>
+                <div className="related-b">{rel.blurb}</div>
+                <span className="related-l">Read →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* FOOTER TRANSITION SPACER (LIGHT BONE / IVORY WITH TWO-INTO-ONE GLYPH) */}
       <div className="footer-transition-spacer" aria-hidden="true">

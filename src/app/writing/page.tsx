@@ -1,8 +1,10 @@
-import { ARTICLES } from '@/lib/content-data';
+import { getPublishedArticles } from '@/lib/content-data';
 import { WritingArchive } from '@/components/writing/WritingArchive';
 import { TwoIntoOneGlyph } from '@/components/ui/SignatureSvg';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
+
+export const revalidate = 300;
 
 export const metadata = {
   title: 'Writing · Swapnil Ughade · Long-Form Notes',
@@ -13,6 +15,8 @@ export const metadata = {
 };
 
 export default function WritingPage() {
+  const publishedArticles = getPublishedArticles();
+
   return (
     <div>
       <div className="section writing">
@@ -24,7 +28,7 @@ export default function WritingPage() {
             <p className="section-sub">Long-form notes on portals, platforms, and the AI era of marketing. Every second Sunday.</p>
           </div>
 
-          <WritingArchive articles={ARTICLES} />
+          <WritingArchive articles={publishedArticles} />
         </div>
       </div>
 

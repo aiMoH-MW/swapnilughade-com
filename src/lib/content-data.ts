@@ -12,11 +12,17 @@ export interface ArticleData {
   title: string;
   titleEm?: string;
   category: string;
-  publishedAt: string;
+  pillar?: string;
+  subPillar?: string;
+  publishDate: string; // ISO format: YYYY-MM-DD
+  updatedDate?: string; // ISO format: YYYY-MM-DD
+  publishedAt: string; // Display format: "5 October 2026"
   readingTime: string;
   lead: string;
   blurb: string;
   metaDescription?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
   keyTakeaways?: string[];
   introParagraphs: string[];
   sections: ArticleSection[];
@@ -34,8 +40,13 @@ export const ARTICLES: ArticleData[] = [
     title: "Two into one: the operating thesis",
     titleEm: "operating",
     category: "Operating Thesis",
+    pillar: "Operating Thesis",
+    publishDate: "2026-09-08",
+    updatedDate: "2026-09-08",
     publishedAt: "8 September 2026",
     readingTime: "4 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/two-into-one-the-operating-thesis",
+    ogImage: "/og-image.png",
     metaDescription: "The operating thesis behind seventeen years at Magicworks and Ideovate. Why integrating strategy and execution, traditional and AI-powered search, services and products beats specialising into one side.",
     blurb: "The operating thesis behind seventeen years at Magicworks and Ideovate. Why integrating strategy and execution beats specialising into one side.",
     lead: "The markets I have spent seventeen years serving have a habit of separating things that need to be held together. Human strategy and machine execution. Traditional search and AI-powered search. Execution and advisory. Services and products. Founder, operator, investor, author.",
@@ -121,8 +132,8 @@ export const ARTICLES: ArticleData[] = [
         "@type": "Person",
         "name": "Swapnil Ughade"
       },
-      "datePublished": "2026-09-08",
-      "dateModified": "2026-09-08",
+      "datePublished": "2026-09-08T09:00:00+05:30",
+      "dateModified": "2026-09-08T09:00:00+05:30",
       "mainEntityOfPage": "https://swapnilughade.com/writing/two-into-one-the-operating-thesis",
       "articleSection": "Operating Thesis",
       "keywords": "operating thesis, founder-operator, AI-powered search, marketplace consultation, portal thesis, Magicworks, Ideovate"
@@ -133,8 +144,13 @@ export const ARTICLES: ArticleData[] = [
     title: "The portal thesis",
     titleEm: "portal",
     category: "Portals & Platforms",
+    pillar: "Portals & Platforms",
+    publishDate: "2026-09-01",
+    updatedDate: "2026-09-01",
     publishedAt: "1 September 2026",
     readingTime: "5 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/the-portal-thesis",
+    ogImage: "/og-image.png",
     metaDescription: "A well-built portal in a high-trust category creates disproportionate value. What each of those words means at practice level, drawn from running simplidistance.com at Ideovate and advising founders at Magicworks.",
     blurb: "A well-built portal in a high-trust category creates disproportionate value. What each of those words means at practice level.",
     lead: "Founders ask me a version of the same question often enough that I have written a phrase for the answer. The phrase is: a well-built portal in a high-trust category creates disproportionate value.",
@@ -238,8 +254,8 @@ export const ARTICLES: ArticleData[] = [
         "@type": "Person",
         "name": "Swapnil Ughade"
       },
-      "datePublished": "2026-09-01",
-      "dateModified": "2026-09-01",
+      "datePublished": "2026-09-01T09:00:00+05:30",
+      "dateModified": "2026-09-01T09:00:00+05:30",
       "mainEntityOfPage": "https://swapnilughade.com/writing/the-portal-thesis",
       "articleSection": "Portals & Platforms",
       "keywords": "portal thesis, high-trust category, discovery portal, marketplace consulting, Ideovate, simplidistance, category leader, operating thesis"
@@ -250,8 +266,13 @@ export const ARTICLES: ArticleData[] = [
     title: "Why marketplace consultation is founder-led",
     titleEm: "founder-led",
     category: "Advisory",
+    pillar: "Advisory",
+    publishDate: "2026-08-25",
+    updatedDate: "2026-08-25",
     publishedAt: "25 August 2026",
     readingTime: "5 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/why-marketplace-consultation-is-founder-led",
+    ogImage: "/og-image.png",
     metaDescription: "Advisory work in some categories does not senior-associate. The design case for the founder-led constraint on the two advisory pillars at Magicworks, and why holding that line is a feature rather than a growth ceiling.",
     blurb: "Advisory work in some categories does not senior-associate. The design case for the founder-led constraint on the two advisory pillars at Magicworks.",
     lead: "Every founder who runs an advisory practice eventually faces the same question. How do we scale this? The instinctive answer is to hire smart people, train them, systemise the frameworks, and put a senior name on the door of engagements without the founder in the room.",
@@ -349,14 +370,640 @@ export const ARTICLES: ArticleData[] = [
         "@type": "Person",
         "name": "Swapnil Ughade"
       },
-      "datePublished": "2026-08-25",
-      "dateModified": "2026-08-25",
+      "datePublished": "2026-08-25T09:00:00+05:30",
+      "dateModified": "2026-08-25T09:00:00+05:30",
       "mainEntityOfPage": "https://swapnilughade.com/writing/why-marketplace-consultation-is-founder-led",
       "articleSection": "Advisory",
       "keywords": "founder-led consulting, marketplace consultation, AI consultation, advisory practice, boutique consulting, Magicworks, Pillar 03, Pillar 04"
     }
+  },
+  {
+    slug: "three-questions-before-every-ad-account-audit",
+    title: "The three questions before every ad account audit",
+    titleEm: "ad account audit",
+    category: "Consultancy",
+    pillar: "Consultancy",
+    subPillar: "Digital Marketing",
+    publishDate: "2026-10-05",
+    updatedDate: "2026-10-05",
+    publishedAt: "5 October 2026",
+    readingTime: "5 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/three-questions-before-every-ad-account-audit",
+    ogImage: "/images/writing/three-questions-audit.jpg",
+    metaDescription: "The Google Ads audit framework starts with three questions: what is the account trying to do, what is the evidence it is doing that, what would we change first.",
+    blurb: "Three questions decide whether an ad account is unclear or underperforming: what is the account trying to do, what is the evidence it is doing that, what would we change first.",
+    lead: "My instinct on being handed an account to audit is to open the interface. Pull the last ninety days. Tab through campaign structure, ad groups, keywords, negatives, extensions, bidding strategies. The instinct is understandable and mostly wrong.",
+    keyTakeaways: [
+      "Three questions decide whether an ad account is **unclear or underperforming** before any audit begins.",
+      "**Question 1:** What is the account trying to do? (One sentence, one number, one boundary).",
+      "**Question 2:** What is the evidence it is doing that? (Verify the intact measurement architecture).",
+      "**Question 3:** What would we change first? (Elicit the operator's unprompted instinct)."
+    ],
+    introParagraphs: [
+      "My instinct on being handed an account to audit is to open the interface. Pull the last ninety days. Tab through campaign structure, ad groups, keywords, negatives, extensions, bidding strategies. The instinct is understandable and mostly wrong. Every hour spent that way, before answering the questions below, is an hour producing findings the account owner cannot use.",
+      "An account is not usually underperforming. It is usually unclear. The three questions separate one condition from the other, and the difference matters because they have different remedies. An underperforming account needs execution; an unclear account needs an operating decision. Auditing the second as if it were the first produces a long report and no change.",
+      "The frameworks in [*The AI-Powered Google Ads System*](/books/ai-powered-google-ads-system) start here, and the frameworks that come later assume this question has been answered. When it hasn't, every downstream recommendation is a guess with a chart attached."
+    ],
+    sections: [
+      {
+        id: "I",
+        heading: "Question 1. What is the account trying to do?",
+        headingEm: "trying to do",
+        paragraphs: [
+          "The single objective the account is optimised for. Not the marketing team's quarterly targets, not the CMO's slide, not the board's north-star metric. The account's operating instructions.",
+          "The right answer is boring: \"acquire qualified leads under ₹1,200 CAC,\" or \"drive first purchases at 4.2x ROAS,\" or \"book demos with prospects above ₹5 lakh ARR potential.\" One sentence, one number, one boundary. If the answer requires reading between the lines of an internal deck, the account is unclear before the audit begins.",
+          "An account without a single operating objective develops a common pathology. Different campaigns optimise for different things: some for conversions, some for clicks, some for a legacy target set in a previous quarter and never updated. Media budget flows toward whichever campaign the automation deems \"successful\" this week, which often is not the campaign that supports the business. On paper the account looks busy. In reality it is drifting.",
+          "Ask the question the way a new head of marketing would ask it. If the account owner needs more than one sentence, or hedges, or names three things, note it. That is the audit's first finding."
+        ]
+      },
+      {
+        id: "II",
+        heading: "Question 2. What is the evidence it is doing that?",
+        headingEm: "evidence",
+        paragraphs: [
+          "The measurement architecture. Which conversions are counted, which windows, which attribution model, which primary metric on the reporting layer. What is imported from the CRM, on what cadence, joined on what identifier.",
+          "This is not a place to be diplomatic. Either the evidence chain from click to counted outcome is intact, or it isn't. Common breakdowns worth naming plainly:\n\n• The account's stated target is CAC on qualified leads, but the counted conversion is \"all form submissions,\" including newsletter signups and support tickets.\n• Attribution is set to last-click inside the account, but the reporting deck cites Data-Driven numbers copied from a different environment.\n• View-through conversions are on by default and quietly inflate the numbers no one questions.\n• Offline conversion imports run weekly, but bidding operates on the seven-day click window; the loop closes after the automation has already made its decisions.\n• Conversion tags fire twice on the thank-you page because the redesign in April kept the old tag alongside the new one.",
+          "Each of these is invisible at the reporting layer and produces a systematically wrong picture of what the account is doing. An account with a broken measurement chain cannot be audited for performance; it has to be audited for measurement first. The order matters."
+        ]
+      },
+      {
+        id: "III",
+        heading: "Question 3. What would we change first?",
+        headingEm: "change first",
+        paragraphs: [
+          "The account owner's honest answer, before the audit begins. If the operator cannot name their top-priority change without the audit, the audit has an outsized role to play, and probably the wrong one. It is now expected to surface an unknown, which is a hard thing to ask of any audit and an easy thing to get wrong.",
+          "If the operator can name it, the audit's job is different and much better defined. It becomes: validate this instinct, or contest it, in that order. Most of the time the audit ends up validating. The operator is closer to the account than anyone else and has usually already sensed where the leverage is. The value of the audit is confirmation, sequencing, and one or two adjacent findings the operator was not close enough to see.",
+          "The other value of asking this question up front is that it flushes out the account's political geography. When the operator names their top-priority change and it is different from the change the CMO wants named, the audit is now walking into a decision the audit was not authorised to make. Better to know that before writing the report than after."
+        ]
+      },
+      {
+        id: "IV",
+        heading: "What the three questions change",
+        headingEm: "questions change",
+        paragraphs: [
+          "The three questions turn an audit from a list of things wrong into a prioritised set of decisions with an owner. That is the whole difference. A long list of findings without an owner is a document; a shorter list of decisions with an owner is a plan.",
+          "For a marketing lead handed a mid-size Google Ads account, the questions land as a standing pre-audit checklist and the front end of the Google Ads audit framework I use across every engagement. Send them to the account manager three working days before the audit call. Ask for one-sentence answers. Read the answers before opening the interface. If any answer is missing or hedged, that is the finding, and the audit either changes shape or is deferred until the underlying decision is made.",
+          "Across the ad accounts refined through [MagicWorks IT Solutions Pvt. Ltd.](/about#magicworks), the AI-first digital marketing agency I founded in 2009, the pattern has held. Accounts where all three answers arrive cleanly are audited in a day; the audit becomes a decision brief. Accounts where the answers arrive hedged or missing produce a longer audit, but that audit's first section is now about the operating decisions that need to be made before the media questions can be addressed sensibly."
+        ]
+      },
+      {
+        id: "V",
+        heading: "What the AI-first tools do here",
+        headingEm: "AI-first tools",
+        paragraphs: [
+          "Automated audits sharpen this rather than replace it. The current generation of tools can produce more findings in an hour than any team can act on in a quarter. That volume is a feature only if the findings can be filtered by relevance to a stated objective. Without the three questions answered, \"relevance\" has no definition, and the tool's output becomes noise dressed in charts.",
+          "With the three questions answered, the automation earns its place. It flags the anomalies that touch the stated objective, sequences them by likely impact, and hands the shortlist to a human who can now audit with the confidence that every item on the list connects to something the account is actually trying to do.",
+          "The full audit framework, including the four-phase structure that follows once the three questions are answered, is Chapter 3 of [*The AI-Powered Google Ads System*](/books/ai-powered-google-ads-system), co-authored with Mohan Chute and published September 2026."
+        ]
+      }
+    ],
+    closingParagraphs: [
+      "**Sources and references.**\n\n• Audit framework and its four-phase structure: *The AI-Powered Google Ads System*, Chapters 2 and 3, Swapnil Ughade and Mohan Chute, September 2026.\n• Managed-spend context of ₹70+ Crore ($8M) across 50+ client accounts: [MagicWorks IT Solutions Pvt. Ltd.](/about#magicworks), September 2026.\n• Attribution and conversion-window terminology per Google Ads documentation, current as of September 2026.",
+      "**About the author.** Swapnil Ughade is Founder · Operator · Investor · Author. He runs [MagicWorks IT Solutions Pvt. Ltd.](/about#magicworks), the AI-first digital marketing agency he founded in Pune in 2009. He is the author of *Two Algorithms, One Strategy* (April 2026) and, with Mohan Chute, *[The AI-Powered Google Ads System](/books/ai-powered-google-ads-system)* (September 2026). Frameworks refined across ₹70+ Crore ($8M) in managed ad spend. More at [/about](/about)."
+    ],
+    footerNote: "Three questions decide whether an ad account is unclear or underperforming. Asked in order before any audit begins, half the audit answers itself.",
+    content: [
+      "My instinct on being handed an account to audit is to open the interface. The instinct is understandable and mostly wrong.",
+      "An account is not usually underperforming. It is usually unclear. Three questions decide whether an account is unclear or underperforming.",
+      "What is the account trying to do? What is the evidence it is doing that? What would we change first?",
+      "The three questions turn an audit from a list of things wrong into a prioritised set of decisions with an owner."
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://swapnilughade.com/writing/three-questions-before-every-ad-account-audit#article",
+          "headline": "The three questions before every ad account audit",
+          "description": "The Google Ads audit framework starts with three questions: what is the account trying to do, what is the evidence it is doing that, what would we change first.",
+          "author": { "@id": "https://swapnilughade.com/about#person" },
+          "publisher": { "@id": "https://swapnilughade.com/#organization" },
+          "datePublished": "2026-10-05T09:00:00+05:30",
+          "dateModified": "2026-10-05T09:00:00+05:30",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://swapnilughade.com/writing/three-questions-before-every-ad-account-audit"
+          },
+          "articleSection": "Consultancy",
+          "keywords": "google ads audit framework, how to audit a google ads account, google ads audit checklist, ad account audit, ai-first marketing",
+          "image": "https://swapnilughade.com/images/writing/three-questions-audit.jpg",
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://swapnilughade.com/about#person",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/about",
+          "jobTitle": "Founder, Operator, Investor, Author",
+          "worksFor": { "@id": "https://swapnilughade.com/#organization" },
+          "sameAs": [
+            "https://www.linkedin.com/in/swapnilughade",
+            "https://www.amazon.com/author/swapnilughade"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://swapnilughade.com/#organization",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/",
+          "logo": "https://swapnilughade.com/brand/signature.svg"
+        }
+      ]
+    }
+  },
+  {
+    slug: "five-pillars-three-siblings-how-magicworks-is-structured-in-2026",
+    title: "Five pillars, three siblings: how MagicWorks is structured in 2026",
+    titleEm: "MagicWorks",
+    category: "Operator's Diary",
+    pillar: "Operator's Diary",
+    publishDate: "2026-10-12",
+    updatedDate: "2026-10-12",
+    publishedAt: "12 October 2026",
+    readingTime: "6 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/five-pillars-three-siblings-how-magicworks-is-structured-in-2026",
+    ogImage: "/images/writing/magicworks-structure-2026.jpg",
+    metaDescription: "MagicWorks IT Solutions Pvt. Ltd. runs as five service pillars with three sibling brands inside the group. A public map of how the agency is organised in 2026.",
+    blurb: "MagicWorks IT Solutions Pvt. Ltd. runs as five service pillars with three sibling brands inside the group. A public map of how the agency is organised in 2026.",
+    lead: "For most of seventeen years, MagicWorks IT Solutions Pvt. Ltd. ran as one service line. A single pitch: digital marketing for growing Indian businesses, done properly. A single deliverable envelope: strategy, execution, reporting. A single kind of client conversation. It worked, until it did not.",
+    keyTakeaways: [
+      "Under one service line, **five distinct practices** had grown up quietly inside MagicWorks.",
+      "The five service pillars: **Digital Marketing, Web Development, AI Consultation, Marketplace & Platform Consultation, and Brand, Research & Publishing.**",
+      "Three product siblings run inside the group: **MagicWorksHost.com, MagicFlow AI, and Magic Pipeline.**",
+      "No sibling brand ships to an external customer before the parent agency has staked its own delivery on it."
+    ],
+    introParagraphs: [
+      "For most of seventeen years, MagicWorks IT Solutions Pvt. Ltd. ran as one service line. A single pitch: digital marketing for growing Indian businesses, done properly. A single deliverable envelope: strategy, execution, reporting. A single kind of client conversation. It worked, until it did not.",
+      "The moment it stopped working was not dramatic. There was no crisis. There was a slow accumulation of things that were true separately and no longer true together. Half the accounts were paying for media that MagicWorks was also building the destination for. A quarter were paying for what looked more like management consultancy with a Google Ads invoice attached. A tenth were on retainers whose scope had drifted so far from the original brief that the retainer name was the only thing still holding it together.",
+      "Under one service line, five different practices had grown up quietly. Each had its own client type, its own delivery cadence, its own skill profile, its own margin structure. The org chart said one thing; the P&L said another. Every operator eventually meets the moment where the two diverge past the point of reconciliation. Ours came in the second half of 2024.",
+      "The rest of that year, and most of 2025, went to naming what was already true. What follows is where we ended up."
+    ],
+    sections: [
+      {
+        id: "I",
+        heading: "The five service pillars",
+        headingEm: "service pillars",
+        paragraphs: [
+          "The pillars are not creative. They describe the work as it exists. Each has its own leadership, its own hiring track, its own client acquisition path, and its own margin target. They share infrastructure, culture, and the founder's attention; they do not share P&Ls.",
+          "**Pillar 01 · Digital Marketing.** SEO, GEO, AEO, Google Ads, Meta Ads, attribution architecture, measurement, reporting. The pillar most clients still encounter first. Where the ₹70+ Crore ($8M) of managed ad spend has flowed. The pillar the books sit under: [*The AI-Powered Google Ads System*](/books/ai-powered-google-ads-system) (September 2026, with Mohan Chute) and *Two Algorithms, One Strategy* (April 2026) are both first-person artefacts of this pillar. The [three-question pre-audit](/writing/three-questions-before-every-ad-account-audit) that opened this month's writing sits here.",
+          "**Pillar 02 · Web Development.** Next.js sites, e-commerce builds, custom applications, technical SEO implementations. Where the destination for Pillar 01's media traffic is built, sustained, and instrumented. Run as a delivery practice, not a design studio.",
+          "**Pillar 03 · AI Consultation.** LLM integrations for client operations, custom chatbots, retrieval-augmented generation, workflow automation, prompt engineering treated as a durable discipline rather than a party trick. The pillar that has grown fastest through 2025 and 2026, and the pillar where the ideas that later became MagicFlow AI and Magic Pipeline first ran as bespoke engagements.",
+          "**Pillar 04 · Marketplace and Platform Consultation.** The founder-led pillar. Platform economics, marketplace design, portal unit economics, multi-tenant SaaS architecture, cross-side monetisation. Serves a smaller number of engagements at a higher altitude. Draws on operating experience from Ideovate Research Pvt. Ltd. (which runs the discovery portal simplidistance.com) and from the sibling products described below. This is the pillar where I still take the first meeting personally; it is also the pillar most likely to end in a decision the client had not planned to make.",
+          "**Pillar 05 · Brand, Research and Publishing.** Positioning, category work, research briefs, and the publishing programme itself: the books, the newsletter, the long-form pieces on this site. A quieter pillar in headcount, a load-bearing one in reputation. Its job is to make the practice legible to the market.",
+          "The pillars are numbered because sequencing matters for a client engagement. A campaign built without measurement is a spend, not an investment. A measurement architecture built without a destination is a report. A destination built without a category is content. Pillars 01 through 05 map, roughly, to the order in which questions get answered for a serious client."
+        ]
+      },
+      {
+        id: "II",
+        heading: "The three sibling brands",
+        headingEm: "sibling brands",
+        paragraphs: [
+          "Inside the MagicWorks Group, three sibling brands run as products rather than services. They share the parent's infrastructure and, in most cases, its clients; they do not share its billing model. Each has its own site, its own subscription surface, its own product roadmap.",
+          "**MagicWorksHost.com** is the domain and hosting arm. Founded to serve MagicWorks' own clients, on the principle that a site build without a hosting plan attached is a handoff waiting to break, it now also serves external customers who arrive without a services engagement. It is the oldest sibling and the least glamorous; it is also the one that never has an outage without a phone call.",
+          "**MagicFlow AI** (magicflowai.io) is a multi-tenant AI-chatbot SaaS. A client signs up on the site, connects their knowledge base, deploys an AI chatbot on their own site under their own brand, and pays a monthly subscription for it. Launched publicly in May 2026 after a year of running inside MagicWorks first. Represents the productisation of the AI Consultation work that used to be bespoke.",
+          "**Magic Pipeline** (MagicPipeline.io) is a multi-tenant outreach and CRM SaaS. Multi-channel outreach, unified reply handling, pipeline analytics. Launched internally in April 2026 and now used across MagicWorks' own business development. It will open to public subscription when the internal use has surfaced the last of the workflow decisions that only a live business can teach a product.",
+          "The pattern for the siblings is consistent, and worth naming plainly. Each began as a bespoke solve inside Pillar 03. Each was rebuilt as a productised service once the underlying pattern was clear enough to be worth engineering against. Each opened to external customers only after MagicWorks itself had used it long enough to know what it should not do. The rule: no sibling brand ships to an external customer before the parent agency has staked its own delivery on it."
+        ]
+      },
+      {
+        id: "III",
+        heading: "Why the structure holds",
+        headingEm: "structure holds",
+        paragraphs: [
+          "The structure holds because it is not architecture; it is a description. Each pillar existed before it was named. Naming it made it operable: gave it a leader, a P&L, a hiring track, a way of saying no to work that belongs somewhere else. Naming the siblings made the difference between services and products explicit, which stopped the accidental discounting of one to fund the other.",
+          "There is no matrix. There is no dotted-line reporting. There is no attempt to force every engagement through a single delivery methodology; each pillar delivers the way its work delivers. What is shared is smaller and more real: a client-service standard, an editorial voice, a brand system, an audit rhythm, and a founder available to any pillar that needs a decision escalated. That is enough.",
+          "The one detail worth flagging for anyone reading this and considering copying the shape: the pillars did not arrive by design. They arrived by acknowledgement. Trying to build them into existence before the underlying practice has grown is the surest way to get an org chart that describes a business no one is actually running."
+        ]
+      },
+      {
+        id: "IV",
+        heading: "What the structure changes for the reader",
+        headingEm: "changes for the reader",
+        paragraphs: [
+          "For a client scoping an engagement: knowing which pillar you are speaking to changes the shape of the first conversation. A Pillar 01 conversation begins with an objective and a measurement architecture. A Pillar 04 conversation begins with unit economics and a category question. Confusing the two costs both parties a meeting.",
+          "For a candidate considering MagicWorks: the pillar you would join has more to do with your day than the company name does. The pillars recruit differently and reward differently, and the honest thing is to say which one is hiring before the interview.",
+          "For anyone writing about the agency: the structure is public now, on this page and on [/about](/about), and can be quoted verbatim.",
+          "For the operator, which is my own vantage: making the structure public has done what public structures usually do. It has made decisions faster. It has made \"no\" easier. It has made the difference between a good year and a busy one a matter of evidence rather than instinct.",
+          "The structure will change again. When it does, this page will be updated and dated. The structure is a snapshot; the practice is what continues."
+        ]
+      }
+    ],
+    closingParagraphs: [
+      "**Sources and references.**\n\n• Company incorporation: MagicWorks IT Solutions Pvt. Ltd., incorporated in Pune on 26 September 2012; operating since 2009.\n• Sibling brand launches: Magic Pipeline internal launch April 2026; MagicFlow AI public launch May 2026; new MagicWorks IT Solutions site (Next.js) launched June 2026.\n• Managed-spend context: ₹70+ Crore ($8M) across 50+ client accounts, current as of September 2026.\n• Related portfolio positions and dates as documented on [/about](/about), current as of September 2026."
+    ],
+    footerNote: "The structure is a snapshot; the practice is what continues.",
+    content: [
+      "For most of seventeen years, MagicWorks IT Solutions Pvt. Ltd. ran as one service line. It worked, until it did not.",
+      "Under one service line, five different practices had grown up quietly: Digital Marketing, Web Development, AI Consultation, Marketplace & Platform Consultation, and Brand, Research & Publishing.",
+      "Inside the MagicWorks Group, three sibling brands run as products rather than services: MagicWorksHost.com, MagicFlow AI, and Magic Pipeline.",
+      "The structure holds because it is not architecture; it is a description of how the agency is organised in 2026."
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://swapnilughade.com/writing/five-pillars-three-siblings-how-magicworks-is-structured-in-2026#article",
+          "headline": "Five pillars, three siblings: how MagicWorks is structured in 2026",
+          "description": "MagicWorks IT Solutions Pvt. Ltd. runs as five service pillars with three sibling brands inside the group. A public map of how the agency is organised in 2026.",
+          "author": { "@id": "https://swapnilughade.com/about#person" },
+          "publisher": { "@id": "https://swapnilughade.com/#organization" },
+          "about": { "@id": "https://magicworksitsolutions.com/#organization" },
+          "datePublished": "2026-10-12T09:00:00+05:30",
+          "dateModified": "2026-10-12T09:00:00+05:30",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://swapnilughade.com/writing/five-pillars-three-siblings-how-magicworks-is-structured-in-2026"
+          },
+          "articleSection": "Operator's Diary",
+          "keywords": "MagicWorks IT Solutions structure, how MagicWorks is organised, digital marketing agency structure India, MagicWorks pillars, MagicWorks Group",
+          "image": "https://swapnilughade.com/images/writing/magicworks-structure-2026.jpg",
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://swapnilughade.com/about#person",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/about",
+          "jobTitle": "Founder, Operator, Investor, Author",
+          "worksFor": { "@id": "https://magicworksitsolutions.com/#organization" },
+          "sameAs": [
+            "https://www.linkedin.com/in/swapnilughade",
+            "https://www.amazon.com/author/swapnilughade"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://swapnilughade.com/#organization",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/",
+          "logo": "https://swapnilughade.com/brand/signature.svg"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://magicworksitsolutions.com/#organization",
+          "name": "MagicWorks",
+          "legalName": "MagicWorks IT Solutions Pvt. Ltd.",
+          "url": "https://magicworksitsolutions.com/",
+          "foundingDate": "2009",
+          "founder": { "@id": "https://swapnilughade.com/about#person" },
+          "location": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Pune",
+              "addressRegion": "Maharashtra",
+              "addressCountry": "IN"
+            }
+          },
+          "description": "AI-first digital marketing agency. Five service pillars: Digital Marketing, Web Development, AI Consultation, Marketplace and Platform Consultation, and Brand, Research and Publishing. Three sibling brands inside the group: MagicWorksHost.com, MagicFlow AI, and Magic Pipeline.",
+          "brand": [
+            {
+              "@type": "Brand",
+              "name": "MagicWorksHost.com",
+              "description": "Domain and hosting arm of the MagicWorks Group."
+            },
+            {
+              "@type": "Brand",
+              "name": "MagicFlow AI",
+              "url": "https://magicflowai.io/",
+              "description": "Multi-tenant AI-chatbot SaaS. Publicly available since May 2026."
+            },
+            {
+              "@type": "Brand",
+              "name": "Magic Pipeline",
+              "url": "https://magicpipeline.io/",
+              "description": "Multi-tenant outreach and CRM SaaS. Launched internally April 2026."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    slug: "unit-economics-of-a-discovery-portal",
+    title: "The unit economics of a discovery portal",
+    titleEm: "discovery portal",
+    category: "Consultancy",
+    pillar: "Consultancy",
+    subPillar: "Marketplace and Platform",
+    publishDate: "2026-10-19",
+    updatedDate: "2026-10-19",
+    publishedAt: "19 October 2026",
+    readingTime: "6 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/unit-economics-of-a-discovery-portal",
+    ogImage: "/images/writing/discovery-portal-unit-economics.jpg",
+    metaDescription: "Discovery portal unit economics turn on three numbers: cost per qualified lead, session-to-inquiry rate, and close rate at the counterparty. A working framework.",
+    blurb: "Portal unit economics turn on three numbers: cost per qualified lead, session-to-inquiry rate, and close rate at the counterparty. Multiply them, and the result is contribution per session.",
+    lead: "The portal thesis is a good story until the numbers arrive. It is the story of a two-sided platform that matches users on one side with counterparties on the other. What the spreadsheet says, when someone opens it, is that a discovery portal is one of the most measurable businesses an operator can build.",
+    keyTakeaways: [
+      "Portal unit economics turn on **three core numbers**: cost per qualified lead, session-to-inquiry rate, and close rate at the counterparty.",
+      "**CPQL** constrains the portal to honest acquisition and separates it from lead-buy businesses.",
+      "**Session-to-inquiry** is the purest product-market fit metric on the analytics dashboard.",
+      "Portals that track counterparties' close rates by cohort shift from **service suppliers to data partners.**"
+    ],
+    introParagraphs: [
+      "The portal thesis is a good story until the numbers arrive. It is the story of a two-sided platform that matches users on one side (students, patients, home buyers, job seekers) with counterparties on the other (universities, hospitals, developers, employers). It is a story that can be told for an hour without touching a spreadsheet, and it usually is. What the spreadsheet says, when someone opens it, is that a discovery portal is one of the most measurable businesses an operator can build, and one of the most punishing when the measurement is skipped.",
+      "The math is not complicated. Three numbers describe most of it, and what the three numbers do not describe, the multiplication of them almost always does. What follows is the framework I have used across five years of running [Ideovate Research Pvt. Ltd.](https://simplidistance.com), and across advisory engagements inside [Pillar 04 at MagicWorks](/writing/five-pillars-three-siblings-how-magicworks-is-structured-in-2026), the founder-led pillar for platform and marketplace consultation."
+    ],
+    sections: [
+      {
+        id: "I",
+        heading: "What a discovery portal actually is",
+        headingEm: "discovery portal",
+        paragraphs: [
+          "Before the numbers, a definition worth being precise about. A discovery portal is not a marketplace. A marketplace clears the transaction on-platform; a portal introduces and steps aside. A portal is also not a lead-generation shop. A lead-gen shop sells leads without owning the qualification model; a portal owns the qualification model, and everything downstream depends on that ownership.",
+          "The distinction matters because it decides which numbers the portal is allowed to be measured by. A marketplace answers to gross merchandise value. A lead-gen shop answers to cost per lead. A portal answers to something in between, and reporting the wrong number is the fastest way to confuse investors, partners, and, eventually, yourself."
+        ]
+      },
+      {
+        id: "II",
+        heading: "The three numbers",
+        headingEm: "three numbers",
+        paragraphs: [
+          "**Number one: cost per qualified lead (CPQL).** Not cost per lead. The word that matters is \"qualified,\" and its definition is negotiated with each counterparty. A university might define qualified as a prospect within a defined age range, with a stated intent to enrol within twelve months, at or above a minimum eligibility bar. A hospital might define it as a self-declared symptom that matches its specialisation. The definition is not the portal's to make; the definition is the portal's to encode.\n\nCPQL is the number that separates portal economics from lead-buy economics. A lead-buy business can improve cost per lead by loosening the definition; a portal cannot, because a loose definition breaks the counterparty relationship, which is the only relationship worth having. CPQL constrains the portal to honest acquisition, which is the whole point.",
+          "**Number two: session-to-inquiry rate.** The purest product-market fit signal a portal has. Not bounce rate, not session depth, not time on page: those are proxies for engagement. The number that matters is the fraction of sessions that end in a submitted inquiry aimed at a specific counterparty. Nothing else on the analytics dashboard tells you as directly whether the portal is doing its job.\n\nSession-to-inquiry is where product and content pay for themselves. Better search, better filters, better counterparty pages, better calls to action; every product decision on a portal should be measurable against this number, and most eventually are.",
+          "**Number three: close rate at the counterparty.** The number the portal cannot control and must know. Once a qualified inquiry is handed to the counterparty, the portal's leverage ends. What happens next is admissions calling back within the hour or not, the sales team following up in three days or ten, the enrolment process being clear or a maze. The portal's economics are hostage to a workflow it does not run.\n\nThis is the number most portal teams underestimate, and the number the good portals track with a discipline the counterparties themselves often do not. A portal that knows its counterparties' close rates, by cohort, by channel, by season, has a data asset the counterparties will eventually pay for. A portal that does not is a lead broker whose margin is dictated by whoever cares more about tracking."
+        ]
+      },
+      {
+        id: "III",
+        heading: "Why the multiplication matters",
+        headingEm: "multiplication",
+        paragraphs: [
+          "Multiply the three numbers, weight by revenue per closed customer, and the result is contribution per session. That is the number an operator should be able to state without opening a spreadsheet.",
+          "The compounding is unforgiving. A portal with a decent CPQL, a decent session-to-inquiry rate, and weak close-rate visibility looks, on any single number, like a portal doing well. On contribution per session, it is losing money on the highest-value cohort and cannot say which cohort that is. A portal that improves any one number by 30% typically improves contribution per session by more, because the other two often improve as a knock-on effect. The model is non-linear both ways."
+        ]
+      },
+      {
+        id: "IV",
+        heading: "What the Ideovate operating experience taught",
+        headingEm: "Ideovate operating experience",
+        paragraphs: [
+          "Ideovate Research Pvt. Ltd., which I founded in October 2018 and continue to direct, operates simplidistance.com, a distance and online MBA discovery portal serving prospective learners across Indian universities. What follows is directional rather than exact; specific figures are held back for commercial reasons.",
+          "Across five years of operation, three observations have held. First, CPQL varies far more by acquisition channel than by content-side improvement, and the channels that look cheapest by cost-per-click almost never win on qualified cost. Second, session-to-inquiry improves in step-changes, not gradients: a single well-shipped product decision moves the number in a way six months of tuning does not. Third, the counterparties whose close rates the portal knows well pay a materially higher effective rate than the counterparties whose close rates the portal has to guess. None of this is proprietary insight. All of it is easy to say and hard to run."
+        ]
+      },
+      {
+        id: "V",
+        heading: "What separates a portal from a lead-buy business",
+        headingEm: "lead-buy business",
+        paragraphs: [
+          "The three numbers, taken together, describe the difference between a portal and a lead-buy business, and it is worth naming that difference plainly because it comes up in every early conversation with an investor.",
+          "A lead-buy business optimises for cost per lead against a spread. Its margin is the difference between what it pays to acquire and what a counterparty pays to receive. It compounds slowly, it commoditises fast, and its defensibility is a media-buying skill and a supplier list.",
+          "A portal owns its qualification model, its product surface, and its counterparty relationships as a system. The three numbers sit inside the system, not outside it. That ownership is what compounds. Over years, it produces a data asset (which cohorts convert, at what price, into which counterparties) that a competitor cannot replicate by outspending on Google Ads. This is the compounding advantage; it is also the reason portals take longer to look good than lead-buy businesses, and longer still to look tired."
+        ]
+      }
+    ],
+    closingParagraphs: [
+      "The three numbers are the portal. Running them daily, publishing them monthly to the operating team, and defending them quarterly to the counterparties is what a portal actually is under the marketing. Everything else, the design, the content, the growth channels, the partnerships, is a lever on one of the three.\n\nPortal defensibility comes from the three numbers being in the portal's hands, not the ad platform's. That is the whole difference between a portal and a lead-buy business; it is also the whole reason a portal is worth building.\n\nFor teams inside a portal engagement, or considering one, the [pre-audit questions from earlier this month](/writing/three-questions-before-every-ad-account-audit) apply here as they do anywhere else, with the counterparty relationship added as a fourth question the portal answers to.",
+      "**Sources and references.**\n\n• Framework refined across five years of operating [Ideovate Research Pvt. Ltd.](https://simplidistance.com), founded 4 October 2018 in Pune.\n• Advisory engagements delivered through Pillar 04, the founder-led Marketplace and Platform Consultation pillar at MagicWorks IT Solutions Pvt. Ltd..\n• Portal versus lead-generation distinctions draw on standard two-sided platform literature and on direct operator experience across the education, healthcare, and real estate categories.",
+      "**About the author.** Swapnil Ughade is Founder · Operator · Investor · Author. He runs [MagicWorks IT Solutions Pvt. Ltd.](/about#magicworks), the AI-first digital marketing agency he founded in Pune in 2009, and directs [Ideovate Research Pvt. Ltd.](https://simplidistance.com), the operator of simplidistance.com. He is the author of *Two Algorithms, One Strategy* (April 2026) and, with Mohan Chute, *[The AI-Powered Google Ads System](/books/ai-powered-google-ads-system)* (September 2026). Frameworks refined across ₹70+ Crore ($8M) in managed ad spend. More at [/about](/about)."
+    ],
+    footerNote: "Portal defensibility comes from the three numbers being in the portal's hands, not the ad platform's.",
+    content: [
+      "The portal thesis is a good story until the numbers arrive. It is the story of a two-sided platform that matches users with counterparties.",
+      "A discovery portal is not a marketplace and not a lead-generation shop. It owns the qualification model.",
+      "Three numbers define it: cost per qualified lead (CPQL), session-to-inquiry rate, and close rate at the counterparty.",
+      "Multiply the three numbers to calculate contribution per session."
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://swapnilughade.com/writing/unit-economics-of-a-discovery-portal#article",
+          "headline": "The unit economics of a discovery portal",
+          "description": "Discovery portal unit economics turn on three numbers: cost per qualified lead, session-to-inquiry rate, and close rate at the counterparty. A working framework.",
+          "author": { "@id": "https://swapnilughade.com/about#person" },
+          "publisher": { "@id": "https://swapnilughade.com/#organization" },
+          "datePublished": "2026-10-19T09:00:00+05:30",
+          "dateModified": "2026-10-19T09:00:00+05:30",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://swapnilughade.com/writing/unit-economics-of-a-discovery-portal"
+          },
+          "articleSection": "Consultancy",
+          "keywords": "discovery portal unit economics, cost per qualified lead, education portal economics India, two-sided platform economics, session-to-inquiry rate",
+          "image": "https://swapnilughade.com/images/writing/discovery-portal-unit-economics.jpg",
+          "inLanguage": "en-IN",
+          "citation": [
+            { "@id": "https://simplidistance.com/#organization" }
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://swapnilughade.com/about#person",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/about",
+          "jobTitle": "Founder, Operator, Investor, Author",
+          "worksFor": { "@id": "https://magicworksitsolutions.com/#organization" },
+          "sameAs": [
+            "https://www.linkedin.com/in/swapnilughade",
+            "https://www.amazon.com/author/swapnilughade"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://swapnilughade.com/#organization",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/",
+          "logo": "https://swapnilughade.com/brand/signature.svg"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://simplidistance.com/#organization",
+          "name": "simplidistance",
+          "legalName": "Ideovate Research Pvt. Ltd.",
+          "url": "https://simplidistance.com/",
+          "foundingDate": "2018-10-04",
+          "founder": { "@id": "https://swapnilughade.com/about#person" },
+          "location": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Pune",
+              "addressRegion": "Maharashtra",
+              "addressCountry": "IN"
+            }
+          },
+          "description": "Distance and online MBA discovery portal serving prospective learners across Indian universities."
+        }
+      ]
+    }
+  },
+  {
+    slug: "festive-quarter-ad-account-six-adjustments-before-diwali",
+    title: "The festive-quarter ad account: six adjustments before Diwali",
+    titleEm: "before Diwali",
+    category: "Consultancy",
+    pillar: "Consultancy",
+    subPillar: "Digital Marketing",
+    publishDate: "2026-10-26",
+    updatedDate: "2026-10-26",
+    publishedAt: "26 October 2026",
+    readingTime: "6 min read",
+    canonicalUrl: "https://swapnilughade.com/writing/festive-quarter-ad-account-six-adjustments-before-diwali",
+    ogImage: "/images/writing/festive-quarter-six-adjustments.jpg",
+    metaDescription: "Diwali Google Ads strategy in six adjustments: budget re-baselining, bidding recalibration, audience refresh, creative rotation, tracking check, dayparting.",
+    blurb: "Six ordered adjustments prepare a Google Ads account for the Indian festive quarter: budget re-baselining, bidding recalibration, audience refresh, creative rotation, tracking check, dayparting.",
+    lead: "For an Indian e-commerce or lead-generation account, the festive quarter (Dhanteras through the New Year weeks) can carry a third of the annual ad budget or pass through as a spike on the reporting dashboard. The difference between the two outcomes is preparation.",
+    keyTakeaways: [
+      "Complete all **six adjustments** in the working week before Dhanteras (Friday 6 November 2026).",
+      "**Adjustment 1 & 2:** Re-baseline total window budget before adjusting bids for 30–80% auction inflation.",
+      "**Adjustment 3 & 4:** Refresh stale remarketing audiences and rotate festive-specific creative variants.",
+      "**Adjustment 5 & 6:** Stress-test conversion tracking under peak load and calibrate festive dayparting."
+    ],
+    introParagraphs: [
+      "For an Indian e-commerce or lead-generation account, the festive quarter (Dhanteras through the New Year weeks) can carry a third of the annual ad budget or pass through as a spike on the reporting dashboard. The difference between the two outcomes is preparation, and preparation compresses to about a working week of focused adjustments before the buildup begins.",
+      "Diwali falls on Sunday 8 November this year. Dhanteras is Friday 6 November. The commercial buildup starts in the last week of October and peaks across those two days and the four days between them. Every day the account runs without the adjustments below is a day of leaked spend at rising cost. What follows is the sequence I run through every festive quarter for accounts inside [Pillar 01 at MagicWorks](/writing/five-pillars-three-siblings-how-magicworks-is-structured-in-2026), and the sequence Chapter 7 of [*The AI-Powered Google Ads System*](/books/ai-powered-google-ads-system) unpacks in full.",
+      "The six adjustments are ordered. Skipping the order means each subsequent adjustment optimises for a state the account is not yet in."
+    ],
+    sections: [
+      {
+        id: "I",
+        heading: "Adjustment 1. Budget re-baselining",
+        headingEm: "Budget re-baselining",
+        paragraphs: [
+          "The instinct is to raise the daily cap and move on. That is not budget re-baselining; that is permission-granting. The re-baseline is a full recalculation of what the account is trying to do with money in the festive window.",
+          "Start with actual conversion volume from the last two festive quarters (2024 and 2025 if available), corrected for account changes since. Model the target CPA or ROAS you are willing to accept during peak, remembering that both drift during festive: CPA rises with auction competition, ROAS falls as new-customer share increases. Set a total budget for the window, not just a daily cap. Reserve the capital in the account. Then, and only then, raise the daily caps.",
+          "Accounts that skip re-baselining and just raise the cap either underspend (bidding cannot find the volume) or overspend (bidding wins auctions the account does not want)."
+        ]
+      },
+      {
+        id: "II",
+        heading: "Adjustment 2. Bidding recalibration",
+        headingEm: "Bidding recalibration",
+        paragraphs: [
+          "Most bidding strategies were tuned for a non-festive baseline. In festive weeks, CPMs and CPCs typically rise between 30 and 80 percent depending on category. A target CPA left at the pre-festive number will win fewer auctions each day, and the account will look like it is under-pacing when it is actually being priced out.",
+          "Two workable moves. First, raise the target CPA (or lower the target ROAS) proportionally to expected auction inflation, category by category. Second, on the campaigns where volume matters more than efficiency for the peak, switch to Maximise Conversions or Maximise Conversion Value with a bid cap, so the account chases the volume that is available while the cap keeps the worst auctions out.",
+          "Either move, made deliberately. Not both on the same campaign, and not none."
+        ]
+      },
+      {
+        id: "III",
+        heading: "Adjustment 3. Audience refresh",
+        headingEm: "Audience refresh",
+        paragraphs: [
+          "Remarketing lists built in Q1 and Q2 are stale for festive intent. A visitor from July who did not convert is a different signal now than they were then. Refresh the audiences the account is actually spending against.",
+          "Rebuild the 30-day cart abandoner list, the 60-day high-intent-search converter list, the newsletter-subscriber-not-yet-purchased list. Add any signal specific to festive: users who viewed the \"gift\" category, users who added multi-item baskets, users who searched a wedding-adjacent keyword. Exclude segments that historically do not convert in festive: newsletter-only signups, support-ticket contacts, employees on the office IP range.",
+          "Cold reach for the festive window is a separate exercise; do not fund it from remarketing budget without segregating the reporting."
+        ]
+      },
+      {
+        id: "IV",
+        heading: "Adjustment 4. Creative rotation",
+        headingEm: "Creative rotation",
+        paragraphs: [
+          "Non-festive creative underperforms in festive auctions for a specific reason: it looks generic against the seasonally-tuned inventory the account is bidding alongside. The bar is not \"make it look festive.\" The bar is \"make it look like this brand chose to show up for the season.\"",
+          "Prepare three to five festive variants for every major asset group. Vary the message across at least two intents (gifting and self-purchase). Test culturally specific visuals that stop short of cliche. Rotate the primary variants on Dhanteras morning; have a second-wave set ready for the days between Diwali and the following weekend, because intent shifts and the creative that landed on the 6th will fatigue by the 10th.",
+          "Every festive creative variant carries a matched landing page. Skipping the landing-page match is where most festive campaigns lose their gains."
+        ]
+      },
+      {
+        id: "V",
+        heading: "Adjustment 5. Tracking check",
+        headingEm: "Tracking check",
+        paragraphs: [
+          "Festive traffic exposes every latent tracking bug the account has been quietly living with. Conversion tags that fire correctly at 1,000 sessions a day misfire at 10,000. Tag Manager environments diverge between staging and production because the last deploy was in July. Offline conversion imports that run weekly cannot inform bidding during a window where a week is the whole peak.",
+          "Before the window opens, verify: the conversion tag fires exactly once per counted outcome under peak load; the Tag Manager production container matches the reviewed configuration; offline imports run daily (or hourly if the CRM allows) for the peak weeks; cross-device conversion linkage is intact; enhanced conversions are configured correctly if the account relies on them.",
+          "Fix now. The account cannot be re-instrumented during peak; it can only be over-adjusted based on wrong numbers."
+        ]
+      },
+      {
+        id: "VI",
+        heading: "Adjustment 6. Dayparting",
+        headingEm: "Dayparting",
+        paragraphs: [
+          "Festive purchase behaviour clusters differently. Late-evening spikes (post family time), mid-morning secondary peaks (research from the office), the pre-Diwali weekend surge, and the day-after Diwali drop-off are all category-specific. What is universal is that the flat 24-hour schedule the account has been running for the rest of the year does not reflect festive intent.",
+          "Pull the last two festive quarters' hourly conversion data. Weight upward the hours that historically convert; do not weight downward the hours that do not, because absence of past conversions in a bad hour may reflect low past spend rather than low intent. Set explicit schedules for Dhanteras, Diwali, and the two days after, because those days behave unlike any other days of the year.",
+          "Dayparting comes last because the other five adjustments change the data dayparting is calibrated against."
+        ]
+      },
+      {
+        id: "VII",
+        heading: "Why the order matters",
+        headingEm: "order matters",
+        paragraphs: [
+          "Budget re-baselining first, because bidding recalibration without a budget frame either overshoots or undershoots. Bidding second, because audience refresh without recalibrated bids optimises against the wrong signal. Audience third, because creative rotation without a refreshed audience shows the right ad to the wrong person. Creative fourth, because tracking must be verified against real festive-shape creative flow to be trustworthy. Tracking fifth, because dayparting off broken tracking is worse than no dayparting. Dayparting last, because the data all five other adjustments produce is what the schedule is set against.",
+          "Reversing any two adjacent items in this list makes the sequence less reliable. Reversing three or more produces the reactive festive account most operators end up with by the second week of November."
+        ]
+      }
+    ],
+    closingParagraphs: [
+      "The six adjustments are the pre-flight checklist, not the season strategy. The season strategy is what the account does with the compounding effect of the six, and that lives in Chapter 7 of [*The AI-Powered Google Ads System*](/books/ai-powered-google-ads-system) and in the follow-through work of the season itself. What the six above give you is a defensible baseline, arrived at in a working week, that can be run as a standing October ritual on every account the operator manages.\n\nThe [three-question pre-audit](/writing/three-questions-before-every-ad-account-audit) from earlier this month is the diagnostic version of this list. The six above are the operational version. Together, they turn festive from a spike on the dashboard into a decision the account made.",
+      "**Sources and references.**\n\n• Six-adjustment sequence and the broader seasonal framework: *The AI-Powered Google Ads System*, Chapter 7, Swapnil Ughade and Mohan Chute, September 2026.\n• Festive-quarter auction inflation estimates (30 to 80 percent CPC and CPM lift, category-dependent) drawn from account-level observations across MagicWorks IT Solutions Pvt. Ltd. managed spend, festive quarters 2023 through 2025.\n• Diwali 2026 dates: Dhanteras Friday 6 November; Diwali Sunday 8 November; Bhai Dooj Tuesday 10 November, per the Drik Panchang for Pune coordinates.",
+      "**About the author.** Swapnil Ughade is Founder · Operator · Investor · Author. He runs [MagicWorks IT Solutions Pvt. Ltd.](/about#magicworks), the AI-first digital marketing agency he founded in Pune in 2009. He is the author of *Two Algorithms, One Strategy* (April 2026) and, with Mohan Chute, *[The AI-Powered Google Ads System](/books/ai-powered-google-ads-system)* (September 2026). Frameworks refined across ₹70+ Crore ($8M) in managed ad spend. More at [/about](/about)."
+    ],
+    footerNote: "Together, they turn festive from a spike on the dashboard into a decision the account made.",
+    content: [
+      "For an Indian e-commerce or lead-generation account, the festive quarter can carry a third of the annual ad budget.",
+      "Preparation compresses to six ordered adjustments in the week before Dhanteras: budget re-baselining, bidding recalibration, audience refresh, creative rotation, tracking check, and dayparting.",
+      "Budget re-baselining first, bidding second, audience third, creative fourth, tracking fifth, dayparting last.",
+      "Together, they turn festive from a spike on the dashboard into a decision the account made."
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://swapnilughade.com/writing/festive-quarter-ad-account-six-adjustments-before-diwali#article",
+          "headline": "The festive-quarter ad account: six adjustments before Diwali",
+          "description": "Diwali Google Ads strategy in six adjustments: budget re-baselining, bidding recalibration, audience refresh, creative rotation, tracking check, dayparting.",
+          "author": { "@id": "https://swapnilughade.com/about#person" },
+          "publisher": { "@id": "https://swapnilughade.com/#organization" },
+          "datePublished": "2026-10-26T09:00:00+05:30",
+          "dateModified": "2026-10-26T09:00:00+05:30",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://swapnilughade.com/writing/festive-quarter-ad-account-six-adjustments-before-diwali"
+          },
+          "articleSection": "Consultancy",
+          "keywords": "diwali google ads strategy, festive quarter ad budget India, diwali digital marketing checklist, dhanteras google ads, festive quarter preparation",
+          "image": "https://swapnilughade.com/images/writing/festive-quarter-six-adjustments.jpg",
+          "inLanguage": "en-IN",
+          "temporalCoverage": "2026-10-26/2026-11-15"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://swapnilughade.com/about#person",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/about",
+          "jobTitle": "Founder, Operator, Investor, Author",
+          "worksFor": { "@id": "https://magicworksitsolutions.com/#organization" },
+          "sameAs": [
+            "https://www.linkedin.com/in/swapnilughade",
+            "https://www.amazon.com/author/swapnilughade"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://swapnilughade.com/#organization",
+          "name": "Swapnil Ughade",
+          "url": "https://swapnilughade.com/",
+          "logo": "https://swapnilughade.com/brand/signature.svg"
+        }
+      ]
+    }
   }
 ];
+
+// Helper: Check if article is published as of right now (09:00 IST on publishDate)
+export function isArticlePublished(article: ArticleData, nowMs: number = Date.now()): boolean {
+  if (!article.publishDate) return true;
+  // Parse scheduled time at 09:00:00 IST (+05:30)
+  const scheduledTimestamp = new Date(`${article.publishDate}T09:00:00+05:30`).getTime();
+  return nowMs >= scheduledTimestamp;
+}
+
+// Get only currently published articles (for public archive, sitemaps, RSS, etc.)
+export function getPublishedArticles(nowMs: number = Date.now()): ArticleData[] {
+  return ARTICLES.filter((art) => isArticlePublished(art, nowMs));
+}
+
+export function getArticleBySlug(slug: string): ArticleData | undefined {
+  return ARTICLES.find((a) => a.slug === slug);
+}
 
 export const TIMELINE_ROWS = [
   {
