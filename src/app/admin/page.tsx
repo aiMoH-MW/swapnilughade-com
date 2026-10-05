@@ -9,6 +9,8 @@ interface NewsletterSubscriber {
   source: string;
   createdAt: string;
   status: 'active' | 'unsubscribed';
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 interface ContactInquiry {
@@ -19,6 +21,8 @@ interface ContactInquiry {
   message: string;
   createdAt: string;
   status: 'new' | 'read' | 'replied';
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 interface SpeakingInquiry {
@@ -33,10 +37,13 @@ interface SpeakingInquiry {
   additionalNotes?: string;
   createdAt: string;
   status: string;
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'newsletter' | 'contacts' | 'speaking'>('newsletter');
+  const [spamView, setSpamView] = useState<'clean' | 'spam' | 'all'>('clean');
   const [newsletter, setNewsletter] = useState<NewsletterSubscriber[]>([]);
   const [contacts, setContacts] = useState<ContactInquiry[]>([]);
   const [speaking, setSpeaking] = useState<SpeakingInquiry[]>([]);
@@ -66,7 +73,6 @@ export default function AdminPage() {
         setIsAuth(true);
         fetchData();
       } else {
-        // Allow seamless login with local fallback if running
         const storedAuth = typeof window !== 'undefined' ? localStorage.getItem('swapnil_admin_auth') : null;
         if (storedAuth === 'true') {
           setIsAuth(true);
@@ -145,6 +151,71 @@ export default function AdminPage() {
     }
   }
 
+  async function handleBulkDelete() {
+    if (selectedIds.length === 0) return;
+    const count = selectedIds.length;
+    if (!confirm(`Are you sure you want to permanently delete all ${count} selected records?`)) return;
+
+    try {
+      const type = activeTab === 'newsletter' ? 'newsletter' : activeTab === 'contacts' ? 'contact' : 'speaking';
+      const res = await fetch(`/api/admin/data?type=${type}&ids=${selectedIds.join(',')}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        if (activeTab === 'newsletter') {
+          setNewsletter((prev) => prev.filter((n) => !selectedIds.includes(n.id)));
+        } else if (activeTab === 'contacts') {
+          setContacts((prev) => prev.filter((c) => !selectedIds.includes(c.id)));
+        } else if (activeTab === 'speaking') {
+          setSpeaking((prev) => prev.filter((s) => !selectedIds.includes(s.id)));
+        }
+        setSelectedIds([]);
+      }
+    } catch (err) {
+      alert('Bulk delete failed.');
+    }
+  }
+
+  async function handleToggleSpam(type: 'newsletter' | 'contact' | 'speaking', id: string, currentSpamState: boolean) {
+    const nextSpam = !currentSpamState;
+    try {
+      const res = await fetch('/api/admin/data', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type,
+          id,
+          isSpam: nextSpam,
+          spamReason: nextSpam ? 'Marked as spam manually by admin' : null,
+          action: 'toggle_spam',
+        }),
+      });
+      if (res.ok) {
+        if (type === 'newsletter') {
+          setNewsletter((prev) =>
+            prev.map((n) => (n.id === id ? { ...n, isSpam: nextSpam, spamReason: nextSpam ? 'Manual admin flag' : null } : n))
+          );
+        } else if (type === 'contact') {
+          setContacts((prev) =>
+            prev.map((c) => (c.id === id ? { ...c, isSpam: nextSpam, spamReason: nextSpam ? 'Manual admin flag' : null } : c))
+          );
+          if (selectedContact && selectedContact.id === id) {
+            setSelectedContact({ ...selectedContact, isSpam: nextSpam, spamReason: nextSpam ? 'Manual admin flag' : null });
+          }
+        } else if (type === 'speaking') {
+          setSpeaking((prev) =>
+            prev.map((s) => (s.id === id ? { ...s, isSpam: nextSpam, spamReason: nextSpam ? 'Manual admin flag' : null } : s))
+          );
+          if (selectedSpeaking && selectedSpeaking.id === id) {
+            setSelectedSpeaking({ ...selectedSpeaking, isSpam: nextSpam, spamReason: nextSpam ? 'Manual admin flag' : null });
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Toggle spam failed:', err);
+    }
+  }
+
   async function handleStatusChange(id: string, status: 'new' | 'read' | 'replied') {
     try {
       const res = await fetch('/api/admin/data', {
@@ -204,9 +275,15 @@ export default function AdminPage() {
   // Filtered Newsletter list
   const filteredNewsletter = useMemo(() => {
     let list = [...newsletter];
+    if (spamView === 'clean') {
+      list = list.filter((n) => !n.isSpam);
+    } else if (spamView === 'spam') {
+      list = list.filter((n) => !!n.isSpam);
+    }
+
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
-      list = list.filter((n) => n.email.toLowerCase().includes(q) || n.source.toLowerCase().includes(q));
+      list = list.filter((n) => n.email.toLowerCase().includes(q) || n.source.toLowerCase().includes(q) || (n.spamReason && n.spamReason.toLowerCase().includes(q)));
     }
     if (fromDate) {
       const f = new Date(fromDate).getTime();
@@ -222,11 +299,17 @@ export default function AdminPage() {
       return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
     });
     return list;
-  }, [newsletter, searchTerm, fromDate, toDate, sortOrder]);
+  }, [newsletter, spamView, searchTerm, fromDate, toDate, sortOrder]);
 
   // Filtered Contacts list
   const filteredContacts = useMemo(() => {
     let list = [...contacts];
+    if (spamView === 'clean') {
+      list = list.filter((c) => !c.isSpam);
+    } else if (spamView === 'spam') {
+      list = list.filter((c) => !!c.isSpam);
+    }
+
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
       list = list.filter(
@@ -234,7 +317,8 @@ export default function AdminPage() {
           c.name.toLowerCase().includes(q) ||
           c.email.toLowerCase().includes(q) ||
           c.purpose.toLowerCase().includes(q) ||
-          c.message.toLowerCase().includes(q)
+          c.message.toLowerCase().includes(q) ||
+          (c.spamReason && c.spamReason.toLowerCase().includes(q))
       );
     }
     if (fromDate) {
@@ -251,11 +335,17 @@ export default function AdminPage() {
       return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
     });
     return list;
-  }, [contacts, searchTerm, fromDate, toDate, sortOrder]);
+  }, [contacts, spamView, searchTerm, fromDate, toDate, sortOrder]);
 
   // Filtered Speaking list
   const filteredSpeaking = useMemo(() => {
     let list = [...speaking];
+    if (spamView === 'clean') {
+      list = list.filter((s) => !s.isSpam);
+    } else if (spamView === 'spam') {
+      list = list.filter((s) => !!s.isSpam);
+    }
+
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
       list = list.filter(
@@ -265,7 +355,8 @@ export default function AdminPage() {
           (s.eventName && s.eventName.toLowerCase().includes(q)) ||
           (s.topicInterest && s.topicInterest.toLowerCase().includes(q)) ||
           (s.locationOrVirtual && s.locationOrVirtual.toLowerCase().includes(q)) ||
-          (s.additionalNotes && s.additionalNotes.toLowerCase().includes(q))
+          (s.additionalNotes && s.additionalNotes.toLowerCase().includes(q)) ||
+          (s.spamReason && s.spamReason.toLowerCase().includes(q))
       );
     }
     if (fromDate) {
@@ -282,7 +373,20 @@ export default function AdminPage() {
       return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
     });
     return list;
-  }, [speaking, searchTerm, fromDate, toDate, sortOrder]);
+  }, [speaking, spamView, searchTerm, fromDate, toDate, sortOrder]);
+
+  // Clean lead counts for sidebar badges (Excludes Spam)
+  const cleanNewsletterCount = useMemo(() => newsletter.filter((n) => !n.isSpam).length, [newsletter]);
+  const cleanContactsNewCount = useMemo(() => contacts.filter((c) => !c.isSpam && c.status === 'new').length, [contacts]);
+  const cleanSpeakingPendingCount = useMemo(() => speaking.filter((s) => !s.isSpam && s.status === 'pending').length, [speaking]);
+
+  // Total spam count across all forms
+  const totalSpamCount = useMemo(() => {
+    const nlSpam = newsletter.filter((n) => n.isSpam).length;
+    const cntSpam = contacts.filter((c) => c.isSpam).length;
+    const spkSpam = speaking.filter((s) => s.isSpam).length;
+    return nlSpam + cntSpam + spkSpam;
+  }, [newsletter, contacts, speaking]);
 
   // Toggle selection
   function toggleSelectAll(listIds: string[]) {
@@ -307,7 +411,7 @@ export default function AdminPage() {
     const now = new Date().toISOString().split('T')[0];
 
     if (activeTab === 'newsletter') {
-      const headers = ['ID', 'Created At', 'Email', 'Source', 'Status'];
+      const headers = ['ID', 'Created At', 'Email', 'Source', 'Status', 'Is Spam', 'Spam Reason'];
       const dataToExport =
         selectedIds.length > 0
           ? filteredNewsletter.filter((n) => selectedIds.includes(n.id))
@@ -319,12 +423,14 @@ export default function AdminPage() {
         `"${n.email}"`,
         `"${n.source}"`,
         `"${n.status}"`,
+        `"${n.isSpam ? 'YES' : 'NO'}"`,
+        `"${(n.spamReason || '').replace(/"/g, '""')}"`,
       ]);
 
       csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
       downloadFile(csvContent, `newsletter_subscribers_${now}.csv`);
     } else if (activeTab === 'contacts') {
-      const headers = ['ID', 'Created At', 'Name', 'Email', 'Purpose', 'Status', 'Message'];
+      const headers = ['ID', 'Created At', 'Name', 'Email', 'Purpose', 'Status', 'Is Spam', 'Spam Reason', 'Message'];
       const dataToExport =
         selectedIds.length > 0
           ? filteredContacts.filter((c) => selectedIds.includes(c.id))
@@ -337,6 +443,8 @@ export default function AdminPage() {
         `"${c.email}"`,
         `"${c.purpose}"`,
         `"${c.status}"`,
+        `"${c.isSpam ? 'YES' : 'NO'}"`,
+        `"${(c.spamReason || '').replace(/"/g, '""')}"`,
         `"${c.message.replace(/"/g, '""').replace(/\n/g, ' ')}"`,
       ]);
 
@@ -354,6 +462,8 @@ export default function AdminPage() {
         'Expected Attendees',
         'Topic Interest',
         'Status',
+        'Is Spam',
+        'Spam Reason',
         'Notes',
       ];
       const dataToExport =
@@ -372,6 +482,8 @@ export default function AdminPage() {
         `"${s.expectedAttendees || ''}"`,
         `"${(s.topicInterest || '').replace(/"/g, '""')}"`,
         `"${s.status || 'pending'}"`,
+        `"${s.isSpam ? 'YES' : 'NO'}"`,
+        `"${(s.spamReason || '').replace(/"/g, '""')}"`,
         `"${(s.additionalNotes || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
       ]);
 
@@ -391,7 +503,7 @@ export default function AdminPage() {
     document.body.removeChild(link);
   }
 
-  // If not authenticated, render dark login box
+  // If not authenticated, render login box
   if (!isAuth) {
     return (
       <div className="admin-login-wrap" style={{ width: '100vw' }}>
@@ -451,7 +563,7 @@ export default function AdminPage() {
               </svg>
               Newsletter
             </span>
-            <span className="admin-badge">{newsletter.length}</span>
+            <span className="admin-badge">{cleanNewsletterCount}</span>
           </button>
 
           <button
@@ -474,11 +586,11 @@ export default function AdminPage() {
             <span
               className="admin-badge"
               style={{
-                backgroundColor: contacts.some((c) => c.status === 'new') ? '#F43F5E' : '#475569',
+                backgroundColor: cleanContactsNewCount > 0 ? '#F43F5E' : '#475569',
                 color: '#FFFFFF',
               }}
             >
-              {contacts.length}
+              {contacts.filter((c) => !c.isSpam).length}
             </span>
           </button>
 
@@ -501,14 +613,23 @@ export default function AdminPage() {
             <span
               className="admin-badge"
               style={{
-                backgroundColor: speaking.some((s) => s.status === 'pending') ? '#E5A83B' : '#475569',
-                color: speaking.some((s) => s.status === 'pending') ? '#070B14' : '#FFFFFF',
+                backgroundColor: cleanSpeakingPendingCount > 0 ? '#E5A83B' : '#475569',
+                color: cleanSpeakingPendingCount > 0 ? '#070B14' : '#FFFFFF',
               }}
             >
-              {speaking.length}
+              {speaking.filter((s) => !s.isSpam).length}
             </span>
           </button>
         </div>
+
+        {totalSpamCount > 0 && (
+          <div style={{ padding: '0 24px 16px' }}>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#EF4444', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>🛡️</span>
+              <span>{totalSpamCount} Flagged Spam</span>
+            </div>
+          </div>
+        )}
 
         <div className="admin-sidebar-footer">
           <Link href="/" target="_blank" style={{ fontSize: '11px', color: '#94A3B8', textDecoration: 'none' }}>
@@ -523,24 +644,70 @@ export default function AdminPage() {
       {/* MAIN CONTENT */}
       <main className="admin-main">
         <header className="admin-header">
-          <h1 className="admin-title">
-            {activeTab === 'newsletter' && 'Newsletter'}
-            {activeTab === 'contacts' && 'Contact Form Inquiries'}
-            {activeTab === 'speaking' && 'Speaking & Keynote Inquiries'}
-          </h1>
-          <button onClick={exportCSV} className="admin-btn-export">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            Export CSV
-          </button>
+          <div>
+            <h1 className="admin-title">
+              {activeTab === 'newsletter' && 'Newsletter'}
+              {activeTab === 'contacts' && 'Contact Form Inquiries'}
+              {activeTab === 'speaking' && 'Speaking & Keynote Inquiries'}
+            </h1>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {selectedIds.length > 0 && (
+              <button onClick={handleBulkDelete} className="admin-btn-bulk-delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                Delete Selected ({selectedIds.length})
+              </button>
+            )}
+
+            <button onClick={exportCSV} className="admin-btn-export">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export CSV
+            </button>
+          </div>
         </header>
 
-        {/* CONTROLS */}
+        {/* CONTROLS & SPAM FILTER PILLS */}
         <div className="admin-controls">
           <div className="admin-filters-left">
+            {/* SPAM VIEW TOGGLE */}
+            <div style={{ display: 'flex', gap: '6px', marginRight: '6px' }}>
+              <button
+                onClick={() => {
+                  setSpamView('clean');
+                  setSelectedIds([]);
+                }}
+                className={`admin-filter-pill ${spamView === 'clean' ? 'active' : ''}`}
+              >
+                Clean Leads
+              </button>
+              <button
+                onClick={() => {
+                  setSpamView('spam');
+                  setSelectedIds([]);
+                }}
+                className={`admin-filter-pill spam ${spamView === 'spam' ? 'active' : ''}`}
+              >
+                Spam (Flagged)
+              </button>
+              <button
+                onClick={() => {
+                  setSpamView('all');
+                  setSelectedIds([]);
+                }}
+                className={`admin-filter-pill ${spamView === 'all' ? 'active' : ''}`}
+              >
+                All Records
+              </button>
+            </div>
+
             <div className="admin-date-group">
               <span>FROM</span>
               <input
@@ -574,9 +741,9 @@ export default function AdminPage() {
               type="text"
               placeholder={
                 activeTab === 'newsletter'
-                  ? 'Search email or source...'
+                  ? 'Search email, source, reason...'
                   : activeTab === 'contacts'
-                  ? 'Search name, email, message...'
+                  ? 'Search name, email, message, reason...'
                   : 'Search organizer, event, topic, email...'
               }
               className="admin-search-input"
@@ -611,20 +778,21 @@ export default function AdminPage() {
                   <th>CREATED AT</th>
                   <th>EMAIL</th>
                   <th>SOURCE</th>
+                  <th>SPAM STATUS</th>
                   <th style={{ textAlign: 'right' }}>ACTION</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
                       Loading records...
                     </td>
                   </tr>
                 ) : filteredNewsletter.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
-                      No newsletter subscribers found matching the filters.
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                      No newsletter subscribers found in this view.
                     </td>
                   </tr>
                 ) : (
@@ -647,7 +815,29 @@ export default function AdminPage() {
                       <td>
                         <span className="admin-source-badge">{row.source || 'footer'}</span>
                       </td>
+                      <td>
+                        {row.isSpam ? (
+                          <div>
+                            <span className="admin-status-badge admin-status-spam">SPAM</span>
+                            {row.spamReason && <div className="admin-spam-tag" title={row.spamReason}>{row.spamReason}</div>}
+                          </div>
+                        ) : (
+                          <span className="admin-status-badge admin-status-replied">CLEAN</span>
+                        )}
+                      </td>
                       <td style={{ textAlign: 'right' }}>
+                        <button
+                          onClick={() => handleToggleSpam('newsletter', row.id, !!row.isSpam)}
+                          className="admin-view-btn"
+                          style={{
+                            marginRight: '8px',
+                            color: row.isSpam ? '#34D399' : '#F87171',
+                            borderColor: row.isSpam ? 'rgba(52, 211, 153, 0.3)' : 'rgba(248, 113, 113, 0.3)',
+                          }}
+                          title={row.isSpam ? 'Mark as Not Spam' : 'Mark as Spam'}
+                        >
+                          {row.isSpam ? '✓ Not Spam' : '🚨 Flag Spam'}
+                        </button>
                         <button
                           onClick={() => handleDelete('newsletter', row.id)}
                           className="admin-action-btn"
@@ -682,20 +872,21 @@ export default function AdminPage() {
                   <th>EMAIL</th>
                   <th>PURPOSE</th>
                   <th>STATUS</th>
+                  <th>SPAM</th>
                   <th style={{ textAlign: 'right' }}>ACTION</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
                       Loading records...
                     </td>
                   </tr>
                 ) : filteredContacts.length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
-                      No contact inquiries found matching the filters.
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                      No contact inquiries found in this view.
                     </td>
                   </tr>
                 ) : (
@@ -720,6 +911,16 @@ export default function AdminPage() {
                       <td>
                         <span className={`admin-status-badge admin-status-${row.status}`}>{row.status}</span>
                       </td>
+                      <td>
+                        {row.isSpam ? (
+                          <div>
+                            <span className="admin-status-badge admin-status-spam">SPAM</span>
+                            {row.spamReason && <div className="admin-spam-tag" title={row.spamReason}>{row.spamReason}</div>}
+                          </div>
+                        ) : (
+                          <span className="admin-status-badge admin-status-replied">CLEAN</span>
+                        )}
+                      </td>
                       <td style={{ textAlign: 'right' }}>
                         <button
                           onClick={() => {
@@ -727,9 +928,20 @@ export default function AdminPage() {
                             if (row.status === 'new') handleStatusChange(row.id, 'read');
                           }}
                           className="admin-view-btn"
-                          style={{ marginRight: '8px' }}
+                          style={{ marginRight: '6px' }}
                         >
                           View Message
+                        </button>
+                        <button
+                          onClick={() => handleToggleSpam('contact', row.id, !!row.isSpam)}
+                          className="admin-action-btn"
+                          style={{
+                            color: row.isSpam ? '#34D399' : '#F87171',
+                            marginRight: '6px',
+                          }}
+                          title={row.isSpam ? 'Mark as Clean' : 'Mark as Spam'}
+                        >
+                          {row.isSpam ? '🛡️' : '🚨'}
                         </button>
                         <button
                           onClick={() => handleDelete('contact', row.id)}
@@ -766,20 +978,21 @@ export default function AdminPage() {
                   <th>LOCATION / DATE</th>
                   <th>TOPIC INTEREST</th>
                   <th>STATUS</th>
+                  <th>SPAM</th>
                   <th style={{ textAlign: 'right' }}>ACTION</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                    <td colSpan={9} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
                       Loading records...
                     </td>
                   </tr>
                 ) : filteredSpeaking.length === 0 ? (
                   <tr>
-                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
-                      No speaking inquiries found matching the filters.
+                    <td colSpan={9} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                      No speaking inquiries found in this view.
                     </td>
                   </tr>
                 ) : (
@@ -818,13 +1031,23 @@ export default function AdminPage() {
                           </span>
                         ) : null}
                       </td>
-                      <td style={{ color: '#94A3B8', fontSize: '13px', maxWidth: '200px' }}>
+                      <td style={{ color: '#94A3B8', fontSize: '13px', maxWidth: '180px' }}>
                         {row.topicInterest || 'Keynotes & Briefings'}
                       </td>
                       <td>
                         <span className={`admin-status-badge admin-status-${row.status || 'pending'}`}>
                           {row.status || 'pending'}
                         </span>
+                      </td>
+                      <td>
+                        {row.isSpam ? (
+                          <div>
+                            <span className="admin-status-badge admin-status-spam">SPAM</span>
+                            {row.spamReason && <div className="admin-spam-tag" title={row.spamReason}>{row.spamReason}</div>}
+                          </div>
+                        ) : (
+                          <span className="admin-status-badge admin-status-replied">CLEAN</span>
+                        )}
                       </td>
                       <td style={{ textAlign: 'right' }}>
                         <button
@@ -833,9 +1056,20 @@ export default function AdminPage() {
                             if (row.status === 'pending') handleSpeakingStatusChange(row.id, 'read');
                           }}
                           className="admin-view-btn"
-                          style={{ marginRight: '8px' }}
+                          style={{ marginRight: '6px' }}
                         >
                           View Details
+                        </button>
+                        <button
+                          onClick={() => handleToggleSpam('speaking', row.id, !!row.isSpam)}
+                          className="admin-action-btn"
+                          style={{
+                            color: row.isSpam ? '#34D399' : '#F87171',
+                            marginRight: '6px',
+                          }}
+                          title={row.isSpam ? 'Mark as Clean' : 'Mark as Spam'}
+                        >
+                          {row.isSpam ? '🛡️' : '🚨'}
                         </button>
                         <button
                           onClick={() => handleDelete('speaking', row.id)}
@@ -860,17 +1094,31 @@ export default function AdminPage() {
               <button className="admin-modal-close" onClick={() => setSelectedContact(null)}>
                 ✕
               </button>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#C7A968', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                INQUIRY DETAILS
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#C7A968', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  INQUIRY DETAILS
+                </div>
+                {selectedContact.isSpam ? (
+                  <span className="admin-status-badge admin-status-spam">FLAGGED SPAM</span>
+                ) : (
+                  <span className="admin-status-badge admin-status-replied">CLEAN LEAD</span>
+                )}
               </div>
+
               <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: '#FFFFFF', marginTop: '6px' }}>
                 {selectedContact.name}
               </h2>
-              <div style={{ display: 'flex', gap: '16px', margin: '12px 0 20px', fontSize: '13px', color: '#94A3B8', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '16px', margin: '12px 0 16px', fontSize: '13px', color: '#94A3B8', flexWrap: 'wrap' }}>
                 <span><strong>Email:</strong> <a href={`mailto:${selectedContact.email}`} style={{ color: '#D4AF37' }}>{selectedContact.email}</a></span>
                 <span><strong>Date:</strong> {formatDate(selectedContact.createdAt)}</span>
                 <span><strong>Purpose:</strong> {selectedContact.purpose}</span>
               </div>
+
+              {selectedContact.spamReason && (
+                <div style={{ padding: '8px 12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '4px', color: '#F87171', fontSize: '12px', marginBottom: '14px' }}>
+                  🛡️ <strong>Spam Trigger:</strong> {selectedContact.spamReason}
+                </div>
+              )}
 
               <div style={{ padding: '16px', backgroundColor: '#070B14', border: '1px solid var(--admin-border)', borderRadius: '6px', fontSize: '14px', lineHeight: 1.6, color: '#E2E8F0', maxHeight: '200px', overflowY: 'auto' }}>
                 {selectedContact.message}
@@ -888,6 +1136,14 @@ export default function AdminPage() {
                     <option value="read">Read</option>
                     <option value="replied">Replied</option>
                   </select>
+
+                  <button
+                    onClick={() => handleToggleSpam('contact', selectedContact.id, !!selectedContact.isSpam)}
+                    className="admin-filter-pill"
+                    style={{ marginLeft: '6px', color: selectedContact.isSpam ? '#34D399' : '#F87171' }}
+                  >
+                    {selectedContact.isSpam ? '✓ Mark as Clean' : '🚨 Flag Spam'}
+                  </button>
                 </div>
 
                 <a
@@ -909,15 +1165,29 @@ export default function AdminPage() {
               <button className="admin-modal-close" onClick={() => setSelectedSpeaking(null)}>
                 ✕
               </button>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#C7A968', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                SPEAKING ENGAGEMENT INQUIRY
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#C7A968', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  SPEAKING ENGAGEMENT INQUIRY
+                </div>
+                {selectedSpeaking.isSpam ? (
+                  <span className="admin-status-badge admin-status-spam">FLAGGED SPAM</span>
+                ) : (
+                  <span className="admin-status-badge admin-status-replied">CLEAN LEAD</span>
+                )}
               </div>
+
               <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: '#FFFFFF', marginTop: '6px' }}>
                 {selectedSpeaking.eventName}
               </h2>
-              <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '4px', marginBottom: '18px' }}>
+              <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '4px', marginBottom: '16px' }}>
                 Organizer: <strong style={{ color: '#FFFFFF' }}>{selectedSpeaking.contactName}</strong> · Submitted on {formatDate(selectedSpeaking.createdAt)}
               </div>
+
+              {selectedSpeaking.spamReason && (
+                <div style={{ padding: '8px 12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '4px', color: '#F87171', fontSize: '12px', marginBottom: '14px' }}>
+                  🛡️ <strong>Spam Trigger:</strong> {selectedSpeaking.spamReason}
+                </div>
+              )}
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '20px', background: '#070B14', padding: '16px', borderRadius: '6px', border: '1px solid var(--admin-border)' }}>
                 <div>
@@ -981,6 +1251,14 @@ export default function AdminPage() {
                     <option value="declined">Declined</option>
                     <option value="completed">Completed</option>
                   </select>
+
+                  <button
+                    onClick={() => handleToggleSpam('speaking', selectedSpeaking.id, !!selectedSpeaking.isSpam)}
+                    className="admin-filter-pill"
+                    style={{ marginLeft: '6px', color: selectedSpeaking.isSpam ? '#34D399' : '#F87171' }}
+                  >
+                    {selectedSpeaking.isSpam ? '✓ Mark as Clean' : '🚨 Flag Spam'}
+                  </button>
                 </div>
 
                 <a

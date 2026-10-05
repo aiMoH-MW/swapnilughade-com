@@ -396,6 +396,59 @@
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
+.admin-status-spam {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+.admin-filter-pill {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: var(--sans, sans-serif);
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--admin-border);
+  background-color: #0F172A;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.admin-filter-pill:hover {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.admin-filter-pill.active {
+  background-color: rgba(200, 155, 60, 0.15);
+  border-color: var(--admin-gold);
+  color: var(--admin-gold-light);
+}
+.admin-filter-pill.spam.active {
+  background-color: rgba(239, 68, 68, 0.15);
+  border-color: #EF4444;
+  color: #F87171;
+}
+
+.admin-btn-bulk-delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #F87171;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+.admin-btn-bulk-delete:hover {
+  background-color: rgba(239, 68, 68, 0.3);
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
 .admin-chip {
   display: inline-flex;
   align-items: center;
@@ -407,6 +460,22 @@
   background-color: rgba(255, 255, 255, 0.05);
   color: #94A3B8;
   border: 1px solid var(--admin-border);
+}
+
+.admin-spam-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--mono, monospace);
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  margin-top: 3px;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .admin-action-btn {

@@ -1,12 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { TurnstileWidget } from '@/components/ui/TurnstileWidget';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', purpose: 'speaking', message: '' });
+  const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [renderedAt, setRenderedAt] = useState<number>(0);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    setRenderedAt(Date.now());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,13 +24,19 @@ export default function ContactPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          website_url_hp: honeypot,
+          token: turnstileToken,
+          _rendered_at: renderedAt,
+        }),
       });
       const data = await res.json();
       if (res.ok) {
         setStatus('success');
         setMsg('Thank you. Your message has been dispatched to Swapnil Ughade.');
         setForm({ name: '', email: '', purpose: 'speaking', message: '' });
+        setHoneypot('');
       } else {
         setStatus('error');
         setMsg(data.error || 'Failed to submit inquiry.');
@@ -46,6 +60,32 @@ export default function ContactPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '40px', marginTop: '32px' }}>
           <div style={{ padding: '32px', background: 'var(--bone-warm)', border: '1px solid var(--line)' }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Off-screen Honeypot */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  top: '-9999px',
+                  width: '1px',
+                  height: '1px',
+                  overflow: 'hidden',
+                  opacity: 0,
+                  pointerEvents: 'none',
+                }}
+                aria-hidden="true"
+              >
+                <label htmlFor="contact_hp_website">Leave this empty</label>
+                <input
+                  id="contact_hp_website"
+                  type="text"
+                  name="website_url_hp"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div>
                 <label style={{ display: 'block', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink)', marginBottom: '8px', fontWeight: 500 }}>
                   Your Name *
@@ -103,6 +143,12 @@ export default function ContactPage() {
                   style={{ width: '100%', padding: '12px 14px', background: 'var(--bone)', border: '1px solid var(--line)', color: 'var(--ink)', fontSize: '14px' }}
                 />
               </div>
+
+              <TurnstileWidget
+                onVerify={(token) => setTurnstileToken(token)}
+                theme="light"
+                size="flexible"
+              />
 
               <button type="submit" disabled={status === 'loading'} className="btn primary" style={{ justifyContent: 'center', width: '100%' }}>
                 {status === 'loading' ? 'Transmitting...' : 'Send Correspondence →'}

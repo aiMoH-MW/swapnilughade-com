@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { TurnstileWidget } from "@/components/ui/TurnstileWidget";
 
 export function NewsletterBand() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [renderedAt, setRenderedAt] = useState<number>(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    setRenderedAt(Date.now());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -16,13 +24,20 @@ export function NewsletterBand() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "homepage_newsletter_band" }),
+        body: JSON.stringify({
+          email,
+          source: "homepage_newsletter_band",
+          website_url_hp: honeypot,
+          token: turnstileToken,
+          _rendered_at: renderedAt,
+        }),
       });
       const data = await res.json();
       if (res.ok) {
         setStatus("success");
         setMsg("You are subscribed to The Letter. Check your inbox.");
         setEmail("");
+        setHoneypot("");
       } else {
         setStatus("error");
         setMsg(data.error || "Subscription failed. Please try again.");
@@ -46,7 +61,31 @@ export function NewsletterBand() {
           Long-form notes on AI-first marketing, portals, and the founder's operating thesis. Reply to any issue to reach Swapnil directly.
         </p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
+          {/* Off-screen Honeypot */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              top: '-9999px',
+              width: '1px',
+              height: '1px',
+              overflow: 'hidden',
+              opacity: 0,
+              pointerEvents: 'none',
+            }}
+            aria-hidden="true"
+          >
+            <input
+              type="text"
+              name="website_url_hp"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <input
             type="email"
             value={email}
@@ -55,6 +94,13 @@ export function NewsletterBand() {
             required
             className="flex-1 px-4 py-3.5 bg-[var(--bg-indigo-deep)] border border-[var(--line-indigo)] text-[var(--bone)] placeholder:text-[rgba(239,235,227,0.4)] text-sm font-sans focus:outline-none focus:border-[var(--gold-light)]"
           />
+
+          <TurnstileWidget
+            onVerify={(token) => setTurnstileToken(token)}
+            size="invisible"
+            theme="dark"
+          />
+
           <button
             type="submit"
             disabled={status === "loading"}

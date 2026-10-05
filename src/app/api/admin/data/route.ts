@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
   getNewsletterSubscribers,
   deleteNewsletterSubscriber,
+  updateNewsletterSpamStatus,
   getContactInquiries,
   updateContactStatus,
+  updateContactSpamStatus,
   deleteContactInquiry,
   getSpeakingInquiries,
   updateSpeakingStatus,
+  updateSpeakingSpamStatus,
   deleteSpeakingInquiry,
 } from '@/lib/store';
 
@@ -44,14 +47,37 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { type, id, status } = await req.json();
+    const body = await req.json();
+    const { type, id, status, isSpam, spamReason, action } = body;
 
-    if (type === 'contact' && id && status) {
+    if (!type || !id) {
+      return NextResponse.json({ error: 'Type and ID are required' }, { status: 400 });
+    }
+
+    // Toggle / update spam flag
+    if (action === 'toggle_spam' || typeof isSpam === 'boolean') {
+      const targetSpamState = typeof isSpam === 'boolean' ? isSpam : true;
+      if (type === 'contact') {
+        const success = await updateContactSpamStatus(id, targetSpamState, spamReason || 'Manually marked by admin');
+        return NextResponse.json({ success });
+      }
+      if (type === 'newsletter') {
+        const success = await updateNewsletterSpamStatus(id, targetSpamState, spamReason || 'Manually marked by admin');
+        return NextResponse.json({ success });
+      }
+      if (type === 'speaking') {
+        const success = await updateSpeakingSpamStatus(id, targetSpamState, spamReason || 'Manually marked by admin');
+        return NextResponse.json({ success });
+      }
+    }
+
+    // Update status
+    if (type === 'contact' && status) {
       const success = await updateContactStatus(id, status);
       return NextResponse.json({ success });
     }
 
-    if (type === 'speaking' && id && status) {
+    if (type === 'speaking' && status) {
       const success = await updateSpeakingStatus(id, status);
       return NextResponse.json({ success });
     }
@@ -67,24 +93,33 @@ export async function DELETE(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const id = searchParams.get('id');
+    const idsParam = searchParams.get('ids');
 
-    if (!type || !id) {
-      return NextResponse.json({ error: 'Type and ID are required' }, { status: 400 });
+    if (!type || (!id && !idsParam)) {
+      return NextResponse.json({ error: 'Type and ID(s) are required' }, { status: 400 });
     }
 
+    const idsToDelete = idsParam ? idsParam.split(',').filter(Boolean) : [id!];
+
     if (type === 'newsletter') {
-      const success = await deleteNewsletterSubscriber(id);
-      return NextResponse.json({ success });
+      for (const targetId of idsToDelete) {
+        await deleteNewsletterSubscriber(targetId);
+      }
+      return NextResponse.json({ success: true, count: idsToDelete.length });
     }
 
     if (type === 'contact') {
-      const success = await deleteContactInquiry(id);
-      return NextResponse.json({ success });
+      for (const targetId of idsToDelete) {
+        await deleteContactInquiry(targetId);
+      }
+      return NextResponse.json({ success: true, count: idsToDelete.length });
     }
 
     if (type === 'speaking') {
-      const success = await deleteSpeakingInquiry(id);
-      return NextResponse.json({ success });
+      for (const targetId of idsToDelete) {
+        await deleteSpeakingInquiry(targetId);
+      }
+      return NextResponse.json({ success: true, count: idsToDelete.length });
     }
 
     return NextResponse.json({ error: 'Invalid deletion type' }, { status: 400 });

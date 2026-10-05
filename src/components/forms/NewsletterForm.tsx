@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { TurnstileWidget } from '@/components/ui/TurnstileWidget';
 
 interface Props {
   source?: string;
@@ -9,8 +10,15 @@ interface Props {
 
 export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to The Letter' }: Props) {
   const [email, setEmail] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [renderedAt, setRenderedAt] = useState<number>(0);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    setRenderedAt(Date.now());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -27,13 +35,20 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source }),
+        body: JSON.stringify({
+          email,
+          source,
+          website_url_hp: honeypot,
+          token: turnstileToken,
+          _rendered_at: renderedAt,
+        }),
       });
 
       const data = await res.json();
       if (res.ok) {
         setStatus('success');
         setEmail('');
+        setHoneypot('');
       } else {
         setStatus('error');
         setErrorMsg(data.error || 'Something went wrong. Please try again.');
@@ -70,6 +85,32 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
 
   return (
     <form className="newsletter-form" onSubmit={handleSubmit}>
+      {/* Off-screen Honeypot field (hidden from real users, attractive to bots) */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: '-9999px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+          opacity: 0,
+          pointerEvents: 'none',
+        }}
+        aria-hidden="true"
+      >
+        <label htmlFor={`hp-url-${source}`}>Leave this empty</label>
+        <input
+          id={`hp-url-${source}`}
+          type="text"
+          name="website_url_hp"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <label htmlFor={`nl-email-${source}`}>Email</label>
       <input
         id={`nl-email-${source}`}
@@ -81,6 +122,12 @@ export function NewsletterForm({ source = 'website', buttonLabel = 'Subscribe to
         disabled={status === 'loading'}
         required
       />
+
+      <TurnstileWidget
+        onVerify={(token) => setTurnstileToken(token)}
+        size="invisible"
+      />
+
       <button
         type="submit"
         disabled={status === 'loading'}

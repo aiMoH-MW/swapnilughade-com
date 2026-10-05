@@ -8,6 +8,8 @@ export interface NewsletterSubscriber {
   source: string;
   createdAt: string;
   status: 'active' | 'unsubscribed';
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 export interface ContactInquiry {
@@ -18,6 +20,8 @@ export interface ContactInquiry {
   message: string;
   createdAt: string;
   status: 'new' | 'read' | 'replied';
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 export interface SpeakingInquiry {
@@ -32,6 +36,8 @@ export interface SpeakingInquiry {
   additionalNotes?: string;
   createdAt: string;
   status: string;
+  isSpam?: boolean;
+  spamReason?: string | null;
 }
 
 interface DatabaseSchema {
@@ -96,6 +102,8 @@ export async function getNewsletterSubscribers(): Promise<NewsletterSubscriber[]
           source: d.source || 'website',
           createdAt: d.created_at || d.createdAt || new Date().toISOString(),
           status: d.status || 'active',
+          isSpam: !!d.is_spam,
+          spamReason: d.spam_reason || null,
         }));
       }
     } catch (err) {
@@ -107,7 +115,12 @@ export async function getNewsletterSubscribers(): Promise<NewsletterSubscriber[]
   return db.newsletter || [];
 }
 
-export async function addNewsletterSubscriber(email: string, source: string = 'website'): Promise<NewsletterSubscriber> {
+export async function addNewsletterSubscriber(
+  email: string,
+  source: string = 'website',
+  isSpam: boolean = false,
+  spamReason: string | null = null
+): Promise<NewsletterSubscriber> {
   const db = ensureDbFile();
   const normalizedEmail = email.toLowerCase().trim();
 
@@ -117,14 +130,18 @@ export async function addNewsletterSubscriber(email: string, source: string = 'w
     source,
     createdAt: new Date().toISOString(),
     status: 'active',
+    isSpam,
+    spamReason,
   };
 
   // 1. Local storage
-  const existing = db.newsletter.find((n) => n.email.toLowerCase() === normalizedEmail);
-  if (!existing) {
+  const existingIndex = db.newsletter.findIndex((n) => n.email.toLowerCase() === normalizedEmail);
+  if (existingIndex === -1) {
     db.newsletter.unshift(newEntry);
-    writeDbFile(db);
+  } else {
+    db.newsletter[existingIndex] = { ...db.newsletter[existingIndex], isSpam, spamReason };
   }
+  writeDbFile(db);
 
   // 2. Supabase Cloud DB
   if (isSupabaseConfigured()) {
@@ -134,6 +151,8 @@ export async function addNewsletterSubscriber(email: string, source: string = 'w
           email: normalizedEmail,
           source,
           status: 'active',
+          is_spam: isSpam,
+          spam_reason: spamReason,
           created_at: newEntry.createdAt,
         },
         { onConflict: 'email' }
@@ -143,7 +162,34 @@ export async function addNewsletterSubscriber(email: string, source: string = 'w
     }
   }
 
-  return existing || newEntry;
+  return newEntry;
+}
+
+export async function updateNewsletterSpamStatus(id: string, isSpam: boolean, reason?: string): Promise<boolean> {
+  let success = false;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin
+        .from('newsletter_subscribers')
+        .update({ is_spam: isSpam, spam_reason: reason || null })
+        .or(`id.eq.${id},email.eq.${id}`);
+      success = true;
+    } catch (err) {
+      console.warn('Supabase newsletter spam update warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  const item = db.newsletter.find((n) => n.id === id || n.email === id);
+  if (item) {
+    item.isSpam = isSpam;
+    item.spamReason = reason || null;
+    writeDbFile(db);
+    success = true;
+  }
+
+  return success;
 }
 
 export async function deleteNewsletterSubscriber(id: string): Promise<boolean> {
@@ -191,6 +237,8 @@ export async function getContactInquiries(): Promise<ContactInquiry[]> {
           message: d.message,
           createdAt: d.created_at || d.createdAt || new Date().toISOString(),
           status: d.status || 'new',
+          isSpam: !!d.is_spam,
+          spamReason: d.spam_reason || null,
         }));
       }
     } catch (err) {
@@ -207,6 +255,8 @@ export async function addContactInquiry(data: {
   email: string;
   purpose?: string;
   message: string;
+  isSpam?: boolean;
+  spamReason?: string | null;
 }): Promise<ContactInquiry> {
   const db = ensureDbFile();
   const newEntry: ContactInquiry = {
@@ -217,6 +267,8 @@ export async function addContactInquiry(data: {
     message: data.message.trim(),
     createdAt: new Date().toISOString(),
     status: 'new',
+    isSpam: data.isSpam || false,
+    spamReason: data.spamReason || null,
   };
 
   // 1. Local backup
@@ -232,6 +284,8 @@ export async function addContactInquiry(data: {
         purpose: newEntry.purpose,
         message: newEntry.message,
         status: newEntry.status,
+        is_spam: newEntry.isSpam,
+        spam_reason: newEntry.spamReason,
         created_at: newEntry.createdAt,
       });
     } catch (err) {
@@ -258,6 +312,30 @@ export async function updateContactStatus(id: string, status: 'new' | 'read' | '
   const item = db.contacts.find((c) => c.id === id);
   if (item) {
     item.status = status;
+    writeDbFile(db);
+    success = true;
+  }
+
+  return success;
+}
+
+export async function updateContactSpamStatus(id: string, isSpam: boolean, reason?: string): Promise<boolean> {
+  let success = false;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin.from('contacts').update({ is_spam: isSpam, spam_reason: reason || null }).eq('id', id);
+      success = true;
+    } catch (err) {
+      console.warn('Supabase update contact spam warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  const item = db.contacts.find((c) => c.id === id);
+  if (item) {
+    item.isSpam = isSpam;
+    item.spamReason = reason || null;
     writeDbFile(db);
     success = true;
   }
@@ -311,6 +389,8 @@ export async function getSpeakingInquiries(): Promise<SpeakingInquiry[]> {
           additionalNotes: d.additional_notes,
           createdAt: d.created_at || new Date().toISOString(),
           status: d.status || 'pending',
+          isSpam: !!d.is_spam,
+          spamReason: d.spam_reason || null,
         }));
       }
     } catch (err) {
@@ -331,6 +411,8 @@ export async function addSpeakingInquiry(data: {
   contactName: string;
   contactEmail: string;
   additionalNotes?: string;
+  isSpam?: boolean;
+  spamReason?: string | null;
 }): Promise<SpeakingInquiry> {
   const db = ensureDbFile();
   const newEntry: SpeakingInquiry = {
@@ -345,6 +427,8 @@ export async function addSpeakingInquiry(data: {
     additionalNotes: data.additionalNotes?.trim(),
     createdAt: new Date().toISOString(),
     status: 'pending',
+    isSpam: data.isSpam || false,
+    spamReason: data.spamReason || null,
   };
 
   // 1. Local backup
@@ -365,6 +449,8 @@ export async function addSpeakingInquiry(data: {
         contact_email: newEntry.contactEmail,
         additional_notes: newEntry.additionalNotes || null,
         status: newEntry.status,
+        is_spam: newEntry.isSpam,
+        spam_reason: newEntry.spamReason,
         created_at: newEntry.createdAt,
       });
     } catch (err) {
@@ -392,6 +478,32 @@ export async function updateSpeakingStatus(id: string, status: string): Promise<
     const item = db.speaking.find((s) => s.id === id);
     if (item) {
       item.status = status;
+      writeDbFile(db);
+      success = true;
+    }
+  }
+
+  return success;
+}
+
+export async function updateSpeakingSpamStatus(id: string, isSpam: boolean, reason?: string): Promise<boolean> {
+  let success = false;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin.from('speaking_inquiries').update({ is_spam: isSpam, spam_reason: reason || null }).eq('id', id);
+      success = true;
+    } catch (err) {
+      console.warn('Supabase update speaking spam warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  if (db.speaking) {
+    const item = db.speaking.find((s) => s.id === id);
+    if (item) {
+      item.isSpam = isSpam;
+      item.spamReason = reason || null;
       writeDbFile(db);
       success = true;
     }

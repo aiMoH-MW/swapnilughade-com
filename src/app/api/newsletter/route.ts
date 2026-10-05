@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse, after } from 'next/server';
 import { sendEmail, getAdminNotificationEmail } from '@/lib/email';
 import { addNewsletterSubscriber } from '@/lib/store';
+import {
+  newsletterSchema,
+  verifyTurnstileToken,
+  normalizeEmail,
+  isDisposableEmail,
+  hasExcessiveDots,
+  isValidTimeDelta,
+  checkRateLimit,
+  extractClientIp,
+} from '@/lib/security/validation';
 
 // Helper function executed in the background (fire-and-forget)
 async function sendBackgroundNewsletterEmails(email: string, source: string) {
@@ -62,39 +72,94 @@ async function sendBackgroundNewsletterEmails(email: string, source: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    let email = '';
-    let source = 'website';
+    const clientIp = extractClientIp(req.headers);
+    let payload: Record<string, any> = {};
 
     const contentType = req.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
-      const body = await req.json();
-      email = body.email;
-      source = body.source || 'website';
+      payload = await req.json();
     } else if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
       const formData = await req.formData();
-      email = formData.get('email')?.toString() || '';
-      source = formData.get('source')?.toString() || 'website';
-    }
-
-    if (!email || !email.includes('@')) {
-      return NextResponse.json({ error: 'Valid email is required.' }, { status: 400 });
-    }
-
-    // 1. Store in persistent store / Supabase (synchronous requirement for success)
-    const subscriber = await addNewsletterSubscriber(email, source);
-
-    // 2. Trigger emails in background (fire-and-forget, non-blocking)
-    if (typeof after === 'function') {
-      after(async () => {
-        await sendBackgroundNewsletterEmails(email, source);
+      formData.forEach((value, key) => {
+        payload[key] = value.toString();
       });
+    }
+
+    // 1. Honeypot check: If filled by automated bot, return fake success immediately
+    if (payload.website_url_hp && payload.website_url_hp.trim() !== '') {
+      console.info('[Newsletter] Bot caught by honeypot. Returning silent fake-success.');
+      return NextResponse.json({ success: true, message: 'Subscribed successfully' });
+    }
+
+    // 2. Validate input schema with Zod
+    const parsed = newsletterSchema.safeParse(payload);
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]?.message || 'Invalid input.';
+      return NextResponse.json({ error: issue }, { status: 400 });
+    }
+
+    const { email: rawEmail, source, token, _rendered_at } = parsed.data;
+
+    // 3. Server-side Cloudflare Turnstile token verification
+    const turnstileResult = await verifyTurnstileToken(token, clientIp);
+    if (!turnstileResult.success) {
+      return NextResponse.json({ error: turnstileResult.error || 'CAPTCHA verification failed.' }, { status: 400 });
+    }
+
+    // 4. Rate Limiting (max 3 submissions / IP / hour)
+    const rateLimit = await checkRateLimit(clientIp, 'newsletter', 3);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please wait before submitting again.' },
+        { status: 429 }
+      );
+    }
+
+    // 5. Spam heuristic checks
+    let isSpam = false;
+    let spamReason: string | null = null;
+
+    // Time check (< 3 seconds is inhuman)
+    const timeCheck = isValidTimeDelta(_rendered_at, 3);
+    if (!timeCheck.isValid && _rendered_at) {
+      isSpam = true;
+      spamReason = `Inhuman submission speed (${timeCheck.elapsedSeconds.toFixed(1)}s)`;
+    }
+
+    // Disposable email check
+    if (isDisposableEmail(rawEmail)) {
+      isSpam = true;
+      spamReason = spamReason ? `${spamReason}; Disposable email` : 'Disposable email domain';
+    }
+
+    // Excessive Gmail dot padding check
+    if (hasExcessiveDots(rawEmail)) {
+      isSpam = true;
+      spamReason = spamReason ? `${spamReason}; Excessive dots in Gmail` : 'Excessive dot patterns in Gmail address';
+    }
+
+    // Normalize email for storage
+    const normalized = normalizeEmail(rawEmail);
+
+    // 6. Save to persistent store (Supabase + local backup)
+    const subscriber = await addNewsletterSubscriber(normalized, source, isSpam, spamReason);
+
+    // 7. Send confirmation/alert emails ONLY if not flagged as spam
+    if (!isSpam) {
+      if (typeof after === 'function') {
+        after(async () => {
+          await sendBackgroundNewsletterEmails(normalized, source);
+        });
+      } else {
+        sendBackgroundNewsletterEmails(normalized, source).catch((err) => {
+          console.warn('[Newsletter] Background email error:', err);
+        });
+      }
     } else {
-      sendBackgroundNewsletterEmails(email, source).catch((err) => {
-        console.warn('[Newsletter] Background email failed silently:', err);
-      });
+      console.info(`[Newsletter] Flagged suspicious entry (${spamReason}) - skipped automated emails.`);
     }
 
-    // 3. Respond immediately with success
+    // 8. Redirect for HTML form or return JSON
     if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
       const referer = req.headers.get('referer');
       let targetUrl: URL;
@@ -114,7 +179,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, message: 'Subscribed successfully', subscriber });
   } catch (error: any) {
-    console.error('[Newsletter] Database save error:', error);
+    console.error('[Newsletter] Submission error:', error);
     return NextResponse.json({ error: error.message || 'Subscription failed. Please try again.' }, { status: 500 });
   }
 }
