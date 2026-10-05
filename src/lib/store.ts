@@ -51,17 +51,19 @@ const isSupabaseConfigured = () => {
 function ensureDbFile(): DatabaseSchema {
   try {
     if (!fs.existsSync(DB_FILE)) {
-      const initial: DatabaseSchema = { newsletter: [], contacts: [] };
+      const initial: DatabaseSchema = { newsletter: [], contacts: [], speaking: [] };
       const dir = path.dirname(DB_FILE);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(DB_FILE, JSON.stringify(initial, null, 2), 'utf8');
       return initial;
     }
     const content = fs.readFileSync(DB_FILE, 'utf8');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+    if (!parsed.speaking) parsed.speaking = [];
+    return parsed;
   } catch (err) {
     console.error('Error reading submissions DB file:', err);
-    return { newsletter: [], contacts: [] };
+    return { newsletter: [], contacts: [], speaking: [] };
   }
 }
 
@@ -371,6 +373,31 @@ export async function addSpeakingInquiry(data: {
   }
 
   return newEntry;
+}
+
+export async function updateSpeakingStatus(id: string, status: string): Promise<boolean> {
+  let success = false;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await supabaseAdmin.from('speaking_inquiries').update({ status }).eq('id', id);
+      success = true;
+    } catch (err) {
+      console.warn('Supabase speaking update status warning:', err);
+    }
+  }
+
+  const db = ensureDbFile();
+  if (db.speaking) {
+    const item = db.speaking.find((s) => s.id === id);
+    if (item) {
+      item.status = status;
+      writeDbFile(db);
+      success = true;
+    }
+  }
+
+  return success;
 }
 
 export async function deleteSpeakingInquiry(id: string): Promise<boolean> {

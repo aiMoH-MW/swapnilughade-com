@@ -5,6 +5,9 @@ import {
   getContactInquiries,
   updateContactStatus,
   deleteContactInquiry,
+  getSpeakingInquiries,
+  updateSpeakingStatus,
+  deleteSpeakingInquiry,
 } from '@/lib/store';
 
 export async function GET(req: NextRequest) {
@@ -22,12 +25,18 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ contacts });
     }
 
-    const [newsletter, contacts] = await Promise.all([
+    if (type === 'speaking') {
+      const speaking = await getSpeakingInquiries();
+      return NextResponse.json({ speaking });
+    }
+
+    const [newsletter, contacts, speaking] = await Promise.all([
       getNewsletterSubscribers(),
       getContactInquiries(),
+      getSpeakingInquiries(),
     ]);
 
-    return NextResponse.json({ newsletter, contacts });
+    return NextResponse.json({ newsletter, contacts, speaking });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to fetch admin data' }, { status: 500 });
   }
@@ -39,6 +48,11 @@ export async function PATCH(req: NextRequest) {
 
     if (type === 'contact' && id && status) {
       const success = await updateContactStatus(id, status);
+      return NextResponse.json({ success });
+    }
+
+    if (type === 'speaking' && id && status) {
+      const success = await updateSpeakingStatus(id, status);
       return NextResponse.json({ success });
     }
 
@@ -65,6 +79,11 @@ export async function DELETE(req: NextRequest) {
 
     if (type === 'contact') {
       const success = await deleteContactInquiry(id);
+      return NextResponse.json({ success });
+    }
+
+    if (type === 'speaking') {
+      const success = await deleteSpeakingInquiry(id);
       return NextResponse.json({ success });
     }
 

@@ -21,10 +21,25 @@ interface ContactInquiry {
   status: 'new' | 'read' | 'replied';
 }
 
+interface SpeakingInquiry {
+  id: string;
+  eventName: string;
+  eventDate?: string;
+  locationOrVirtual: string;
+  expectedAttendees?: number;
+  topicInterest?: string;
+  contactName: string;
+  contactEmail: string;
+  additionalNotes?: string;
+  createdAt: string;
+  status: string;
+}
+
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<'newsletter' | 'contacts'>('newsletter');
+  const [activeTab, setActiveTab] = useState<'newsletter' | 'contacts' | 'speaking'>('newsletter');
   const [newsletter, setNewsletter] = useState<NewsletterSubscriber[]>([]);
   const [contacts, setContacts] = useState<ContactInquiry[]>([]);
+  const [speaking, setSpeaking] = useState<SpeakingInquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +47,7 @@ export default function AdminPage() {
   const [toDate, setToDate] = useState('');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [selectedContact, setSelectedContact] = useState<ContactInquiry | null>(null);
+  const [selectedSpeaking, setSelectedSpeaking] = useState<SpeakingInquiry | null>(null);
 
   // Simple authentication state
   const [isAuth, setIsAuth] = useState(false);
@@ -99,6 +115,7 @@ export default function AdminPage() {
         const data = await res.json();
         setNewsletter(data.newsletter || []);
         setContacts(data.contacts || []);
+        setSpeaking(data.speaking || []);
       }
     } catch (err) {
       console.error('Failed to load admin data:', err);
@@ -107,7 +124,7 @@ export default function AdminPage() {
     }
   }
 
-  async function handleDelete(type: 'newsletter' | 'contact', id: string) {
+  async function handleDelete(type: 'newsletter' | 'contact' | 'speaking', id: string) {
     if (!confirm(`Are you sure you want to delete this ${type} record?`)) return;
     try {
       const res = await fetch(`/api/admin/data?type=${type}&id=${id}`, {
@@ -116,8 +133,10 @@ export default function AdminPage() {
       if (res.ok) {
         if (type === 'newsletter') {
           setNewsletter((prev) => prev.filter((n) => n.id !== id));
-        } else {
+        } else if (type === 'contact') {
           setContacts((prev) => prev.filter((c) => c.id !== id));
+        } else if (type === 'speaking') {
+          setSpeaking((prev) => prev.filter((s) => s.id !== id));
         }
         setSelectedIds((prev) => prev.filter((item) => item !== id));
       }
@@ -146,8 +165,29 @@ export default function AdminPage() {
     }
   }
 
+  async function handleSpeakingStatusChange(id: string, status: string) {
+    try {
+      const res = await fetch('/api/admin/data', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'speaking', id, status }),
+      });
+      if (res.ok) {
+        setSpeaking((prev) =>
+          prev.map((s) => (s.id === id ? { ...s, status } : s))
+        );
+        if (selectedSpeaking && selectedSpeaking.id === id) {
+          setSelectedSpeaking({ ...selectedSpeaking, status });
+        }
+      }
+    } catch (err) {
+      console.error('Speaking status update failed:', err);
+    }
+  }
+
   // Format Date (e.g. "25 Aug 2026")
-  function formatDate(isoStr: string) {
+  function formatDate(isoStr?: string) {
+    if (!isoStr) return '—';
     try {
       const d = new Date(isoStr);
       if (isNaN(d.getTime())) return isoStr;
@@ -213,6 +253,37 @@ export default function AdminPage() {
     return list;
   }, [contacts, searchTerm, fromDate, toDate, sortOrder]);
 
+  // Filtered Speaking list
+  const filteredSpeaking = useMemo(() => {
+    let list = [...speaking];
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      list = list.filter(
+        (s) =>
+          (s.contactName && s.contactName.toLowerCase().includes(q)) ||
+          (s.contactEmail && s.contactEmail.toLowerCase().includes(q)) ||
+          (s.eventName && s.eventName.toLowerCase().includes(q)) ||
+          (s.topicInterest && s.topicInterest.toLowerCase().includes(q)) ||
+          (s.locationOrVirtual && s.locationOrVirtual.toLowerCase().includes(q)) ||
+          (s.additionalNotes && s.additionalNotes.toLowerCase().includes(q))
+      );
+    }
+    if (fromDate) {
+      const f = new Date(fromDate).getTime();
+      list = list.filter((s) => new Date(s.createdAt).getTime() >= f);
+    }
+    if (toDate) {
+      const t = new Date(toDate).getTime() + 86400000;
+      list = list.filter((s) => new Date(s.createdAt).getTime() <= t);
+    }
+    list.sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === 'desc' ? timeB - timeA : timeA - timeB;
+    });
+    return list;
+  }, [speaking, searchTerm, fromDate, toDate, sortOrder]);
+
   // Toggle selection
   function toggleSelectAll(listIds: string[]) {
     if (selectedIds.length === listIds.length) {
@@ -252,7 +323,7 @@ export default function AdminPage() {
 
       csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
       downloadFile(csvContent, `newsletter_subscribers_${now}.csv`);
-    } else {
+    } else if (activeTab === 'contacts') {
       const headers = ['ID', 'Created At', 'Name', 'Email', 'Purpose', 'Status', 'Message'];
       const dataToExport =
         selectedIds.length > 0
@@ -271,6 +342,41 @@ export default function AdminPage() {
 
       csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
       downloadFile(csvContent, `contact_inquiries_${now}.csv`);
+    } else if (activeTab === 'speaking') {
+      const headers = [
+        'ID',
+        'Created At',
+        'Contact Name',
+        'Contact Email',
+        'Event Name',
+        'Event Date',
+        'Location / Format',
+        'Expected Attendees',
+        'Topic Interest',
+        'Status',
+        'Notes',
+      ];
+      const dataToExport =
+        selectedIds.length > 0
+          ? filteredSpeaking.filter((s) => selectedIds.includes(s.id))
+          : filteredSpeaking;
+
+      const rows = dataToExport.map((s) => [
+        `"${s.id}"`,
+        `"${formatDate(s.createdAt)}"`,
+        `"${(s.contactName || '').replace(/"/g, '""')}"`,
+        `"${s.contactEmail || ''}"`,
+        `"${(s.eventName || '').replace(/"/g, '""')}"`,
+        `"${s.eventDate || 'TBD'}"`,
+        `"${(s.locationOrVirtual || '').replace(/"/g, '""')}"`,
+        `"${s.expectedAttendees || ''}"`,
+        `"${(s.topicInterest || '').replace(/"/g, '""')}"`,
+        `"${s.status || 'pending'}"`,
+        `"${(s.additionalNotes || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+      ]);
+
+      csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+      downloadFile(csvContent, `speaking_inquiries_${now}.csv`);
     }
   }
 
@@ -375,6 +481,33 @@ export default function AdminPage() {
               {contacts.length}
             </span>
           </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('speaking');
+              setSelectedIds([]);
+            }}
+            className={`admin-nav-item ${activeTab === 'speaking' ? 'active' : ''}`}
+          >
+            <span className="admin-nav-left">
+              <svg className="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="12" x2="12" y1="19" y2="22" />
+                <line x1="8" x2="16" y1="22" y2="22" />
+              </svg>
+              Speaking Inquiries
+            </span>
+            <span
+              className="admin-badge"
+              style={{
+                backgroundColor: speaking.some((s) => s.status === 'pending') ? '#E5A83B' : '#475569',
+                color: speaking.some((s) => s.status === 'pending') ? '#070B14' : '#FFFFFF',
+              }}
+            >
+              {speaking.length}
+            </span>
+          </button>
         </div>
 
         <div className="admin-sidebar-footer">
@@ -390,7 +523,11 @@ export default function AdminPage() {
       {/* MAIN CONTENT */}
       <main className="admin-main">
         <header className="admin-header">
-          <h1 className="admin-title">{activeTab === 'newsletter' ? 'Newsletter' : 'Contact Form Inquiries'}</h1>
+          <h1 className="admin-title">
+            {activeTab === 'newsletter' && 'Newsletter'}
+            {activeTab === 'contacts' && 'Contact Form Inquiries'}
+            {activeTab === 'speaking' && 'Speaking & Keynote Inquiries'}
+          </h1>
           <button onClick={exportCSV} className="admin-btn-export">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -435,7 +572,13 @@ export default function AdminPage() {
 
             <input
               type="text"
-              placeholder={activeTab === 'newsletter' ? 'Search email or source...' : 'Search name, email, message...'}
+              placeholder={
+                activeTab === 'newsletter'
+                  ? 'Search email or source...'
+                  : activeTab === 'contacts'
+                  ? 'Search name, email, message...'
+                  : 'Search organizer, event, topic, email...'
+              }
               className="admin-search-input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -443,12 +586,14 @@ export default function AdminPage() {
           </div>
 
           <div className="admin-records-count">
-            {activeTab === 'newsletter' ? filteredNewsletter.length : filteredContacts.length} records
+            {activeTab === 'newsletter' && `${filteredNewsletter.length} records`}
+            {activeTab === 'contacts' && `${filteredContacts.length} records`}
+            {activeTab === 'speaking' && `${filteredSpeaking.length} records`}
           </div>
         </div>
 
         {/* DATA TABLES */}
-        {activeTab === 'newsletter' ? (
+        {activeTab === 'newsletter' && (
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
@@ -517,7 +662,9 @@ export default function AdminPage() {
               </tbody>
             </table>
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'contacts' && (
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
@@ -600,7 +747,113 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* MESSAGE DETAIL MODAL */}
+        {activeTab === 'speaking' && (
+          <div className="admin-table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '40px' }}>
+                    <input
+                      type="checkbox"
+                      className="admin-checkbox"
+                      checked={filteredSpeaking.length > 0 && selectedIds.length === filteredSpeaking.length}
+                      onChange={() => toggleSelectAll(filteredSpeaking.map((s) => s.id))}
+                    />
+                  </th>
+                  <th>CREATED AT</th>
+                  <th>CONTACT</th>
+                  <th>EVENT</th>
+                  <th>LOCATION / DATE</th>
+                  <th>TOPIC INTEREST</th>
+                  <th>STATUS</th>
+                  <th style={{ textAlign: 'right' }}>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                      Loading records...
+                    </td>
+                  </tr>
+                ) : filteredSpeaking.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: '#64748B' }}>
+                      No speaking inquiries found matching the filters.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredSpeaking.map((row) => (
+                    <tr key={row.id}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          className="admin-checkbox"
+                          checked={selectedIds.includes(row.id)}
+                          onChange={() => toggleSelectRow(row.id)}
+                        />
+                      </td>
+                      <td style={{ color: '#E2E8F0', fontFamily: 'var(--mono, monospace)', fontSize: '13px' }}>
+                        {formatDate(row.createdAt)}
+                      </td>
+                      <td>
+                        <div style={{ fontWeight: 600, color: '#FFFFFF' }}>{row.contactName}</div>
+                        <div className="admin-email-text" style={{ fontSize: '12px', marginTop: '2px' }}>
+                          {row.contactEmail}
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ color: '#FFFFFF', fontWeight: 500 }}>{row.eventName}</div>
+                        {row.eventDate && (
+                          <div style={{ fontSize: '11px', color: '#C89B3C', fontFamily: 'var(--mono)', marginTop: '2px' }}>
+                            📅 {formatDate(row.eventDate)}
+                          </div>
+                        )}
+                      </td>
+                      <td>
+                        <span className="admin-chip">{row.locationOrVirtual || 'TBD'}</span>
+                        {row.expectedAttendees ? (
+                          <span className="admin-chip" style={{ marginLeft: '6px' }}>
+                            👥 {row.expectedAttendees}
+                          </span>
+                        ) : null}
+                      </td>
+                      <td style={{ color: '#94A3B8', fontSize: '13px', maxWidth: '200px' }}>
+                        {row.topicInterest || 'Keynotes & Briefings'}
+                      </td>
+                      <td>
+                        <span className={`admin-status-badge admin-status-${row.status || 'pending'}`}>
+                          {row.status || 'pending'}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button
+                          onClick={() => {
+                            setSelectedSpeaking(row);
+                            if (row.status === 'pending') handleSpeakingStatusChange(row.id, 'read');
+                          }}
+                          className="admin-view-btn"
+                          style={{ marginRight: '8px' }}
+                        >
+                          View Details
+                        </button>
+                        <button
+                          onClick={() => handleDelete('speaking', row.id)}
+                          className="admin-action-btn"
+                          title="Delete speaking inquiry"
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* CONTACT MESSAGE DETAIL MODAL */}
         {selectedContact && (
           <div className="admin-modal-backdrop" onClick={() => setSelectedContact(null)}>
             <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
@@ -643,6 +896,99 @@ export default function AdminPage() {
                   style={{ backgroundColor: 'var(--admin-gold)', color: '#070B14', borderColor: 'var(--admin-gold)', fontWeight: 600 }}
                 >
                   Reply via Email ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SPEAKING INQUIRY DETAIL MODAL */}
+        {selectedSpeaking && (
+          <div className="admin-modal-backdrop" onClick={() => setSelectedSpeaking(null)}>
+            <div className="admin-modal" style={{ maxWidth: '660px' }} onClick={(e) => e.stopPropagation()}>
+              <button className="admin-modal-close" onClick={() => setSelectedSpeaking(null)}>
+                ✕
+              </button>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#C7A968', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                SPEAKING ENGAGEMENT INQUIRY
+              </div>
+              <h2 style={{ fontFamily: 'var(--serif)', fontSize: '24px', color: '#FFFFFF', marginTop: '6px' }}>
+                {selectedSpeaking.eventName}
+              </h2>
+              <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '4px', marginBottom: '18px' }}>
+                Organizer: <strong style={{ color: '#FFFFFF' }}>{selectedSpeaking.contactName}</strong> · Submitted on {formatDate(selectedSpeaking.createdAt)}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '20px', background: '#070B14', padding: '16px', borderRadius: '6px', border: '1px solid var(--admin-border)' }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.1em' }}>Organizer Email</div>
+                  <a href={`mailto:${selectedSpeaking.contactEmail}`} style={{ color: '#D4AF37', fontSize: '13px', textDecoration: 'none', wordBreak: 'break-all' }}>
+                    {selectedSpeaking.contactEmail}
+                  </a>
+                </div>
+
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.1em' }}>Target Event Date</div>
+                  <div style={{ color: '#E2E8F0', fontSize: '13px' }}>
+                    {selectedSpeaking.eventDate ? formatDate(selectedSpeaking.eventDate) : 'Flexible / TBD'}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.1em' }}>Location / Format</div>
+                  <div style={{ color: '#E2E8F0', fontSize: '13px' }}>
+                    {selectedSpeaking.locationOrVirtual || 'TBD'}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.1em' }}>Expected Audience</div>
+                  <div style={{ color: '#E2E8F0', fontSize: '13px' }}>
+                    {selectedSpeaking.expectedAttendees ? `${selectedSpeaking.expectedAttendees} attendees` : 'Not specified'}
+                  </div>
+                </div>
+
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase', color: '#64748B', letterSpacing: '0.1em' }}>Topic Interest</div>
+                  <div style={{ color: '#E4B551', fontSize: '13.5px', fontWeight: 500 }}>
+                    {selectedSpeaking.topicInterest || 'Keynotes & Briefings'}
+                  </div>
+                </div>
+              </div>
+
+              {selectedSpeaking.additionalNotes ? (
+                <div style={{ marginBottom: '20px' }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', textTransform: 'uppercase', color: '#8E9BB5', marginBottom: '8px', letterSpacing: '0.08em' }}>
+                    Additional Notes &amp; Context
+                  </div>
+                  <div style={{ padding: '16px', backgroundColor: '#070B14', border: '1px solid var(--admin-border)', borderRadius: '6px', fontSize: '14px', lineHeight: 1.6, color: '#E2E8F0', maxHeight: '180px', overflowY: 'auto', whiteSpace: 'pre-wrap' }}>
+                    {selectedSpeaking.additionalNotes}
+                  </div>
+                </div>
+              ) : null}
+
+              <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '12px', color: '#64748B' }}>Status:</span>
+                  <select
+                    className="admin-select"
+                    value={selectedSpeaking.status || 'pending'}
+                    onChange={(e) => handleSpeakingStatusChange(selectedSpeaking.id, e.target.value)}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="read">Read</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="declined">Declined</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+
+                <a
+                  href={`mailto:${selectedSpeaking.contactEmail}?subject=Re: Speaking Inquiry for ${encodeURIComponent(selectedSpeaking.eventName)} - Swapnil Ughade`}
+                  className="admin-btn-export"
+                  style={{ backgroundColor: 'var(--admin-gold)', color: '#070B14', borderColor: 'var(--admin-gold)', fontWeight: 600 }}
+                >
+                  Reply to Organizer ↗
                 </a>
               </div>
             </div>
