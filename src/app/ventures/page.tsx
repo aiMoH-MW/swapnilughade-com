@@ -88,7 +88,7 @@ export default function VenturesPage() {
 
             {/* 2. IDEOVATE */}
             <article className="venture gold">
-              <div className="v-role">Founder-Director · Since 2018</div>
+              <div className="v-role">Former Director</div>
               <h3 className="v-name">Ideovate</h3>
               <p className="v-sector">Edtech · Distance and online MBA discovery · simplidistance.com</p>
               <p className="v-desc">

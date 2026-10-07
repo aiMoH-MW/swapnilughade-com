@@ -144,7 +144,7 @@ export default function HomePage() {
             </article>
 
             <article className="venture gold">
-              <div className="venture-role">Founder-Director · 2018</div>
+              <div className="venture-role">Former Director</div>
               <h3 className="venture-name">Ideovate</h3>
               <p className="venture-sector">Edtech, distance and online MBA discovery, simplidistance.com</p>
               <p className="venture-desc">Built to prove the portal thesis. Over 50,000 qualified leads in sixteen months.</p>

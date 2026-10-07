@@ -25,7 +25,7 @@ export default function IdeovateSubpage() {
             ]}
           />
           <div className="role-card gold">
-            <div className="rc-role">Founder-Director · Since 2018</div>
+            <div className="rc-role">Former Director</div>
             <h1 className="rc-name">Ideovate</h1>
             <p className="rc-legal">Ideovate Research Pvt Ltd</p>
             <p className="rc-sector">
